@@ -1,0 +1,24 @@
+
+
+.header-container{
+    text-align: center;}
+.subtitle{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    }
+.title {
+    color: red;
+    font-weight: bold;
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-top:4%;
+    margin-bottom: 1%;
+}
+.new-game-button{
+    background-color: antiquewhite;
+    border: none;
+    padding: 3% !important;
+    margin: auto;
+    display: block;   
+}
+body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
