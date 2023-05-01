@@ -1,24 +1,45 @@
 
-
-.header-container{
-    text-align: center;}
+body{
+    background-color: #0f72e5;
+}
+.popup{
+    background-color:#B96D40;
+    width: 450px;
+    padding: 30px 40px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    border-radius: 8px;
+    display:none;
+    text-align: center;
+}
+.btn-primary {
+    background-color: #424c55 !important;
+    border-color: #424c55!important;
+  }
+  .btn-primary:hover,
+  .btn-primary:focus {
+    background-color: #62727F !important;
+    border-color: #62727F !important;
+  }
+.popup button{
+        display: block;
+        margin:  0 0 20px auto;
+        background-color: transparent;
+        font-size: 30px;
+        color: black;
+        border: none;
+        outline: none;
+        cursor: pointer;
+}
 .subtitle{
-    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-family: 'Nanum Brush Script', cursive;
     }
 .title {
-    color: red;
-    font-weight: bold;
-    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    margin-top:4%;
-    margin-bottom: 1%;
-}
-.new-game-button{
-    background-color: antiquewhite;
-    border: none;
-    padding: 3% !important;
-    margin: auto;
-    display: block;   
-}
-body{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #e3dac9;
+    font-family: 'Comforter Brush', cursive;
+    font-weight: bolder;
+    font size: 30%; !important;
+    text-shadow:2px 1px black;
 }
