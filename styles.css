@@ -24,3 +24,11 @@
     padding-top: 30vh;
     
 }  
+.modal-body {
+    font-family: 'Comforter Brush', cursive !important;
+    font-size: 25px;
+}
+.modal-title {
+    font-family: 'Comforter Brush', cursive !important;
+    font-size: 35px;
+}
