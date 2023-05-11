@@ -1,13 +1,3 @@
-.btn-primary{
-    background-color: #424c55 !important;
-    border-color: #424c55 !important;
-  }
-  .btn-primary:hover,
-  .btn-primary:focus {
-    background-color: #62727F !important;
-    border-color: #62727F !important;
-  }
-  
 .subtitle{
     text-align: center;
     font-family: 'Nanum Brush Script', cursive;
@@ -21,14 +11,8 @@
     font-weight: bolder;
     font-size:15vw;
     white-space: nowrap;
-    padding-top: 30vh;
-    
+    padding-top: 30vh;  
 }  
-.modal-body {
-    font-family: 'Comforter Brush', cursive !important;
-    font-size: 25px;
-}
-.modal-title {
-    font-family: 'Comforter Brush', cursive !important;
-    font-size: 35px;
+.btn-primary {
+    
 }
