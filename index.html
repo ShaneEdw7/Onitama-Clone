@@ -18,28 +18,37 @@
     <h3 class="subtitle">My take on Onitama, but digitalized.</h3>
 <!-- Button trigger modal -->
 <div class="d-grid gap-2 col-5 mx-auto">
-  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Start a New Game
-  </button>
+  <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img src="brush-stroke-png-47321.png" alt="start-game" style="width: 45vw;">
+  <div class="btn-text">
+    Start
+  </div>
+</button>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Start a New Game</h1>
+        <h1 style=font: class="modal-title fs-1" id="staticBackdropLabel">New Game</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input type="text" id="Player 1" placeholder="Red">
-          <input type="checkbox" id="Computer">Computer 
-          <input type="checkbox" id="Human">Human <br>
-        <input type="text" id="Player 2" placeholder="Blue">
-        <input type="checkbox" id="Computer">Computer 
-        <input type="checkbox" id="Human">Human <br>
+        Choose your Color<br>
+          <input type="radio" id="red" name="color" value="red" checked="Choose">
+            <label for="red">Red</label>
+          <input type="radio" id="blue" name="color" value="blue">
+            <label for="blue">Blue</label>
+          <br>
+        Choose your AI Difficulty<br>
+        <input type="radio" id="easy" name="difficulty" value="easy">
+          <label for="easy">Easy</label><br>
+        <input type="radio" id="normal" name="difficulty" value="normal" checked="Choose">
+          <label for="normal">Normal</label><br>
+        <input type="radio" id="hard" name="difficulty" value="hard">
+          <label for="hard">Hard</label>
       </div>
       <div class="modal-footer">
-        <a class="btn btn-primary" href="new.html" role="button">Let's Go</a>
+        <a class="btn btn-primary btn" href="new.html" role="button" id="start">Let's Go</a>
       </div>
     </div>
   </div>
