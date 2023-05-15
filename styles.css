@@ -1,18 +1,74 @@
 .subtitle{
     text-align: center;
-    font-family: 'Nanum Brush Script', cursive;
+    font-family: 'Long Cang', cursive;
     font-size: 4vw;
     }
 
 .title {
     text-align: center;
-    color: #050300;
+    color: white;
     font-family: 'Comforter Brush', cursive;
-    font-weight: bolder;
+    font-weight: 900;
     font-size:15vw;
+    text-shadow: -9px -2px #894E24;
     white-space: nowrap;
     padding-top: 30vh;  
-}  
-.btn-primary {
-    
+}
+.modal-content{
+    font-family: 'Long Cang', cursive;
+}
+.rule-head{
+    font-family: 'Comforter Brush', cursive;
+    font-size: 45px;
+    text-decoration: underline solid black 10%;
+}
+.rule-subtitle{
+    font-family: 'Comforter Brush', cursive;
+    font-size: 45px;
+}
+.rules{
+    font-family: 'Long Cang', cursive;
+    font-size: 25px;
+    margin: 40px;
+    padding: 5%;
+}
+.modal-body{
+    background-color: #EEE8C9;
+    font-size: 30px;
+}
+.modal-header{
+    background-color: #EEE8C9;
+}
+.default-body{
+     background-color: #C39856;
+
+}
+.modal-title{
+    font-family: 'Comforter Brush', cursive;
+    font-size: 40%;
+}
+#footer{
+    background-color: #EEE8C9;
+}
+#start{
+    background-color: black;
+    text-decoration-color: white;
+    border-color: darkgrey;
+}
+.navbar-brand{
+    font-family: 'Comforter Brush', cursive;
+    font-size: 30px;
+}
+.description{
+    text-align: center;
+    font-family: 'Long Cang', cursive;
+    font-size: 35px;
+    }
+.offcanvas-title{
+    font-family: 'Comforter Brush', cursive;
+    font-size: 30px;
+}
+#playerboard{
+    max-width: 100%;
+    height: auto;
 }
