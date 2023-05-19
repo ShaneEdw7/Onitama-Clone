@@ -1,3 +1,9 @@
+/* Color Palette
+Lion - #C39856
+White - #FCECEB
+Russet - #894F24
+Parchment - #EEE8C9 */
+
 .subtitle{
     text-align: center;
     font-family: 'Long Cang', cursive;
@@ -11,6 +17,7 @@
     font-weight: 900;
     font-size:15vw;
     text-shadow: -9px -2px #894E24;
+    text-shadow: black;
     white-space: nowrap;
     padding-top: 30vh;  
 }
@@ -18,17 +25,17 @@
     font-family: 'Long Cang', cursive;
 }
 .rule-head{
-    font-family: 'Comforter Brush', cursive;
+    font-family: 'Long Cang', cursive;
     font-size: 45px;
     text-decoration: underline solid black 10%;
 }
 .rule-subtitle{
-    font-family: 'Comforter Brush', cursive;
-    font-size: 45px;
+    font-family: 'Long Cang', cursive;
+    font-size: 38px;
 }
 .rules{
-    font-family: 'Long Cang', cursive;
-    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
     margin: 40px;
     padding: 5%;
 }
@@ -61,14 +68,18 @@
 }
 .description{
     text-align: center;
-    font-family: 'Long Cang', cursive;
-    font-size: 35px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
     }
 .offcanvas-title{
-    font-family: 'Comforter Brush', cursive;
+    font-family: 'Long Cang', cursive;
     font-size: 30px;
 }
-#playerboard{
-    max-width: 100%;
-    height: auto;
+#gameboard{
+    background-color: #EEE8C9;
+    border: 1px solid black;
+    }
+.gameboard-container{
+    justify-content: center;
+    align-content: center;
 }

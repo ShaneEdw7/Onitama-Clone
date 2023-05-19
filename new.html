@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
      <!--Google Fonts-->
@@ -17,14 +18,12 @@
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">Onitama Clone</a>
-          <span class="navbar-text" id="playercolor">..</span>
-          <span class="navbar-text" id="aidiff">--</span>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span>Rules</span>
           </button>
           <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="offcanvas-header">
-              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Rules</h5>
+              <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"></h5>
               <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -38,7 +37,7 @@
                     <br>
                       <h2 class="rule-subtitle">Setup</h2>
                     <br>
-                      <h3>The player chooses 5 pawns of one color (1 master + 4 students). 
+                      <p>The player chooses 5 pawns of one color (1 master + 4 students). 
                         The Master pawn is placed on the temple arch nearest them,
                         and their 4 Student pawns on the 2 squares on either side of the master.
                         Two random cards are given to each player, face up — this is the player’s
@@ -48,14 +47,14 @@
                         right hand corner of the card is used to determine the starting player.
                         This card is placed so that it is on the right side of the
                         game play area. The rest of the Move cards will not be used.
-                      </h3>
+                      </p>
                     <br>
                       <h2 class="rule-subtitle">How do I Win?</h2>
                     <br>
-                      <h3>It is important to explain how to win before any other movement. This way you can
+                      <p>It is important to explain how to win before any other movement. This way you can
                         associate the movement with strategy to win. There are two ways to prove that your 
                         Art is stronger — the Way of the Stone or the Way of the Stream.
-                      </h3>
+                      </p>
                       <br>
                         <ul>
                         <li> To win in the Way of the Stone, you must capture your opponent’s Master pawn.</li>
@@ -64,9 +63,9 @@
                         <br>
                       <h2 class="rule-subtitle">How do I Play?</h2>
                       <br>
-                        <h3>Combat in Onitama is simple and elegant, as befits a contest between two Masters. You and
+                        <p>Combat in Onitama is simple and elegant, as befits a contest between two Masters. You and
                           your opponent will take turns following the two steps below, one for the body, one for the spirit.
-                        </h3>
+                        </p>
                         <br>
                           <ul>
                             <li>Step 1, Move and Attack<br>
@@ -98,14 +97,14 @@
                           <br><br>
                       <h2 class="rule-subtitle">What if I don't want to move?</h2>
                       <br>
-                          <h3>If you have a legal move, you must take it—even if you don’t want to! Be careful that
+                          <p>If you have a legal move, you must take it—even if you don’t want to! Be careful that
                             your opponent does not trap you in a position from which you cannot escape.
                             It is possible that you will find that you cannot use any of your cards to make a
                             legal move. If this happens —and only then— you must pass your turn. None of
                             your pawns will move. But like the river that constantly flows, you cannot remain
                             unchanged: you must still choose one of the two cards in front of you to be placed to the
                             left of the play area, and receive the card from the right of the play area.
-                          </h3>
+                          </p>
                 
                   </div>
                 </li>
@@ -116,9 +115,10 @@
         
       </nav>
 
-  <canvas id="gamemat">
-
-  </canvas>
+<!--Game Board-->
+<div class="gameboard-container">
+  <canvas id="gameboard" width="400" height="400"></canvas>
+</div>
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-zYPOMqeu1DAVkHiLqWBUTcbYfZ8osu1Nd6Z89ify25QV9guujx43ITvfi12/QExE" crossorigin="anonymous"></script>  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
