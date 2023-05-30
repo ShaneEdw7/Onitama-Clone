@@ -1,13 +1,6 @@
 // Selections from index
-const player1 = {
-  color : localStorage.getItem('playercolor'),
-  cards : playerCards
-}
-const AI = {
-  color : playercolor,
-  cards : AICards,
-  difficulty : localStorage.getItem('difficulty'),
-}
+const playercolor = localStorage.getItem('playercolor');
+const difficulty = localStorage.getItem('difficulty');
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
 const ctx = gameboard.getContext("2d");
@@ -195,9 +188,20 @@ for (let i = 0; i < 5; i++) {
   let imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = gameCards[i];
 }
+
 const playerCards = gameCards.slice (0,2)
 const AICards = gameCards.slice (2,4)
 const commonCard = gameCards.slice (4)
+
+const player1 = {
+  color : localStorage.getItem('playercolor'),
+  cards : playerCards
+}
+const AI = {
+  color : playercolor,
+  cards : AICards,
+  difficulty : localStorage.getItem('difficulty'),
+}
 
 const card1 = document.getElementById("card1");
 const card2 = document.getElementById("card2");
