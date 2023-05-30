@@ -78,8 +78,20 @@ Parchment - #EEE8C9 */
 #gameboard{
     background-color: #EEE8C9;
     border: 1px solid black;
-    }
+    margin: 0;
+    display: block;
+    }   
 .gameboard-container{
     justify-content: center;
     align-content: center;
+    padding: 2%;
+    transform: translate(-50, 0%)
+}
+.column {
+    display: flex;
+    flex: 10vw;
+    padding: 5px;
+}
+.card.selected {
+    border: 2px solid;
 }
