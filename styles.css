@@ -85,12 +85,15 @@ Parchment - #EEE8C9 */
     justify-content: center;
     align-content: center;
     padding: 2%;
-    transform: translate(-50, 0%)
+    transform: translate(-50, 0%);
+    margin: auto;
 }
 .column {
     display: flex;
-    flex: 10vw;
+    flex: 33%;
     padding: 5px;
+    align-items: 50vh;
+    justify-items: 50vh;
 }
 .card.selected {
     border: 2px solid;

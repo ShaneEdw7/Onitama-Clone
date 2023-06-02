@@ -1,6 +1,24 @@
-// Selections from index
 const playercolor = localStorage.getItem('playercolor');
 const difficulty = localStorage.getItem('difficulty');
+const gameCards = [];
+const playerCards = gameCards.slice (0,2);
+const AICards = gameCards.slice (2,4);
+const commonCard = gameCards.slice (4);
+const player1 = {
+  color : localStorage.getItem('playercolor'),
+  cards : playerCards
+};
+let opponentColor = 'red';
+
+if (playercolor === 'red') opponentColor = 'blue';
+
+const AI = {
+  color : opponentColor,
+  cards : AICards,
+  difficulty : localStorage.getItem('difficulty'),
+};
+
+
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
 const ctx = gameboard.getContext("2d");
@@ -38,26 +56,11 @@ let piecePositions = [
   { row: 4, col: 4, piece: "student", color: "red" },
   { row: 4, col: 3, piece: "student", color: "red" },
   { row: 4, col: 2, piece: "master", color: "red" },
-];
-let altPiecePositions = [
-  { row: 0, col: 0, piece: "student", color: "red" },
-  { row: 0, col: 1, piece: "student", color: "red" },
-  { row: 0, col: 4, piece: "student", color: "red" },
-  { row: 0, col: 3, piece: "student", color: "red" },
-  { row: 0, col: 2, piece: "master", color: "red" },
-
-  { row: 4, col: 0, piece: "student", color: "blue" },
-  { row: 4, col: 1, piece: "student", color: "blue" },
-  { row: 4, col: 4, piece: "student", color: "blue" },
-  { row: 4, col: 3, piece: "student", color: "blue" },
-  { row: 4, col: 2, piece: "master", color: "blue" },
-];
-
+]
 const pieceImgs = {
   blue: {},
   red: {}
 };
-if (playercolor == 'red'){
 const drawPieces = () => {
   piecePositions.forEach((position) => {
     const { row, col, piece, color } = position;
@@ -98,65 +101,56 @@ const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.r
     ).then(() => {
       drawPieces();
     });
-  } else {
-    const pieceImgs = {
-      blue: {},
-      red: {}
-    };
 
-    const drawPieces = () => {
-      altPiecePositions.forEach((position) => {
-        const { row, col, piece, color } = position;
-    
-        const x = col * cellSize;
-        const y = row * cellSize;
-    
-        const img = pieceImgs[color][piece];
-        ctx.drawImage(img, x, y, cellSize, cellSize);
-      });
-    };
-    
-    const pieceTypes = ['student', 'master'];
-    
-      let loadPieceImgs = () => {
-        pieceTypes.forEach((pieceType) => {
-          const redPiece = new Image();
-          redPiece.src = `images/red_${pieceType}.png`;
-          pieceImgs.red[pieceType] = redPiece;
-      
-          const bluePiece = new Image();
-          bluePiece.src = `images/blue_${pieceType}.png`;
-          pieceImgs.blue[pieceType] = bluePiece;
-        });
-      }
-      
     loadPieceImgs();
-    
-    const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.red));
-    
-        Promise.all(
-          allImages.map(img => {
-            return new Promise((resolve, reject) => {
-              img.onload = resolve;
-              img.onerror = reject;
-            });
-          })
-        ).then(() => {
-          drawPieces();
-        });
-  }
 
 //Piece Movement
 
-const movePiece = ({ clientX, clientY }) => {
+
+const selectPiece = (event) => {
   const board = gameboard.getBoundingClientRect();
-  const mouseX = clientX - board.left;
-  const mouseY = clientY - board.top;
+  const mouseX = event.clientX - board.left;
+  const mouseY = event.clientY - board.top;
   const cellX = Math.floor(mouseX / cellSize);
   const cellY = Math.floor(mouseY / cellSize);
-  studentx = cellX * cellSize
-  studenty = cellY * cellSize
+  const selectedPiece = piecePositions.find((piece) => {
+    return piece.row === cellY && piece.col === cellX;
+  });
+  if (selectedPiece) {
+    selectedPiece.selected = true;
+  }
 }
+const movePiece = (event, selectedPiece) => {
+  const board = gameboard.getBoundingClientRect();
+  const mouseX = event.clientX - board.left;
+  const mouseY = event.clientY - board.top;
+  const cellX = Math.floor(mouseX / cellSize);
+  const cellY = Math.floor(mouseY / cellSize);
+  selectedPiece.row = cellY;
+  selectedPiece.col = cellX;
+  selectedPiece.selected = false;
+}
+const handlePlayerClick = (event) => {
+  const selectedPiece = piecePositions.find((piece) => piece.selected === true)
+ if (selectedPiece) movePiece(event, selectedPiece) 
+ else selectPiece(event)
+ ctx.clearRect (0,0, gameboard.width, gameboard.height);
+  drawGameboard()
+  drawPieces()
+}
+const highlightSquare = (event) => {
+  const board = gameboard.getBoundingClientRect();
+  const mouseX = event.clientX - board.left;
+  const mouseY = event.clientY - board.top;
+  const cellX = Math.floor(mouseX / cellSize);
+  const cellY = Math.floor(mouseY / cellSize);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
+}
+
+gameboard.addEventListener('click', handlePlayerClick)
+
+
 
 // Movement Cards
 
@@ -178,7 +172,6 @@ const movementCards = [
   'images/rooster.png',
   'images/tiger.png',
 ]
-const gameCards = []
 
 for (let i = 0; i < 5; i++) {
   let shuffle = Math.floor(Math.random() * movementCards.length);
@@ -187,20 +180,6 @@ for (let i = 0; i < 5; i++) {
   movementCards.splice(shuffle, 1);
   let imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = gameCards[i];
-}
-
-const playerCards = gameCards.slice (0,2)
-const AICards = gameCards.slice (2,4)
-const commonCard = gameCards.slice (4)
-
-const player1 = {
-  color : localStorage.getItem('playercolor'),
-  cards : playerCards
-}
-const AI = {
-  color : playercolor,
-  cards : AICards,
-  difficulty : localStorage.getItem('difficulty'),
 }
 
 const card1 = document.getElementById("card1");
