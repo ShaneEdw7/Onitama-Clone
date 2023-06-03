@@ -18,7 +18,6 @@ const AI = {
   difficulty : localStorage.getItem('difficulty'),
 };
 
-
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
 const ctx = gameboard.getContext("2d");
@@ -61,6 +60,7 @@ const pieceImgs = {
   blue: {},
   red: {}
 };
+
 const drawPieces = () => {
   piecePositions.forEach((position) => {
     const { row, col, piece, color } = position;
@@ -73,6 +73,29 @@ const drawPieces = () => {
   });
 };
 
+/* Working on changing piece positions based on playercolor
+
+const drawPieces = () => {
+  piecePositions.forEach((position) => {
+    const { row, col, piece, color } = position;
+    const x = col * cellSize;
+    const y = row * cellSize;
+    if (playercolor === 'red') {
+      const img = pieceImgs[color][piece];
+      ctx.drawImage(img, x, y, cellSize, cellSize);
+    } else {
+      let altRow = row;
+      let altCol = col;
+      altRow = 4 + pieceImgs.blue.row;
+      altRow = 4 - pieceImgs.red.row;
+    const x = altCol * cellSize;
+    const y = altRow * cellSize;
+    const img = pieceImgs[color][piece];
+    ctx.drawImage(img, altRow, altCol, cellSize, cellSize);
+    }
+  });
+};
+*/
 const pieceTypes = ['student', 'master'];
 
   let loadPieceImgs = () => {
@@ -106,7 +129,6 @@ const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.r
 
 //Piece Movement
 
-
 const selectPiece = (event) => {
   const board = gameboard.getBoundingClientRect();
   const mouseX = event.clientX - board.left;
@@ -138,17 +160,45 @@ const handlePlayerClick = (event) => {
   drawGameboard()
   drawPieces()
 }
+
+const colorConverter = (color, alpha) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = color;
+  ctx.globalAlpha = alpha;
+  ctx.fillRect(0, 0, 1, 1);
+  const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+  return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+};
+
+let highlightedSquare
+
 const highlightSquare = (event) => {
   const board = gameboard.getBoundingClientRect();
   const mouseX = event.clientX - board.left;
   const mouseY = event.clientY - board.top;
   const cellX = Math.floor(mouseX / cellSize);
   const cellY = Math.floor(mouseY / cellSize);
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+  const alpha = 0.4;
+  const pieceColor = colorConverter(playercolor, alpha);
+  ctx.fillStyle = pieceColor;
   ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
-}
+  highlightedSquare = {row: cellY, col: cellX}
+
+if (highlightedSquare) {
+  ctx.fillStyle = pieceColor;
+  ctx.fillRect(
+    highlightedSquare.col * cellSize,
+    highlightedSquare.row * cellSize,
+    cellSize,
+    cellSize,
+  )};
+};
 
 gameboard.addEventListener('click', handlePlayerClick)
+gameboard.addEventListener('click', highlightSquare)
 
 
 
