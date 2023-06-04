@@ -114,23 +114,18 @@
         </div>
         
       </nav>
-
 <!--Game Board-->
 
 <div class="gameboard-container">
-  <div>
+  <div class="cardContainer">
     <img class='card' id="card3" style="height: 125px; width: 211px; transform: scaleY(-1) "/> 
     <img class='card' id="card4" style="height: 125px; width: 211px; transform: scaleY(-1) "/>
   </div>
-  <div class="row">
-      <div class="column">
-       <canvas id="gameboard" width="450" height="450"></canvas>
-      </div>
-      <div class="column">
+    <div class="board">
+        <canvas id="gameboard" width="450" height="450"></canvas>
         <img class='card' id="card5" style="height: 125px; width: 211px;"/>
-      </div>
-  </div>
-  <div>
+    </div>
+  <div class="cardContainer">
     <img class='card' id="card1" style="height: 125px; width: 211px"; onclick="selectCard(this)"/>
     <img class='card' id="card2" style="height: 125px; width: 211px"; onclick="selectCard(this)"/>
   </div>

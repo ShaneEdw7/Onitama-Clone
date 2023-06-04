@@ -204,7 +204,157 @@ gameboard.addEventListener('click', highlightSquare)
 
 // Movement Cards
 
-const movementCards = [
+const movementCards = {
+boar: {
+  color: 'red',
+  image: 'images/boar.png',
+  movement: [
+    {x: 0, y: 1}, // forward 1 space
+    {x: -1, y: 0}, // left 1 space
+    {x: 1, y: 0}, // right 1 space
+  ]
+},
+cobra: {
+  color: 'red',
+  image: 'images/cobra.png',
+  movement: [
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: -1, y: 0}, // left 1 space
+    {x: 1, y: -1}, // diagonally 1 space down-left
+  ]
+},
+crab: {
+  color: 'blue',
+  image: 'images/crab.png',
+  movement: [
+    {x: 0, y: 1}, // forward 1 space
+    {x: -2, y: 0}, // left 2 spaces
+    {x: 2, y: 0}, // right 2 spaces
+  ]
+},
+crane: {
+  color: 'blue',
+  image: 'images/crane.png',
+  movement: [
+    {x: 0, y: 1}, // forward 1 space
+    {x: -1, y: -1}, // diagonally 1 space down-left
+    {x: 1, y: -1}, // diagonally 1 space down-right
+  ]
+},
+dragon: {
+  color: 'red',
+  image: 'images/dragon.png',
+  movement: [
+    {x: -2, y: 2}, // diagonally 2 spaces up-left
+    {x: 2, y: 2}, // diagonally 2 spaces up-right
+    {x: -1, y: -1}, // diagonally 1 space down-left
+    {x: 1, y: -1}, // diagonally 1 space down-right
+  ]
+},
+eel: {
+  color: 'blue',
+  image: 'images/eel.png',
+  movement: [
+    {x: 1, y: 1}, // diagonally 1 space up-left
+    {x: -1, y: -1}, // diagonally 1 space down-left
+    {x: 1, y: 0}, // right 1 space
+  ]
+},
+elephant: {
+  color: 'red',
+  image: 'images/elephant.png',
+  movement: [
+    {x: -1, y: 1}, // diagonally 1 space up-left
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: -1, y: 0}, // left 1 space
+    {x: 1, y: 0}, // right 1 space
+  ]
+},
+frog: {
+  color: 'blue',
+  image: 'images/frog.png',
+  movement: [
+    {x: -1, y: 1}, // diagonally 1 space up-left
+    {x: -2, y: 0}, // left 2 space
+    {x: -1, y: 1}, // diagonally 1 space down-right
+  ]
+},
+goose: {
+  color: 'blue',
+  image: 'images/goose.png',
+  movement: [
+    {x: -1, y: 1}, // diagonally 1 space up-left
+    {x: -1, y: 0}, // left 1 space
+    {x: 1, y: 0}, // right 1 space
+    {x: 1, y: -1}, // diagonally 1 space down-right
+  ]
+},
+horse: {
+  color: 'red',
+  image: 'images/horse.png',
+  movement: [
+    {x: 0, y: 1}, // forward 1 space
+    {x: 0, y: -1}, // backward 1 space
+    {x: -1, y: 0}, // left 1 space
+  ]
+},
+mantis: {
+  color: 'red',
+  image: 'images/mantis.png',
+  movement: [
+    {x: -1, y: 1}, // diagonally 1 space up-left
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: 0, y: -1}, // backward 1 space
+  ]
+},
+monkey: {
+  color: 'blue',
+  image: 'images/monkey.png',
+  movement: [
+    {x: -1, y: 1}, // diagonally 1 space up-left
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: -1, y: -1}, // diagonally 1 space down-left
+    {x: 1, y: -1}, // diagonally 1 space down-right
+  ]
+},
+ox: {
+  color: 'red',
+  image: 'images/ox.png',
+  movement: [
+    {x: 0, y: 1}, // forward 1 space
+    {x: 0, y: -1}, // backward 1 space
+    {x: 1, y: 0}, // right 1 space
+  ]
+},
+rabbit: {
+  color: 'blue',
+  image: 'images/rabbit.png',
+  movement: [
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: -1, y: -1}, // diagonally 1 space down-left
+    {x: 2, y: 0}, // right 2 spaces
+  ]
+},
+rooster: {
+  color: 'red',
+  image: 'images/rooster.png',
+  movement: [
+    {x: 1, y: 1}, // diagonally 1 space up-right
+    {x: -1, y: 0}, // left 1 space
+    {x: 1, y: 0}, // right 1 space
+    {x: -1, y: -1}, // diagonally 1 space down-left
+  ]
+},
+tiger: {
+  color: 'blue',
+  image: 'images/tiger.png',
+  movement: [
+    {x: 0, y: -1}, // backward 1 space
+    {x: 1, y: 2}, // forward 2 spaces
+  ]
+},
+//Remove when loop is fixed below
+images:  [
   'images/boar.png',
   'images/cobra.png',
   'images/crab.png',
@@ -222,12 +372,13 @@ const movementCards = [
   'images/rooster.png',
   'images/tiger.png',
 ]
-
+};
+//Need to modify this loop.
 for (let i = 0; i < 5; i++) {
-  let shuffle = Math.floor(Math.random() * movementCards.length);
-  let selectedCards = movementCards[shuffle];
+  let shuffle = Math.floor(Math.random() * movementCards.images.length);
+  let selectedCards = movementCards.images[shuffle];
   gameCards.push(selectedCards);
-  movementCards.splice(shuffle, 1);
+  movementCards.images.splice(shuffle, 1);
   let imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = gameCards[i];
 }
