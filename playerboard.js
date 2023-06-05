@@ -354,6 +354,7 @@ tiger: {
   ]
 },
 //Remove when loop is fixed below
+/*
 images:  [
   'images/boar.png',
   'images/cobra.png',
@@ -371,23 +372,52 @@ images:  [
   'images/rabbit.png',
   'images/rooster.png',
   'images/tiger.png',
-]
+]*/
 };
+
 //Need to modify this loop.
 for (let i = 0; i < 5; i++) {
+  const selectedCards = Object.keys(movementCards);
+  console.log(selectedCards);
+  const randomIndex = Math.floor(Math.random() * selectedCards.length);
+  console.log(randomIndex);
+  const selectedCard = selectedCards[randomIndex];
+  console.log(selectedCard)
+  const chosenOne = movementCards[selectedCard]
+  console.log(chosenOne)
+//  const shuffle = Math.floor(Math.random() * movementCards.images.length);
+  gameCards.push(chosenOne);
+  console.log(chosenOne)
+  console.log(gameCards)
+  console.log(gameCards[i].image)
+  const imgArray = document.getElementById("card" + (i + 1));
+  imgArray.src = gameCards[i].image;
+
+};
+console.log(card1)
+
+/*
+for (let i = 0; i < 5; i++) {
   let shuffle = Math.floor(Math.random() * movementCards.images.length);
+  console.log(shuffle)
   let selectedCards = movementCards.images[shuffle];
+  console.log(selectedCards)
   gameCards.push(selectedCards);
+  console.log(gameCards)
   movementCards.images.splice(shuffle, 1);
+
   let imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = gameCards[i];
-}
+  console.log(imgArray)
+};
+*/
 
 const card1 = document.getElementById("card1");
 const card2 = document.getElementById("card2");
 const card3 = document.getElementById("card3");
 const card4 = document.getElementById("card4");
 const card5 = document.getElementById("card5");
+
 
 const selectCard = (card) => {
   card1.classList.remove('selected');
