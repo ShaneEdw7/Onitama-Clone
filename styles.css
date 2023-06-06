@@ -107,4 +107,5 @@ Parchment - #EEE8C9 */
 }
 .card {
     margin: 5px;
+    border: none;
 }
