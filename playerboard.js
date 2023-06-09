@@ -23,7 +23,7 @@ const movementCards = {
     color: 'red',
     image: 'images/boar.png',
     movement: [
-      {x: 0, y: 1}, // forward 1 space
+      {x: 0, y: -1}, // forward 1 space
       {x: -1, y: 0}, // left 1 space
       {x: 1, y: 0}, // right 1 space
       {x:0, y:0}, // No Movement
@@ -33,9 +33,9 @@ const movementCards = {
     color: 'red',
     image: 'images/cobra.png',
     movement: [
-      {x: 1, y: 1}, // diagonally 1 space up-right
+      {x: 1, y: -1}, // diagonally 1 space up-right
       {x: -1, y: 0}, // left 1 space
-      {x: 1, y: -1}, // diagonally 1 space down-left
+      {x: 1, y: 1}, // diagonally 1 space down-left
       {x:0, y:0}, // No Movement
     ]
   },
@@ -43,7 +43,7 @@ const movementCards = {
     color: 'blue',
     image: 'images/crab.png',
     movement: [
-      {x: 0, y: 1}, // forward 1 space
+      {x: 0, y: -1}, // forward 1 space
       {x: -2, y: 0}, // left 2 spaces
       {x: 2, y: 0}, // right 2 spaces
       {x:0, y:0}, // No Movement
@@ -53,9 +53,9 @@ const movementCards = {
     color: 'blue',
     image: 'images/crane.png',
     movement: [
-      {x: 0, y: 1}, // forward 1 space
-      {x: -1, y: -1}, // diagonally 1 space down-left
-      {x: 1, y: -1}, // diagonally 1 space down-right
+      {x: 0, y: -1}, // forward 1 space
+      {x: -1, y: 1}, // diagonally 1 space down-left
+      {x: 1, y: 1}, // diagonally 1 space down-right
       {x:0, y:0}, // No Movement
     ]
   },
@@ -63,10 +63,10 @@ const movementCards = {
     color: 'red',
     image: 'images/dragon.png',
     movement: [
-      {x: -2, y: 2}, // diagonally 2 spaces up-left
-      {x: 2, y: 2}, // diagonally 2 spaces up-right
-      {x: -1, y: -1}, // diagonally 1 space down-left
-      {x: 1, y: -1}, // diagonally 1 space down-right
+      {x: -2, y: -1}, // diagonally 2 spaces up-left
+      {x: 2, y: -1}, // diagonally 2 spaces up-right
+      {x: -1, y: 1}, // diagonally 1 space down-left
+      {x: 1, y: 1}, // diagonally 1 space down-right
       {x:0, y:0}, // No Movement
     ]
   },
@@ -74,8 +74,8 @@ const movementCards = {
     color: 'blue',
     image: 'images/eel.png',
     movement: [
-      {x: 1, y: 1}, // diagonally 1 space up-left
-      {x: -1, y: -1}, // diagonally 1 space down-left
+      {x: -1, y: -1}, // diagonally 1 space up-left
+      {x: -1, y: 1}, // diagonally 1 space down-left
       {x: 1, y: 0}, // right 1 space
       {x:0, y:0}, // No Movement
     ]
@@ -84,8 +84,8 @@ const movementCards = {
     color: 'red',
     image: 'images/elephant.png',
     movement: [
-      {x: -1, y: 1}, // diagonally 1 space up-left
-      {x: 1, y: 1}, // diagonally 1 space up-right
+      {x: -1, y: -1}, // diagonally 1 space up-left
+      {x: 1, y: -1}, // diagonally 1 space up-right
       {x: -1, y: 0}, // left 1 space
       {x: 1, y: 0}, // right 1 space
       {x:0, y:0}, // No Movement
@@ -95,9 +95,9 @@ const movementCards = {
     color: 'blue',
     image: 'images/frog.png',
     movement: [
-      {x: -1, y: 1}, // diagonally 1 space up-left
+      {x: -1, y: -1}, // diagonally 1 space up-left
       {x: -2, y: 0}, // left 2 space
-      {x: -1, y: 1}, // diagonally 1 space down-right
+      {x: 1, y: 1}, // diagonally 1 space down-right
       {x:0, y:0}, // No Movement
     ]
   },
@@ -105,10 +105,10 @@ const movementCards = {
     color: 'blue',
     image: 'images/goose.png',
     movement: [
-      {x: -1, y: 1}, // diagonally 1 space up-left
+      {x: -1, y: -1}, // diagonally 1 space up-left
       {x: -1, y: 0}, // left 1 space
       {x: 1, y: 0}, // right 1 space
-      {x: 1, y: -1}, // diagonally 1 space down-right
+      {x: 1, y: 1}, // diagonally 1 space down-right
       {x:0, y:0}, // No Movement
     ]
   },
@@ -126,9 +126,9 @@ const movementCards = {
     color: 'red',
     image: 'images/mantis.png',
     movement: [
-      {x: -1, y: 1}, // diagonally 1 space up-left
-      {x: 1, y: 1}, // diagonally 1 space up-right
-      {x: 0, y: -1}, // backward 1 space
+      {x: -1, y: -1}, // diagonally 1 space up-left
+      {x: 1, y: -1}, // diagonally 1 space up-right
+      {x: 0, y: 1}, // backward 1 space
       {x:0, y:0}, // No Movement
     ]
   },
@@ -136,10 +136,10 @@ const movementCards = {
     color: 'blue',
     image: 'images/monkey.png',
     movement: [
-      {x: -1, y: 1}, // diagonally 1 space up-left
-      {x: 1, y: 1}, // diagonally 1 space up-right
-      {x: -1, y: -1}, // diagonally 1 space down-left
-      {x: 1, y: -1}, // diagonally 1 space down-right
+      {x: -1, y: -1}, // diagonally 1 space up-left
+      {x: 1, y: -1}, // diagonally 1 space up-right
+      {x: -1, y: 1}, // diagonally 1 space down-left
+      {x: 1, y: 1}, // diagonally 1 space down-right
       {x:0, y:0}, // No Movement
     ]
   },
@@ -157,8 +157,8 @@ const movementCards = {
     color: 'blue',
     image: 'images/rabbit.png',
     movement: [
-      {x: 1, y: 1}, // diagonally 1 space up-right
-      {x: -1, y: -1}, // diagonally 1 space down-left
+      {x: 1, y: -1}, // diagonally 1 space up-right
+      {x: -1, y: 1}, // diagonally 1 space down-left
       {x: 2, y: 0}, // right 2 spaces
       {x:0, y:0}, // No Movement
     ]
@@ -167,10 +167,10 @@ const movementCards = {
     color: 'red',
     image: 'images/rooster.png',
     movement: [
-      {x: 1, y: 1}, // diagonally 1 space up-right
+      {x: 1, y: -1}, // diagonally 1 space up-right
       {x: -1, y: 0}, // left 1 space
       {x: 1, y: 0}, // right 1 space
-      {x: -1, y: -1}, // diagonally 1 space down-left
+      {x: -1, y: 1}, // diagonally 1 space down-left
       {x:0, y:0}, // No Movement
     ]
   },
@@ -178,12 +178,46 @@ const movementCards = {
     color: 'blue',
     image: 'images/tiger.png',
     movement: [
-      {x: 0, y: -1}, // backward 1 space
-      {x: 1, y: 2}, // forward 2 spaces
+      {x: 0, y: 1}, // backward 1 space
+      {x: 0, y: -2}, // forward 2 spaces
       {x:0, y:0}, // No Movement
     ]
   },
   };
+let clickedCard
+
+const handleCardClick = (index) => {
+  clickedCard = gameCards[index];
+  gameCards[index].selected = true;
+  const selectedYes = (array, index, property) => {
+    array.forEach((card, i) => {
+      if (i === index) {
+        card.selected = true;
+      } else {
+        delete card.selected;
+      };
+    });
+  };
+  selectedYes(gameCards, index, 'selected')
+};
+
+const selCard1 = document.getElementById('card1')
+  selCard1.onclick = () => {
+    handleCardClick(0)
+    selCard2.style.borderWidth = '0px';
+    selCard1.style.borderColor = playercolor;
+    selCard1.style.borderWidth = '2px'
+    console.log(clickedCard);
+};  
+
+const selCard2 = document.getElementById('card2')
+  selCard2.onclick = () => {
+  handleCardClick(1)
+  selCard1.style.borderWidth= '0px'
+  selCard2.style.borderColor = playercolor;
+  selCard2.style.borderWidth = '2px'
+  console.log(clickedCard);
+};
 
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
@@ -205,7 +239,8 @@ for (let y = 0; y <= boardSize; y += cellSize) {
     }
 ctx.strokeStyle = "894E24";
 ctx.stroke();
-}
+};
+
 drawGameboard()
 
 // Game Pieces
@@ -296,30 +331,39 @@ const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.r
 
 //Piece Movement
 
+let highlightedSquare
+let selectedPiece
+let pieceColor
+
 const selectPiece = (event) => {
   const board = gameboard.getBoundingClientRect();
   const mouseX = event.clientX - board.left;
   const mouseY = event.clientY - board.top;
   const cellX = Math.floor(mouseX / cellSize);
   const cellY = Math.floor(mouseY / cellSize);
-  const selectedPiece = piecePositions.find((piece) => {
+  selectedPiece = piecePositions.find((piece) => {
     return piece.row === cellY && piece.col === cellX;
   });
   if (selectedPiece) {
     selectedPiece.selected = true;
+  };
+  console.log('selectedPiece', selectedPiece)
+  console.log('selectPiece function', 'mouseX',mouseX, 'mouseY', mouseY, 'cellX', cellX, 'cellY', cellY)
+};
 
-    let highlightedSquare
-    const highlightSquare = (event) => {
-      const board = gameboard.getBoundingClientRect();
-      const mouseX = event.clientX - board.left;
-      const mouseY = event.clientY - board.top;
-      const cellX = Math.floor(mouseX / cellSize);
-      const cellY = Math.floor(mouseY / cellSize);
-      const alpha = 0.2;
-      const pieceColor = colorConverter(playercolor, alpha);
-      ctx.fillStyle = pieceColor;
-      ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
-      highlightedSquare = {row: cellY, col: cellX}
+  const highlightSquare = (event) => {
+  if (selectedPiece.selected){
+    const board = gameboard.getBoundingClientRect();
+    const mouseX = event.clientX - board.left;
+    const mouseY = event.clientY - board.top;
+    const cellX = Math.floor(mouseX / cellSize);
+    const cellY = Math.floor(mouseY / cellSize);
+    const alpha = 0.2;
+    pieceColor = colorConverter(playercolor, alpha);
+    ctx.fillStyle = pieceColor;
+    ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
+    highlightedSquare = {row: cellY, col: cellX}
+    console.log('highlightsquare','cellX:',cellX, 'cellY',cellY);
     
     if (highlightedSquare) {
       ctx.fillStyle = pieceColor;
@@ -329,10 +373,31 @@ const selectPiece = (event) => {
         cellSize,
         cellSize,
       )};
-      highlightSquare();
+      console.log('highlightedsquare', highlightedSquare)
+
+      clickedCard.movement.forEach((movement) => {
+        const movementCardX = movement.x;
+        const movementCardY = movement.y;
+      
+        for (let row = 0; row < numCells; row++) {
+          for (let col = 0; col < numCells; col++) {
+            const x = col * cellSize;
+            const y = row * cellSize;
+            const selectedPieceX = col - movementCardX;
+            const selectedPieceY = row - movementCardY;
+      
+            if (selectedPieceX === cellX && selectedPieceY === cellY) {
+              ctx.fillStyle = pieceColor;
+              ctx.fillRect(x, y, cellSize, cellSize);
+              
+            };
+          };
+        };
+        console.log('cellX', cellX, 'cellY', cellY)
+        console.log(clickedCard.movement, movementCardX,movementCardY)
+      });
     };
-  };
-};
+    };
 
 const movePiece = (event, selectedPiece) => {
   const board = gameboard.getBoundingClientRect();
@@ -344,6 +409,7 @@ const movePiece = (event, selectedPiece) => {
   selectedPiece.col = cellX;
   selectedPiece.selected = false;
 };
+
 const handlePlayerClick = (event) => {
   const selectedPiece = piecePositions.find((piece) => piece.selected === true)
  if (selectedPiece) movePiece(event, selectedPiece)
@@ -365,39 +431,8 @@ const colorConverter = (color, alpha) => {
   return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 };
 
-
-
-
-
-/*
-const highlightSquare = (event) => {
-  const board = gameboard.getBoundingClientRect();
-  const mouseX = event.clientX - board.left;
-  const mouseY = event.clientY - board.top;
-  const cellX = Math.floor(mouseX / cellSize);
-  const cellY = Math.floor(mouseY / cellSize);
-
-  const selectedPiece = piecePositions.find((piece) => piece.selected === true);
-  console.log(selectedPiece)
-  const selectedMovementCard = gameCards.find((movement) => movement.selected === true);
-  if (selectedPiece) {
-  }
-
-    };
-
-    const validMovements = selectedMovementCard.movement;
-    console.log(validMovements)
-    const highlightedSquare = { row: cellY, col: cellX };
-    console.log(highlightedSquare)
-    };
-    const validMovements = gameCards.movement;
-    console.log(validMovements);
-    const highlightedSquare = { row: cellY, col: cellX };
-    console.log(highlightedSquare);
-  };
-*/
 gameboard.addEventListener('click', handlePlayerClick, selectPiece);
-// gameboard.addEventListener('click', highlightSquare)
+gameboard.addEventListener('click', highlightSquare)
 
 for (let i = 0; i < 5; i++) {
   const selectedCards = Object.keys(movementCards);
@@ -409,40 +444,4 @@ for (let i = 0; i < 5; i++) {
   selectedCards.splice(randomIndex, 1);
   const imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = gameCards[i].image;
-};
-
-const handleCardClick = (index) => {
-  const clickedCard = gameCards[index];
-  gameCards[index].selected = true;
-  const selectedYes = (array, index, property) => {
-    array.forEach((card, i) => {
-      if (i === index) {
-        card.selected = true;
-      } else {
-        delete card.selected;
-      };
-    }); 
-  };
-  selectedYes(gameCards, index, 'selected')
-};
-
-const selCard1 = document.getElementById('card1')
-  selCard1.onclick = () => {
-    handleCardClick(0)
-    selCard2.style.borderWidth = '0px';
-    selCard1.style.borderColor = playercolor;
-    selCard1.style.borderWidth = '2px'
-};  
-
-const selCard2 = document.getElementById('card2')
-  selCard2.onclick = () => {
-  handleCardClick(1)
-  selCard1.style.borderWidth= '0px'
-  selCard2.style.borderColor = playercolor;
-  selCard2.style.borderWidth = '2px'
-};
-
-const highlightMovement = () => {
-  selectedMovementCard = gameCards.selected;
-  console.log(selectedMovementCard)
 };
