@@ -118,16 +118,16 @@
 
 <div class="gameboard-container">
   <div class="cardContainer">
-    <img class='card' id="card3" style="height: 125px; width: 211px; transform: scaleY(-1) "/> 
-    <img class='card' id="card4" style="height: 125px; width: 211px; transform: scaleY(-1) "/>
+    <img class='card' id="card3" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card3',2,player1.color)"/> 
+    <img class='card' id="card4" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card4',3,player1.color)"/>
   </div>
     <div class="board">
         <canvas id="gameboard" width="450" height="450"></canvas>
-        <img class='card' id="card5" style="height: 125px; width: 211px;"/>
+        <img class='card' id="card5" style="height: 125px; width: 211px";/>
     </div>
   <div class="cardContainer">
-    <img class='card' id="card1" style="height: 125px; width: 211px";/>
-    <img class='card' id="card2" style="height: 125px; width: 211px";/>
+    <img class='card' id="card1" style="height: 125px; width: 211px" onclick="selectCard('card1',0,player1.color)";/>
+    <img class='card' id="card2" style="height: 125px; width: 211px" onclick="selectCard('card2',1,player1.color)";/>
   </div>
 </div>
 

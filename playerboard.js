@@ -3,7 +3,7 @@ const difficulty = localStorage.getItem('difficulty');
 const gameCards = [];
 const playerCards = gameCards[0,2];
 const AICards = gameCards[2,4];
-const commonCard = gameCards[4];
+let commonCard = gameCards[4];
 const player1 = {
   color : localStorage.getItem('playercolor'),
   cards : playerCards
@@ -226,6 +226,9 @@ const drawPieces = () => {
       pieceImgs.blue[pieceType] = bluePiece;
     });
   };
+
+  loadPieceImgs();
+
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
 const ctx = gameboard.getContext("2d");
@@ -248,11 +251,8 @@ ctx.strokeStyle = "894E24";
 ctx.stroke();
 };
 
-
 drawGameboard();
-loadPieceImgs();
 drawPieces();
-
 
 let highlightedSquare
 let selectedPiece
@@ -284,7 +284,6 @@ const highlightSquare = (event) => {
     ctx.fillStyle = pieceColor;
     ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
     highlightedSquare = {row: cellY, col: cellX};
-    console.log(event);
     
   if (highlightedSquare) {
     ctx.fillStyle = pieceColor;
@@ -293,7 +292,6 @@ const highlightSquare = (event) => {
     highlightedSquare.row * cellSize,
     cellSize,
     cellSize,
-    console.log(event)
     )};
 
     clickedCard.movement.forEach((movement) => {
@@ -319,37 +317,34 @@ const highlightSquare = (event) => {
 };
 
 let clickedCard
+let lastCard
 
-const handleCardClick = (index) => {
-  clickedCard = gameCards[index];
-  gameCards[index].selected = true;
-  const selectedYes = (array, index) => {
-      array.forEach((card, i,) => {
-          if (i === index) {
-            gameCards[card].selected = false
-            card.selected = true;
-            
-          } 
-      });
+const selectedYes = (array, cardIndex) => {
+  array.forEach((card, i,) => {
+    if (i === cardIndex) {
+      card.selected = true;
+    };
+  });
+};
+
+const selectCard = (cardId, cardIndex,playerColor) => {
+  let selectedCard = document.getElementById(cardId);
+  selectedCard.onclick = () => {
+    const handleCardClick = (cardIndex) => {
+      clickedCard = gameCards[cardIndex];
+      gameCards[cardIndex].selected = true;
+      selectedYes(gameCards, cardIndex)
+    };
+    handleCardClick(cardIndex);
+    const cards = document.getElementsByClassName('card')
+    for (let card of cards) {
+      card.style.borderWidth = '0px';
+    }
+    selectedCard.style.borderColor = playerColor;
+    selectedCard.style.borderWidth = '2px';
   };
-  selectedYes(gameCards, index)
 };
-    
-const selCard1 = document.getElementById('card1')
-  selCard1.onclick = () => {
-  handleCardClick(0)
-  selCard2.style.borderWidth = '0px';
-  selCard1.style.borderColor = player1.color;
-  selCard1.style.borderWidth = '2px'
-};  
-    
-const selCard2 = document.getElementById('card2')
-  selCard2.onclick = () => {
-  handleCardClick(1)
-  selCard1.style.borderWidth= '0px'
-  selCard2.style.borderColor = player1.color;
-  selCard2.style.borderWidth = '2px'
-};
+
 const createImages = (createCard, i) => {
   const imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = createCard.image;
@@ -366,6 +361,11 @@ const movePiece = (event, selectedPiece) => {
   selectedPiece.selected = false;
   
   // Testing switching cards when move is made
+  commonCard = gameCards.splice(gameCards[4], 1);
+  gameCards.push(clickedCard)
+  gameCards.pop(commonCard)
+
+
   /*
 const cardIndex = gameCards.indexOf(clickedCard);
 console.log('cardindex', cardIndex)
@@ -376,12 +376,10 @@ console.log('tempCard', tempCard)
 gameCards.push(clickedCard);
 gameCards[cardIndex] = tempCard[0];
 */
-console.log('gameCards', gameCards)
 gameCards.forEach((gameCard, i) => {
   createImages(gameCard, i)
 });
 highlightSquare(event);
-console.log(gameCards.indexOf(clickedCard))
 };
 
 const handlePlayerClick = (event) => {
@@ -391,7 +389,6 @@ const handlePlayerClick = (event) => {
  ctx.clearRect (0,0, gameboard.width, gameboard.height);
   drawGameboard()
   drawPieces()
-  console.log(gameCards.indexOf(clickedCard))
 };
 
 const colorConverter = (color, alpha) => {
@@ -419,4 +416,3 @@ for (let i = 0; i < 5; i++) {
   selectedCards.splice(randomIndex, 1);
   createImages(gameCards[i], i)
 };
-
