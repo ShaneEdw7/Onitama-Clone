@@ -257,6 +257,7 @@ drawPieces();
 let highlightedSquare
 let selectedPiece
 let pieceColor
+let clickedCard
 
 const selectPiece = (event) => {
   const board = gameboard.getBoundingClientRect();
@@ -269,6 +270,7 @@ const selectPiece = (event) => {
   });
   if (selectedPiece) {
     selectedPiece.selected = true;
+    highlightSquare(event)
   };
 };
 
@@ -280,7 +282,7 @@ const highlightSquare = (event) => {
     const cellX = Math.floor(mouseX / cellSize);
     const cellY = Math.floor(mouseY / cellSize);
     const alpha = 0.2;
-    pieceColor = colorConverter(playercolor, alpha);
+    pieceColor = colorConverter(player1.color, alpha);
     ctx.fillStyle = pieceColor;
     ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
     highlightedSquare = {row: cellY, col: cellX};
@@ -316,8 +318,6 @@ const highlightSquare = (event) => {
   };
 };
 
-let clickedCard
-let lastCard
 
 const selectedYes = (array, cardIndex) => {
   array.forEach((card, i,) => {
@@ -360,26 +360,28 @@ const movePiece = (event, selectedPiece) => {
   selectedPiece.col = cellX;
   selectedPiece.selected = false;
   
-  // Testing switching cards when move is made
-  commonCard = gameCards.splice(gameCards[4], 1);
-  gameCards.push(clickedCard)
-  gameCards.pop(commonCard)
+  switchCards = () => {
+    console.log('gameCards', gameCards)
+    commonCard = gameCards.pop();
+    console.log('commonCard', commonCard)
+    console.log('clickedcard', clickedCard)
+    gameCards.push(clickedCard);
+    const temp = gameCards.indexOf(clickedCard);
+    console.log('temp index', temp)
+    gameCards[temp] = commonCard;
+    commonCard = gameCards[temp];
+    console.log('commoncard', commonCard)
+    gameCards.forEach(gameCard => {
+      gameCard.selected = false;
+    });
+  };
 
+  switchCards()
 
-  /*
-const cardIndex = gameCards.indexOf(clickedCard);
-console.log('cardindex', cardIndex)
-const lastCard = gameCards[gameCards.length - 1];
-console.log('lastCard', lastCard)
-const tempCard = gameCards.splice(gameCards.length -1, 1)
-console.log('tempCard', tempCard)
-gameCards.push(clickedCard);
-gameCards[cardIndex] = tempCard[0];
-*/
-gameCards.forEach((gameCard, i) => {
-  createImages(gameCard, i)
-});
-highlightSquare(event);
+  gameCards.forEach((gameCard, i) => {
+    createImages(gameCard, i)
+    });
+  highlightSquare(event);
 };
 
 const handlePlayerClick = (event) => {
