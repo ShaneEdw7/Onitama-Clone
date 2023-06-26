@@ -215,19 +215,19 @@ const drawPieces = () => {
   });
 };
 
-let loadPieceImgs = () => {
-  pieceTypes.forEach((pieceType) => {
-    const redPiece = new Image();
-    redPiece.src = `images/red_${pieceType}.png`;
-    pieceImgs.red[pieceType] = redPiece;
-    console.log(redPiece)
+  let loadPieceImgs = () => {
+    pieceTypes.forEach((pieceType) => {
+      const redPiece = new Image();
+      redPiece.src = `images/red_${pieceType}.png`;
+      pieceImgs.red[pieceType] = redPiece;
+  
+      const bluePiece = new Image();
+      bluePiece.src = `images/blue_${pieceType}.png`;
+      pieceImgs.blue[pieceType] = bluePiece;
+    });
+  };
 
-    const bluePiece = new Image();
-    bluePiece.src = `images/blue_${pieceType}.png`;
-    pieceImgs.blue[pieceType] = bluePiece;
-    console.log(bluePiece)
-  });
-};
+  loadPieceImgs();
 
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
@@ -252,7 +252,6 @@ ctx.stroke();
 };
 
 drawGameboard();
-loadPieceImgs();
 drawPieces();
 
 let highlightedSquare
@@ -287,7 +286,6 @@ const highlightSquare = (event) => {
     ctx.fillStyle = pieceColor;
     ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
     highlightedSquare = {row: cellY, col: cellX};
-    console.log(highlightedSquare)
     
   if (highlightedSquare) {
     ctx.fillStyle = pieceColor;
@@ -298,29 +296,28 @@ const highlightSquare = (event) => {
     cellSize,
     )};
 
-      clickedCard.movement.forEach((movement) => {
-      const movementCardX = movement.x;
-      const movementCardY = movement.y;
-
+    clickedCard.movement.forEach((movement) => {
+    const movementCardX = movement.x;
+    const movementCardY = movement.y;
+      
     for (let row = 0; row < numCells; row++) {
       for (let col = 0; col < numCells; col++) {
           const x = col * cellSize;
           const y = row * cellSize;
           const selectedPieceX = col - movementCardX;
           const selectedPieceY = row - movementCardY;
-          
+      
           if (selectedPieceX === cellX && selectedPieceY === cellY) {
-            console.log('selectedpieces',selectedPieceX, selectedPieceY)
-            console.log('cellX', cellX, 'cellY', cellY)
-            console.log('x and y', x,y)
             ctx.fillStyle = pieceColor;
             ctx.fillRect(x, y, cellSize, cellSize);
+              
           };
         };
       };
     });
   };
 };
+
 
 const selectedYes = (array, cardIndex) => {
   array.forEach((card, i,) => {
@@ -352,6 +349,42 @@ const createImages = (createCard, i) => {
   const imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = createCard.image;
 };
+const checkValidMove = (event) => {
+  clickedCard.movement.forEach((movement) => {
+    const movementCardX = movement.x;
+    const movementCardY = movement.y;
+      
+    for (let row = 0; row < numCells; row++) {
+      for (let col = 0; col < numCells; col++) {
+          const x = col * cellSize;
+          const y = row * cellSize;
+          const validCheckX = col - movementCardX;
+          const validCheckY = row - movementCardY;
+      
+          if (validCheckX === cellX && validCheckY === cellY) {
+              event.valid = true;
+              
+          };
+        };
+      };
+    });
+}
+const pieceDestination = (checkValidMove) => {
+  const board = gameboard.getBoundingClientRect();
+  const mouseX = event.clientX - board.left;
+  const mouseY = event.clientY - board.top;
+  const cellX = Math.floor(mouseX / cellSize);
+  const cellY = Math.floor(mouseY / cellSize);
+  checkValidMove.row = cellY;
+  checkValidMove.col = cellX;
+  return {cellY, cellX};
+};
+
+const isValidMove = (event) => {
+  const targetSquare = pieceDestination(checkValidMove);
+  const validMove = checkValidMove(targetSquare);
+
+  if (validMove) {
 
 const movePiece = (event, selectedPiece) => {
   const board = gameboard.getBoundingClientRect();
@@ -361,32 +394,45 @@ const movePiece = (event, selectedPiece) => {
   const cellY = Math.floor(mouseY / cellSize);
   selectedPiece.row = cellY;
   selectedPiece.col = cellX;
-  selectedPiece.selected = true;
+  selectedPiece.selected = false;
   
   switchCards = () => {
+    console.log('gameCards', gameCards)
     commonCard = gameCards.pop();
+    console.log('commonCard', commonCard)
+    console.log('clickedcard', clickedCard)
     gameCards.push(clickedCard);
     const temp = gameCards.indexOf(clickedCard);
+    console.log('temp index', temp)
     gameCards[temp] = commonCard;
     commonCard = gameCards[temp];
+    console.log('commoncard', commonCard)
     gameCards.forEach(gameCard => {
       gameCard.selected = false;
     });
   };
+
   switchCards()
+
   gameCards.forEach((gameCard, i) => {
     createImages(gameCard, i)
     });
-
+  highlightSquare(event);
+};
+movePiece(event, selectedPiece, checkValidMove)
+drawGameboard();
+  } else {
+      window.alert('Invalid move! You can only move to highlighted squares.')
+  }
 };
 
 const handlePlayerClick = (event) => {
   const selectedPiece = piecePositions.find((piece) => piece.selected === true)
- if (selectedPiece) movePiece(event, selectedPiece)
+ if (selectedPiece) movePiece(event, selectedPiece, checkValidMove)
  else selectPiece(event)
  ctx.clearRect (0,0, gameboard.width, gameboard.height);
-  drawGameboard();
-  drawPieces();
+  drawGameboard()
+  drawPieces()
 };
 
 const colorConverter = (color, alpha) => {
@@ -402,8 +448,8 @@ const colorConverter = (color, alpha) => {
 };
 
 gameboard.addEventListener('click', handlePlayerClick, selectPiece);
-gameboard.addEventListener('click', highlightSquare)
-
+gameboard.addEventListener('click', highlightSquare,)
+gameboard.addEventListener('click', pieceDestination)
 for (let i = 0; i < 5; i++) {
   const selectedCards = Object.keys(movementCards);
   const randomIndex = Math.floor(Math.random() * selectedCards.length);
