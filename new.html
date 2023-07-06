@@ -126,8 +126,22 @@
         <img class='card' id="card5" style="height: 125px; width: 211px";/>
     </div>
   <div class="cardContainer">
-    <img class='card' id="card1" style="height: 125px; width: 211px" onclick="selectCard('card1',0,player1.color)";/>
-    <img class='card' id="card2" style="height: 125px; width: 211px" onclick="selectCard('card2',1,player1.color)";/>
+    <img class='card' id="card1" style="height: 125px; width: 211px; border-width: 0px;" onclick="selectCard('card1',0,player1.color)";/>
+    <img class='card' id="card2" style="height: 125px; width: 211px; border-width: 0px;" onclick="selectCard('card2',1,player1.color)";/>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" id="alert">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Alert</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Not a Valid Move</p>
+      </div>
+    </div>
   </div>
 </div>
 
