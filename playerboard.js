@@ -304,11 +304,6 @@ const mouseClick = (event) => {
   return { cellX, cellY };
 };
 
-const toggleSelected = (card) => {
-  movementCards[card].selected = !card.selected;
-  console.log('movementCards', movementCards)
-};
-
 const selectPiece = (event) => {
   const { cellX , cellY } = mouseClick(event);
   selectedPiece = piecePositions.find((piece) => {
@@ -322,22 +317,6 @@ const highlightSquare = (event) => {
  const { cellX , cellY } = mouseClick(event);
   const alpha = 0.2;
     pieceColor = colorConverter(player1.color, alpha);
-/*  
-    ctx.fillStyle = pieceColor;
-  ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize);
-  highlightedSquare = {row: cellY, col: cellX};
-  console.log(highlightedSquare)
-
-  if (highlightedSquare) {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(
-    highlightedSquare.col * cellSize,
-    highlightedSquare.row * cellSize,
-    cellSize,
-    cellSize,
-    )};
-*/
-  
     ctx.clearRect (0,0, gameboard.width, gameboard.height);
     drawGameboard();
 
@@ -409,6 +388,7 @@ const resetCards = () => {
       allCards.forEach((card) => {
         card.style.borderWidth = '0px'
     });
+    if (player1.color)
     clickedCard = gameCards[cardIndex];
     clickedCard.selected = true;
     selectedCard.style.borderColor = playerColor;
@@ -421,8 +401,41 @@ const createImages = (createCard, i) => {
   imgArray.src = createCard.image;
 };
 
+const triggerAlert = (alertMessage) => {
+  console.log(document.getElementById('alert'));
+  const myModal = new bootstrap.Modal(document.getElementById('alert'));
+myModal.show();
+  document.getElementById('modalText').innerText = alertMessage;
+};
+
+const gameOver = () => {
+  triggerAlert(`Game Over. ${player1.color.charAt(0).toUpperCase() + player1.color.slice(1)} Wins!`);
+};
+
+const invalidMove = () => {
+  triggerAlert('Invalid Move');
+}
+
+const cardSelection = () => {
+  triggerAlert('Please select a Card')
+}
+
+const checkForPiece = (event) => {
+  const { cellX , cellY } = mouseClick(event);
+  const pieceToRemove = piecePositions.find((piece) => {
+    return piece.row === cellY && piece.col === cellX && piece.color === opponentColor;
+  });
+  if (pieceToRemove) {
+    if(pieceToRemove.piece === 'master') {
+      gameOver();
+    };
+    const index = piecePositions.indexOf(pieceToRemove);
+    piecePositions.splice(index, 1);
+  };
+};
+
 const createValidMoves = (moves) => {
-  const newMoves = moves.map((move) => {
+  const newMoves = moves?.map((move) => {
     return {x: move.x + selectedPiece.col, y: move.y + selectedPiece.row}
   });
   return newMoves;
@@ -431,14 +444,16 @@ const createValidMoves = (moves) => {
 const movePiece = (event, selectedPiece) => {
   const moves = createValidMoves(highlightSquare(event));
   const { cellX , cellY } = mouseClick(event);
-  const isValidMove = moves.find((move) => move.x === cellX && move.y === cellY);
-  console.log('isValidMove', isValidMove)
+  const isValidMove = moves?.find((move) => move.x === cellX && move.y === cellY);
  if (isValidMove) {
   selectedPiece.row = cellY;
   selectedPiece.col = cellX;
   switchCards();
+  checkForPiece(event);
+  if (cellX === 2 && cellY === 0) gameOver();
   } else {
-    window.alert('test') //Create Modal for this
+    resetCards();
+    invalidMove();
   }
   resetGameboard();
   loadPieceImgs();

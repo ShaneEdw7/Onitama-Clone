@@ -51,8 +51,8 @@ Parchment - #EEE8C9 */
 
 }
 .modal-title{
-    font-family: 'Comforter Brush', cursive;
-    font-size: 40%;
+    font-family: 'Long Cang', cursive;
+    text-decoration:underline;
 }
 #footer{
     background-color: #EEE8C9;
