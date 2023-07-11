@@ -291,6 +291,7 @@ drawGameboard();
 let highlightedSquare
 let selectedPiece
 let pieceColor
+let opponentPieceColor
 let clickedCard
 
 const mouseClick = (event) => {
@@ -317,6 +318,7 @@ const highlightSquare = (event) => {
  const { cellX , cellY } = mouseClick(event);
   const alpha = 0.2;
     pieceColor = colorConverter(player1.color, alpha);
+    opponentPieceColor = colorConverter(opponentColor, alpha)
     ctx.clearRect (0,0, gameboard.width, gameboard.height);
     drawGameboard();
 
@@ -332,13 +334,18 @@ const highlightSquare = (event) => {
           const y = row * cellSize;
           const selectedPieceX = col - movementCardX;
           const selectedPieceY = row - movementCardY;
-      
+
           if (selectedPieceX === cellX && selectedPieceY === cellY) {
-            ctx.fillStyle = pieceColor;
-            ctx.fillRect(x, y, cellSize, cellSize);
+           if (selectedPiece.color === player1.color) {  
+              ctx.fillStyle = pieceColor;
+              ctx.fillRect(x, y, cellSize, cellSize);
+            } else {
+              ctx.fillStyle = opponentPieceColor;
+              ctx.fillRect(x, y, cellSize, cellSize);
+              };
+            };
           };
         };
-      };
     });
    return validMoves;
   } 

@@ -118,8 +118,8 @@
 
 <div class="gameboard-container">
   <div class="cardContainer">
-    <img class='card' id="card3" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card3',2,player1.color)"/> 
-    <img class='card' id="card4" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card4',3,player1.color)"/>
+    <img class='card' id="card3" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card3',2,opponentColor)"/> 
+    <img class='card' id="card4" style="height: 125px; width: 211px; transform: scaleY(-1)" onclick="selectCard('card4',3,opponentColor)"/>
   </div>
     <div class="board">
         <canvas id="gameboard" width="450" height="450"></canvas>
@@ -141,9 +141,9 @@
       <div class="modal-body" id="alert">
         <p id="modalText"></p>
       </div>
-      <div class="modal-footer" id="footer">
-        <a class="btn btn-primary btn" href="new.html" role="button" id="start">Let's Go</a>
-      </div>
+<!--      <div class="modal-footer" id="footer">
+        <a class="btn btn-primary btn" href="new.html" role="button" id="start">New Game</a>
+      </div> -->
     </div>
   </div>
 </div>
