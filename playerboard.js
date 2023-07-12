@@ -1,3 +1,16 @@
+const colordisplay = document.getElementsByName('color');
+colordisplay.forEach((color) => {
+    color.addEventListener('click', (event) => {
+        localStorage.setItem('playercolor', event.target.value)
+    })
+});
+const difflevel = document.getElementsByName('difficulty');
+difflevel.forEach((difficulty) => {
+    difficulty.addEventListener('click', (event) => {
+        localStorage.setItem('difficulty', event.target.value)
+    })
+});
+
 const playercolor = localStorage.getItem('playercolor');
 const difficulty = localStorage.getItem('difficulty');
 const gameCards = [];
@@ -218,19 +231,7 @@ const pieceImgs = {
 };
 
 const pieceTypes = ['student', 'master'];
-/*
-const drawPieces = () => {
-  piecePositions.forEach((position) => {
-    const { row, col, piece, color } = position;
 
-    const x = col * cellSize;
-    const y = row * cellSize;
-
-    const img = pieceImgs[color][piece];
-    ctx.drawImage(img, x, y, cellSize, cellSize);
-  });
-};
-*/
   let loadPieceImgs = () => {
     pieceTypes.forEach((pieceType) => {
       const redPiece = new Image();
@@ -324,9 +325,10 @@ const highlightSquare = (event) => {
 
   if(clickedCard) {
     const validMoves = []
+    if(selectedPiece.color === player1.color) {
     clickedCard.movement.forEach((movement) => {
-    const movementCardX = movement.x;
-    const movementCardY = movement.y;
+      const movementCardX = movement.x;
+      const movementCardY = movement.y;
     validMoves.push({x: movementCardX, y: movementCardY});    
     for (let row = 0; row < numCells; row++) {
       for (let col = 0; col < numCells; col++) {
@@ -347,11 +349,36 @@ const highlightSquare = (event) => {
           };
         };
     });
-   return validMoves;
-  } 
+  } else {
+    clickedCard.movement.forEach((movement) => {
+      const movementCardX = movement.x;
+      const movementCardY = -movement.y;
+    validMoves.push({x: movementCardX, y: movementCardY});    
+    for (let row = 0; row < numCells; row++) {
+      for (let col = 0; col < numCells; col++) {
+          const x = col * cellSize;
+          const y = row * cellSize;
+          const selectedPieceX = col - movementCardX;
+          const selectedPieceY = row - movementCardY;
+
+          if (selectedPieceX === cellX && selectedPieceY === cellY) {
+           if (selectedPiece.color === player1.color) {  
+              ctx.fillStyle = pieceColor;
+              ctx.fillRect(x, y, cellSize, cellSize);
+            } else {
+              ctx.fillStyle = opponentPieceColor;
+              ctx.fillRect(x, y, cellSize, cellSize);
+              };
+            };
+          };
+        };
+    });
+  }
+  return validMoves;
 };
 if (clickedCard && selectedPiece) {
   highlightSquare();
+};
 };
 
 const switchCards = () => {
@@ -400,6 +427,7 @@ const resetCards = () => {
     clickedCard.selected = true;
     selectedCard.style.borderColor = playerColor;
     selectedCard.style.borderWidth = '2px';
+    highlightSquare();
     };
  };
 
@@ -421,16 +449,20 @@ const gameOver = () => {
 
 const invalidMove = () => {
   triggerAlert('Invalid Move');
+  const newGameButton = document.getElementById('start');
+  newGameButton.style.display = 'none'
 }
 
-const cardSelection = () => {
+const cardSelectionAlert = () => {
   triggerAlert('Please select a Card')
+  const newGameButton = document.getElementById('start');
+  newGameButton.style.display = 'none'
 }
 
 const checkForPiece = (event) => {
   const { cellX , cellY } = mouseClick(event);
   const pieceToRemove = piecePositions.find((piece) => {
-    return piece.row === cellY && piece.col === cellX && piece.color === opponentColor;
+    return piece.row === cellY && piece.col === cellX; //&& piece.color === opponentColor;
   });
   if (pieceToRemove) {
     if(pieceToRemove.piece === 'master') {
@@ -458,6 +490,7 @@ const movePiece = (event, selectedPiece) => {
   switchCards();
   checkForPiece(event);
   if (cellX === 2 && cellY === 0) gameOver();
+  if (card.) // Working here
   } else {
     resetCards();
     invalidMove();
