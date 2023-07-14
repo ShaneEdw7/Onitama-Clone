@@ -23,6 +23,7 @@ const player1 = {
 };
 
 let currentPlayer = 1;
+
 const switchPlayers = () => {
   if (currentPlayer === 1) {
     currentPlayer = 2
@@ -33,6 +34,11 @@ const switchPlayers = () => {
 
 let opponentColor = 'red';
 if (playercolor === 'red') opponentColor = 'blue';
+
+const getCurrentPlayerColor = () => {
+  if(currentPlayer === 1) return player1.color
+  return opponentColor;
+}
 
 const AI = {
   color : opponentColor,
@@ -333,15 +339,15 @@ const selectPiece = (event) => {
     if (selectedPiece.color === opponentColor) {
       selectedPiece.selected = true;
     } else {
-  pieceSelectionAlert();
-  resetGameboard();
-  resetCards();
+      pieceSelectionAlert();
+      resetGameboard();
+      resetCards();
   };
 };
 };
 
 const highlightSquare = (event) => {
- const { cellX , cellY } = mouseClick(event);
+// const { cellX , cellY } = mouseClick(event);
   const alpha = 0.2;
     pieceColor = colorConverter(player1.color, alpha);
     opponentPieceColor = colorConverter(opponentColor, alpha)
@@ -350,10 +356,12 @@ const highlightSquare = (event) => {
 
   if(clickedCard) {
     const validMoves = []
-    if(selectedPiece.color === player1.color) {
     clickedCard.movement.forEach((movement) => {
       const movementCardX = movement.x;
-      const movementCardY = movement.y;
+      let movementCardY = movement.y;
+      if(selectedPiece.color !== player1.color) {
+       movementCardY = -movement.y;
+      }
     validMoves.push({x: movementCardX, y: movementCardY});    
     for (let row = 0; row < numCells; row++) {
       for (let col = 0; col < numCells; col++) {
@@ -374,31 +382,6 @@ const highlightSquare = (event) => {
           };
         };
     });
-  } else {
-    clickedCard.movement.forEach((movement) => {
-      const movementCardX = movement.x;
-      const movementCardY = -movement.y;
-    validMoves.push({x: movementCardX, y: movementCardY});    
-    for (let row = 0; row < numCells; row++) {
-      for (let col = 0; col < numCells; col++) {
-          const x = col * cellSize;
-          const y = row * cellSize;
-          const selectedPieceX = col - movementCardX;
-          const selectedPieceY = row - movementCardY;
-
-          if (selectedPieceX === cellX && selectedPieceY === cellY) {
-           if (selectedPiece.color === player1.color) {  
-              ctx.fillStyle = pieceColor;
-              ctx.fillRect(x, y, cellSize, cellSize);
-            } else {
-              ctx.fillStyle = opponentPieceColor;
-              ctx.fillRect(x, y, cellSize, cellSize);
-              };
-            };
-          };
-        };
-    });
-  }
   return validMoves;
 };
 if (clickedCard && selectedPiece) {
@@ -437,6 +420,10 @@ const resetCards = () => {
       allCards.forEach((card) => {
         card.style.borderWidth = '0px'
     });
+    ctx.clearRect (0,0, gameboard.width, gameboard.height);
+    drawGameboard();
+    loadPieceImgs();
+    highlightSquare();
     // Working on player conditions
     if (currentPlayer === 1) {
       if (player1.color) {
@@ -445,6 +432,7 @@ const resetCards = () => {
         selectedCard.style.borderColor = playerColor;
         selectedCard.style.borderWidth = '2px';
         } else {
+          cardSelectionAlert();
           resetCards();
           }
     } else if (currentPlayer === 2) {
@@ -454,6 +442,7 @@ const resetCards = () => {
           selectedCard.style.borderColor = playerColor;
           selectedCard.style.borderWidth = '2px';
           } else {
+            cardSelectionAlert();
             resetCards();
             };
     };
@@ -472,7 +461,8 @@ myModal.show();
 };
 
 const gameOver = () => {
-  triggerAlert(`Game Over. ${player1.color.charAt(0).toUpperCase() + player1.color.slice(1)} Wins!`);
+  const winner = getCurrentPlayerColor();
+  triggerAlert(`Game Over. ${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`);
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'block'
 };
@@ -494,11 +484,15 @@ const pieceSelectionAlert = () => {
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'none'
 }
+const getOpponentColor = () => {
+  if (currentPlayer === 1) return opponentColor;
+  return player1.color;
+}
 
 const checkForPiece = (event) => {
   const { cellX , cellY } = mouseClick(event);
   const pieceToRemove = piecePositions.find((piece) => {
-    return piece.row === cellY && piece.col === cellX && piece.color === opponentColor;
+    return piece.row === cellY && piece.col === cellX && piece.color === getOpponentColor();
   });
   if (pieceToRemove) {
     if(pieceToRemove.piece === 'master') {
@@ -525,7 +519,7 @@ const movePiece = (event, selectedPiece) => {
   selectedPiece.col = cellX;
   switchCards();
   checkForPiece(event);
-  if (cellX === 2 && cellY === 0) gameOver();
+  if (cellX === 2 && cellY === 0 && currentPlayer === 1 || cellX === 2 && cellY === 4 && currentPlayer === 2) gameOver();
   } else {
     resetCards();
     invalidMove();
@@ -534,6 +528,7 @@ const movePiece = (event, selectedPiece) => {
   loadPieceImgs();
   console.log('Current Player', currentPlayer);
   switchPlayers();
+  console.log(currentPlayer)
 };
 
 const resetGameboard = () => {
