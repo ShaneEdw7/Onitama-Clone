@@ -2,7 +2,10 @@
 Lion - #C39856
 White - #FCECEB
 Russet - #894F24
-Parchment - #EEE8C9 */
+Parchment - #EEE8C9 
+Red = #be222a
+Blue = #2a85b3
+*/
 
 .subtitle{
     text-align: center;
@@ -76,7 +79,7 @@ Parchment - #EEE8C9 */
     font-size: 30px;
 }
 #gameboard{
-    background-color: #EEE8C9;
+   /* background-color: #EEE8C9; */
     border: 1px solid black;
     margin: 0;
     display: block;
@@ -89,6 +92,7 @@ Parchment - #EEE8C9 */
     margin: auto;
     margin-top: 5%;
 }
+
 .board {
     display: flex;
     flex: 33%;
@@ -106,3 +110,17 @@ Parchment - #EEE8C9 */
     margin: 5px;
     border: 2px solid black;
 }
+#card5 {
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#backgroundImage {
+    background-image: url('/images/Onitama_board.png');
+    background-size: 530px 965px;
+    background-repeat: no-repeat;
+    background-position:center;
+    background-position-y: -94px;
+};

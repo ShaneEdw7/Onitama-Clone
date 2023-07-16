@@ -27,8 +27,12 @@ let currentPlayer = 1;
 const switchPlayers = () => {
   if (currentPlayer === 1) {
     currentPlayer = 2
+    boardBorder.style.borderColor = opponentColor
+    boardBorder.style.borderSpacing = '5px';
     } else {
       currentPlayer = 1
+      boardBorder.style.borderColor = player1.color;
+      boardBorder.style.borderSpacing = '5px';
       };
 };
 
@@ -347,7 +351,7 @@ const selectPiece = (event) => {
 };
 
 const highlightSquare = (event) => {
-// const { cellX , cellY } = mouseClick(event);
+  const { cellX , cellY } = mouseClick(event);
   const alpha = 0.2;
     pieceColor = colorConverter(player1.color, alpha);
     opponentPieceColor = colorConverter(opponentColor, alpha)
@@ -423,7 +427,6 @@ const resetCards = () => {
     ctx.clearRect (0,0, gameboard.width, gameboard.height);
     drawGameboard();
     loadPieceImgs();
-    highlightSquare();
     // Working on player conditions
     if (currentPlayer === 1) {
       if (player1.color) {
@@ -579,4 +582,16 @@ for (let i = 0; i < 5; i++) {
   delete movementCards[selectedCard];
   selectedCards.splice(randomIndex, 1);
   createImages(gameCards[i], i)
+};
+const boardBorder = document.getElementById('gameboard');
+if (gameCards[4].color === player1.color) {
+  currentPlayer = 1
+  boardBorder.style.borderWidth = "5px"
+  boardBorder.style.borderColor = player1.color;
+  boardBorder.style.borderSpacing = '5px';
+} else {
+  currentPlayer = 2
+  boardBorder.style.borderWidth = "5px"
+  boardBorder.style.borderColor = opponentColor;
+  boardBorder.style.borderSpacing = '5px';
 };
