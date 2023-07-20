@@ -124,3 +124,93 @@ Blue = #2a85b3
     background-position:center;
     background-position-y: -94px;
 };
+.header{
+    max-width: 100%;
+    overflow: hidden;
+    color: white;
+  } 
+  .section-header{
+    background-image: url('images/brush-stroke-png-47321.png');
+    background-position: top;
+    background-size: auto 20%;
+    background-repeat:no-repeat;
+    height: 10vh;
+    min-height: 750px;
+    width: 100%; 
+    position:  center;
+    z-index: 1;
+    overflow: hidden; 
+
+    &:before{
+      content:'';
+      height: 50%; 
+      width: 50%;
+
+      left: 0;
+      right: 30%;
+      bottom: 0;
+      position: absolute;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/239533/white-swipe.png');
+      background-position: center; 
+      background-size: 20%;
+      background-repeat:no-repeat;
+      z-index: 3;
+      animation: brush 0.5s linear forwards; 
+    }
+  }
+  .text-wrapper{
+    top: auto;
+    opacity: 0;
+    left: 60%;
+    position: relative;
+    width: 40%; 
+    transform: translate(-50%, -50%);
+    animation: fadeInUp 0.75s linear forwards;
+    animation-delay: .75s;
+    max-width: 500px;
+    
+    h1, h3{
+      text-transform: uppercase;
+      font-family: 'Long Cang', cursive;
+      font-size: medium;
+    }
+    h1{
+      font-size: 4.5em;
+      font-weight: 900;
+      word-wrap: normal;
+    }
+    h3{
+      font-weight: 200;
+      letter-spacing: .05em;  
+
+    }
+  }
+  @keyframes brush{
+      0%{
+        transform: translate(0, 0); 
+      }    
+      50%{
+        transform: translate(-50%, 5%);
+      } 
+      100%{
+        transform: translate(-100%, 12%);
+      }
+    }
+  @keyframes fadeInUp{
+    0%{
+        opacity: 0; 
+        transform: translate(-50%, -25%); 
+      }  
+      50%{
+        opacity: .6;  
+        transform: translate(-50%, -50%);
+      } 
+      80%{
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+      100%{
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+  }
