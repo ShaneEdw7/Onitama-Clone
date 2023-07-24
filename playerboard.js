@@ -24,15 +24,31 @@ const player1 = {
 
 let currentPlayer = 1;
 
+const disableCards = (player) => {
+  if (player === 1) {
+    const card3 = document.getElementById('card3');
+    card3.onclick = null;
+    const card4 = document.getElementById('card4');
+    card4.onclick = null;
+  } else {
+    const card1 = document.getElementById('card1');
+    card1.onclick = null;
+    const card2 = document.getElementById('card2');
+    card2.onclick = null;
+  }
+}
+
 const switchPlayers = () => {
   if (currentPlayer === 1) {
     currentPlayer = 2
     boardBorder.style.borderColor = opponentColor
     boardBorder.style.borderSpacing = '5px';
+    disableCards(currentPlayer);
     } else {
       currentPlayer = 1
       boardBorder.style.borderColor = player1.color;
       boardBorder.style.borderSpacing = '5px';
+      disableCards(currentPlayer);
       };
 };
 
@@ -305,8 +321,12 @@ for (let y = 0; y <= boardSize; y += cellSize) {
 ctx.strokeStyle = "894E24";
 ctx.stroke();
 };
-loadPieceImgs();
-drawGameboard();
+const updateBoard = () => {
+  ctx.clearRect (0,0, gameboard.width, gameboard.height);
+  loadPieceImgs();
+  drawGameboard();
+}
+updateBoard();
 
 let highlightedSquare
 let selectedPiece
@@ -315,15 +335,17 @@ let opponentPieceColor
 let clickedCard
 let cellX
 let cellY
+let currentLocX
+let currentLocY
 
 const mouseClick = (event) => {
   const board = gameboard.getBoundingClientRect();
   const mouseX = event.clientX - board.left;
   const mouseY = event.clientY - board.top;
   cellX = Math.floor(mouseX / cellSize);
-  console.log('cellX', cellX)
+  console.log('cellX', cellX, mouseX)
   cellY = Math.floor(mouseY / cellSize);
-  console.log('cellY', cellY)
+  console.log('cellY', cellY, mouseY)
   return { cellX, cellY };
 };
 
@@ -332,21 +354,25 @@ const selectPiece = (event) => {
   selectedPiece = piecePositions.find((piece) => {
     return piece.row === cellY && piece.col === cellX;
   });
+  currentLocY = cellY;
+  console.log(currentLocY)
+  currentLocX = cellX;
+  console.log(currentLocX)
   if (currentPlayer === 1) {
     if (selectedPiece.color === player1.color) {
       selectedPiece.selected = true;
     } else {
       pieceSelectionAlert();
+      updateBoard();
       resetGameboard();
-      resetCards();
     }
 } else if (currentPlayer === 2) {
     if (selectedPiece.color === opponentColor) {
       selectedPiece.selected = true;
     } else {
       pieceSelectionAlert();
+      updateBoard();
       resetGameboard();
-      resetCards();
     };
   };
 };
@@ -357,6 +383,7 @@ const highlightSquare = () => {
     opponentPieceColor = colorConverter(opponentColor, alpha)
     ctx.clearRect (0,0, gameboard.width, gameboard.height);
     drawGameboard();
+
 
     const validMoves = []
     clickedCard?.movement.forEach((movement) => {
@@ -418,9 +445,7 @@ const resetCards = () => {
       allCards.forEach((card) => {
         card.style.borderWidth = '0px'
     });
-    ctx.clearRect (0,0, gameboard.width, gameboard.height);
-    drawGameboard();
-    loadPieceImgs();
+    updateBoard();
 
     if (currentPlayer === 1) {
       if (player1.color) {
@@ -452,6 +477,11 @@ const createImages = (createCard, i) => {
   imgArray.src = createCard.image;
 };
 
+const removeStart = () => {
+  const newGameButton = document.getElementById('start');
+  newGameButton.style.display = 'none'
+}
+
 const triggerAlert = (alertMessage) => {
   const myModal = new bootstrap.Modal(document.getElementById('alert'));
 myModal.show();
@@ -467,20 +497,17 @@ const gameOver = () => {
 
 const invalidMove = () => {
   triggerAlert('Invalid Move');
-  const newGameButton = document.getElementById('start');
-  newGameButton.style.display = 'none'
+  removeStart();
 }
 
 const cardSelectionAlert = () => {
   triggerAlert('Please select a Card')
-  const newGameButton = document.getElementById('start');
-  newGameButton.style.display = 'none'
+  removeStart();
 }
 
 const pieceSelectionAlert = () => {
   triggerAlert('Select Your Own Piece')
-  const newGameButton = document.getElementById('start');
-  newGameButton.style.display = 'none'
+  removeStart();
 }
 const getOpponentColor = () => {
   if (currentPlayer === 1) return opponentColor;
@@ -511,6 +538,12 @@ const movePiece = (event, selectedPiece) => {
   const moves = createValidMoves(highlightSquare(event));
   const { cellX , cellY } = mouseClick(event);
   const isValidMove = moves?.find((move) => move.x === cellX && move.y === cellY);
+  const animate = (event) => {
+    const dY = currentLocY - cellY;
+    const dX = currentLocX - cellX;
+    console.log('currentLocY', currentLocY, '- cellY:',cellY, '= dY:',dY)
+    console.log('currentLocX', currentLocX, '- cellX:',cellX, '= dX',dX)
+  }
   const pieceCheck = piecePositions.find((piece) => {
     const pieceColorCheck = piece.color === getCurrentPlayerColor();
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
@@ -529,8 +562,10 @@ const movePiece = (event, selectedPiece) => {
     } else {
         invalidMove();
         };
+//  updateBoard();
   resetGameboard();
   loadPieceImgs();
+  animate();
 };
 
 const resetGameboard = () => {
@@ -540,7 +575,6 @@ const resetGameboard = () => {
   cellX = null;
   cellY = null;
   resetCards();
-  loadPieceImgs();
 };
 
 const handlePlayerClick = (event) => {
@@ -549,15 +583,17 @@ const handlePlayerClick = (event) => {
     if (selectedPiece) {
       movePiece(event, selectedPiece)
     } else { selectPiece(event)
-      ctx.clearRect (0,0, gameboard.width, gameboard.height);
-      drawGameboard();
-      loadPieceImgs();
+      updateBoard();
+    //  ctx.clearRect (0,0, gameboard.width, gameboard.height);
+    //  drawGameboard();
+    //  loadPieceImgs();
       };
     } else {
       cardSelectionAlert();
-      ctx.clearRect (0,0, gameboard.width, gameboard.height);
-      drawGameboard();
-      loadPieceImgs();
+      updateBoard();
+    //  ctx.clearRect (0,0, gameboard.width, gameboard.height);
+    //  drawGameboard();
+    //  loadPieceImgs();
     }
 };
 
