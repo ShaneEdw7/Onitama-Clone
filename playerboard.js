@@ -37,13 +37,13 @@ const disableCards = (player) => {
   if (player === 1) {
     stopClick(card3);
     stopClick(card4);
-    restoreClick(card1, 0)
-    restoreClick(card2, 1)
+   // restoreClick(card1, 0)
+   // restoreClick(card2, 1)
   } else {
     stopClick(card1);
     stopClick(card2);
-    restoreClick(card3, 2)
-    restoreClick(card4, 3)
+   // restoreClick(card3, 2)
+  //  restoreClick(card4, 3)
   }
 }
 const stopClick = (card) => {
@@ -51,7 +51,7 @@ const stopClick = (card) => {
   };
 
 const restoreClick = (card, index) => {
-  card.setAttribute('onclick', `selectCard('` + `card` + `', ${index}, ${getCurrentPlayerColor()})`);
+  card.setAttribute('onclick', `selectCard('` + `${card}` + `', ${index}, ${getCurrentPlayerColor()})`);
     };
 
 const switchPlayers = () => {
