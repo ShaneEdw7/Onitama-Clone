@@ -446,40 +446,42 @@ const resetCards = () => {
 });
 };
 
- const selectCard = (cardId, cardIndex, playerColor) => {
+const selectCard = (cardId, cardIndex, playerColor) => {
+  if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
+    return;
+  }
   const selectedCard = document.getElementById(cardId);
-    gameCards.forEach((card) => {
-      card.selected = false;
-    });
-      const allCards = Array.from(document.getElementsByClassName('card'));
-      allCards.forEach((card) => {
-        card.style.borderWidth = '0px'
-    });
-    updateBoard();
-
-    if (currentPlayer === 1) {
-      if (player1.color) {
-        clickedCard = gameCards[cardIndex];
-        clickedCard.selected = true;
-        selectedCard.style.borderColor = playerColor;
-        selectedCard.style.borderWidth = '2px';
-        if (selectedPiece?.color === player1.color) highlightSquare();
-        } else {
-          cardSelectionAlert();
-          resetCards();
-          }
-    } else if (currentPlayer === 2) {
-        if (opponentColor) {
-          clickedCard = gameCards[cardIndex];
-          clickedCard.selected = true;
-          selectedCard.style.borderColor = playerColor;
-          selectedCard.style.borderWidth = '2px';
-          if (selectedPiece?.color === opponentColor) highlightSquare();
-          } else {
-            cardSelectionAlert();
-            resetCards();
-            };
-    }; 
+  gameCards.forEach((card) => {
+    card.selected = false;
+  });
+  const allCards = Array.from(document.getElementsByClassName('card'));
+  allCards.forEach((card) => {
+    card.style.borderWidth = '0px';
+  });
+  updateBoard();
+  if (currentPlayer === 1) {
+    if (player1.color) {
+      clickedCard = gameCards[cardIndex];
+      clickedCard.selected = true;
+      selectedCard.style.borderColor = playerColor;
+      selectedCard.style.borderWidth = '2px';
+      if (selectedPiece?.color === player1.color) highlightSquare();
+    } else {
+      cardSelectionAlert();
+      resetCards();
+    }
+  } else if (currentPlayer === 2) {
+    if (opponentColor) {
+      clickedCard = gameCards[cardIndex];
+      clickedCard.selected = true;
+      selectedCard.style.borderColor = playerColor;
+      selectedCard.style.borderWidth = '2px';
+      if (selectedPiece?.color === opponentColor) highlightSquare();
+    } else {
+      cardSelectionAlert();
+      resetCards();
+    }
+  }
 };
 
 const createImages = (createCard, i) => {
@@ -627,6 +629,7 @@ for (let i = 0; i < 5; i++) {
   selectedCards.splice(randomIndex, 1);
   createImages(gameCards[i], i)
 };
+
 const boardBorder = document.getElementById('gameboard');
 if (gameCards[4].color === player1.color) {
   currentPlayer = 1
