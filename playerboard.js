@@ -322,7 +322,8 @@ const updateBoard = () => {
 }
 updateBoard();
 
-let highlightedSquare
+let highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
+/*
 let selectedPiece
 let pieceColor
 let opponentPieceColor
@@ -331,6 +332,7 @@ let cellX
 let cellY
 let animationStep = 0
 let invalidMoveCounter = 0
+*/
 
 const mouseClick = (event) => {
   const board = gameboard.getBoundingClientRect();
@@ -340,6 +342,7 @@ const mouseClick = (event) => {
   console.log('cellX', cellX, mouseX)
   cellY = Math.floor(mouseY / cellSize);
   console.log('cellY', cellY, mouseY)
+  console.log('selectedPiece', selectedPiece);
   return { cellX, cellY };
 };
 
@@ -379,31 +382,31 @@ const highlightSquare = () => {
     clickedCard?.movement.forEach((movement) => {
       const movementCardX = movement.x;
       let movementCardY = movement.y;
-      if(selectedPiece.color !== player1.color) {
-       movementCardY = -movement.y;
-      }
-    validMoves.push({x: movementCardX, y: movementCardY});    
-    for (let row = 0; row < numCells; row++) {
-      for (let col = 0; col < numCells; col++) {
-          const x = col * cellSize;
-          const y = row * cellSize;
-          const selectedPieceX = col - movementCardX;
-          const selectedPieceY = row - movementCardY;
-
-          if (selectedPieceX === cellX && selectedPieceY === cellY) {
-           if (selectedPiece.color === player1.color) {  
-              ctx.fillStyle = pieceColor;
-              ctx.fillRect(x, y, cellSize, cellSize);
-            } else {
-              ctx.fillStyle = opponentPieceColor;
-              ctx.fillRect(x, y, cellSize, cellSize);
-              };
+        if(selectedPiece.color !== player1.color) {
+            movementCardY = -movement.y;
+            }
+      validMoves.push({x: movementCardX, y: movementCardY});    
+        for (let row = 0; row < numCells; row++) {
+          for (let col = 0; col < numCells; col++) {
+            const x = col * cellSize;
+            const y = row * cellSize;
+            const selectedPieceX = col - movementCardX;
+            const selectedPieceY = row - movementCardY;
+                if (selectedPieceX === cellX && selectedPieceY === cellY) {
+                  if (selectedPiece.color === player1.color) {  
+                    ctx.fillStyle = pieceColor;
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                  } else {
+                    ctx.fillStyle = opponentPieceColor;
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                  };
+                };
             };
-          };
         };
     });
   return validMoves;
 };
+
 
 const switchCards = () => {
   commonCard = gameCards.pop();
@@ -493,7 +496,7 @@ const gameOver = () => {
   removePass();
 };
 
-const invalidMove = () => {
+const invalidMoveAlert = () => {
   if (invalidMoveCounter < 3) {
   triggerAlert('Invalid Move');
   removeStart();
@@ -501,11 +504,11 @@ const invalidMove = () => {
   console.log(invalidMoveCounter);
   removePass();
 } else {
-    pass()
+    passAlert()
   };
 };
 
-const pass = () => {
+const passAlert = () => {
   triggerAlert('Would you like to pass?')
   removeStart();
   const passTurn = document.getElementById('pass');
@@ -592,6 +595,10 @@ const movePiece = (event, selectedPiece) => {
     const pieceColorCheck = piece.color === getCurrentPlayerColor();
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
   });
+  if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
+    resetGameboard();
+    loadPieceImgs();
+  } else {
     if (isValidMove && !pieceCheck) {
       selectedPiece.row = cellY;
       selectedPiece.col = cellX;
@@ -605,19 +612,21 @@ const movePiece = (event, selectedPiece) => {
       removePiece();
       switchPlayers();  
     } else {
-        invalidMove();
+        invalidMoveAlert();
         };
   resetGameboard();
+  clickedCard = null;
   loadPieceImgs();
+  };
 };
 
 const resetGameboard = () => {
   clickedCard.selected = false;
   selectedPiece.selected = false;
-  clickedCard = null;
+ // clickedCard = null;
   cellX = null;
   cellY = null;
-  resetCards();
+ // resetCards();
 };
 
 const handlePlayerClick = (event) => {
@@ -634,6 +643,7 @@ const handlePlayerClick = (event) => {
     };
 };
 
+// Convert color to include alpha for transparency on the board.
 const colorConverter = (color, alpha) => {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
@@ -649,6 +659,7 @@ const colorConverter = (color, alpha) => {
 gameboard.addEventListener('click', handlePlayerClick, selectPiece);
 gameboard.addEventListener('click', highlightSquare);
 
+// Select random cards for game use out of possible 16.
 for (let i = 0; i < 5; i++) {
   const selectedCards = Object.keys(movementCards);
   const randomIndex = Math.floor(Math.random() * selectedCards.length);
@@ -660,6 +671,7 @@ for (let i = 0; i < 5; i++) {
   createImages(gameCards[i], i)
 };
 
+// Visual cue to show whos turn it is.
 const boardBorder = document.getElementById('gameboard');
 if (gameCards[4].color === player1.color) {
   currentPlayer = 1
