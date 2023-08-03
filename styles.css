@@ -109,6 +109,7 @@ Blue = #2a85b3
 .card {
     margin: 5px;
     border: 2px solid black;
+    right: 4%;
 }
 #card5 {
     display: flex;
@@ -122,8 +123,8 @@ Blue = #2a85b3
     background-size: 530px 965px;
     background-repeat: no-repeat;
     background-position:center;
-    background-position-y: -94px;
-    background-position-x: 264px;
+    background-position-y: 52%;
+    background-position-x: 44%;
 }
 /*
 .brushstroke {
