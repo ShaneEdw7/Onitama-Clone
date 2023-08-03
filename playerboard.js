@@ -323,16 +323,6 @@ const updateBoard = () => {
 updateBoard();
 
 let highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
-/*
-let selectedPiece
-let pieceColor
-let opponentPieceColor
-let clickedCard
-let cellX
-let cellY
-let animationStep = 0
-let invalidMoveCounter = 0
-*/
 
 const mouseClick = (event) => {
   const board = gameboard.getBoundingClientRect();
@@ -356,16 +346,12 @@ const selectPiece = (event) => {
       selectedPiece.selected = true;
     } else {
       pieceSelectionAlert();
-      updateBoard();
-      resetGameboard();
     };
 } else if (currentPlayer === 2) {
     if (selectedPiece.color === opponentColor) {
       selectedPiece.selected = true;
     } else {
       pieceSelectionAlert();
-      updateBoard();
-      resetGameboard();
     };
   };
 };
@@ -451,7 +437,6 @@ const selectCard = (cardId, cardIndex, playerColor) => {
       if (selectedPiece?.color === player1.color) highlightSquare();
     } else {
       cardSelectionAlert();
-      resetCards();
     };
   } else if (currentPlayer === 2) {
     if (opponentColor) {
@@ -462,7 +447,6 @@ const selectCard = (cardId, cardIndex, playerColor) => {
       if (selectedPiece?.color === opponentColor) highlightSquare();
     } else {
       cardSelectionAlert();
-      resetCards();
     };
   };
 };
@@ -525,12 +509,15 @@ const cardSelectionAlert = () => {
   triggerAlert('Please select a Card')
   removeStart();
   removePass();
+  resetCards();
 };
 
 const pieceSelectionAlert = () => {
   triggerAlert('Select Your Own Piece')
   removeStart();
   removePass();
+  updateBoard();
+  resetGameboard();
 };
 
 const getOpponentColor = () => {
