@@ -19,7 +19,7 @@
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">Onitama Clone</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
-            <span>Rules</span>
+            <span>How To Play</span>
           </button>
           <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="offcanvas-header">
@@ -125,7 +125,7 @@
       <div>
           <canvas id="gameboard" width="450" height="450"></canvas>
       </div>
-      <div style="margin-left: 100px;">
+      <div style="margin-left: 20%;">
           <img class='card' id="card5" style="height: 125px; width: 211px;";/>
       </div>
     </div>
@@ -136,12 +136,12 @@
   </div>
 </div>
 
-<div class="modal" tabindex="-1" id="alert">
+<div class="modal fade" tabindex="-1" id="alert" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title">Alert</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button id="closeButtonAlert" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="alert">
         <p id="modalText"></p>
@@ -158,7 +158,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-1" id="newGameModalLabel">New Game</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button id="newGameCloseButton" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         Choose your Color<br>
@@ -176,7 +176,7 @@
           <label for="hard">Hard</label>
       </div>
       <div class="modal-footer" id="footer">
-        <a class="btn btn-primary btn" href="new.html" role="button" id="start">Let's Go</a>
+        <a class="btn btn-primary btn-lg" href="new.html" role="button" id="start">Let's Go</a>
       </div>
     </div>
   </div>

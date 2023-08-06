@@ -341,6 +341,7 @@ const selectPiece = (event) => {
   selectedPiece = piecePositions.find((piece) => {
     return piece.row === cellY && piece.col === cellX;
   });
+  if (!selectedPiece) pieceSelectionAlert();
   if (currentPlayer === 1) {
     if (selectedPiece.color === player1.color) {
       selectedPiece.selected = true;
@@ -478,6 +479,14 @@ const gameOver = () => {
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'block'
   removePass();
+  removeClose();
+};
+
+const removeClose = () => {
+  const closeButton1 = document.getElementById('closeButtonAlert')
+  const closeButton2 = document.getElementById('newGameCloseButton')
+  closeButton1.style.visibility = 'hidden'
+  closeButton2.style.visibility = 'hidden'
 };
 
 const invalidMoveAlert = () => {
@@ -513,7 +522,7 @@ const cardSelectionAlert = () => {
 };
 
 const pieceSelectionAlert = () => {
-  triggerAlert('Select Your Own Piece')
+  triggerAlert('Select A Piece')
   removeStart();
   removePass();
   updateBoard();
