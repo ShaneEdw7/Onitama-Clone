@@ -7,6 +7,7 @@ Red = #be222a
 Blue = #2a85b3
 */
 
+
 .subtitle{
     text-align: center;
     font-family: 'Long Cang', cursive;
@@ -83,20 +84,31 @@ Blue = #2a85b3
     border: 1px solid black;
     margin: 0;
     display: block;
-    margin-left: 26.5%;
-    margin-top: 2%;
+    top: 0px;
+    left: 400px;
     background-image: url('/images/canvas_background-PhotoRoom.png');
     background-image: center;
     background-repeat:no-repeat;
     background-size: cover;
-
+    position: static;
     }   
+
 .gameboard-container{
     justify-content: center;
     align-content: center;
-    padding: 2%;
-    margin: auto;
-    margin-top: 5%;
+    padding: 1px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+    height: 990px;
+    overflow: visible;
+    margin-top: 110px;
+    position: static;
+    background-image: url('/images/Onitama_board3.png');
+    background-size: 535px 990px;
+    background-repeat: no-repeat;
+    background-position-y: -120px;
+    background-position-x: 5px;
 }
 
 .board {
@@ -105,34 +117,27 @@ Blue = #2a85b3
     padding: 5px;
     align-items: center;
     justify-content: center;
+    position: static;
+    left: 400px;
+    top: 100px;
 }
+
 .cardContainer {
     display: flex;
     flex: 50%;
     justify-items: center;
     justify-content: center;
+    position: relative;
 }
 .card {
     margin: 5px;
     border: 2px solid black;
-    right: 9%;
+    right: 210px;
     background-color: transparent;
 }
 #card5 {
-    display: flex;
-    justify-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
-
-#backgroundImage {
-    background-image: url('/images/Onitama_board3.png');
-    background-size: 535px 990px;
-    background-repeat: no-repeat;
-    background-position:center;
-    background-position-y: 44%;
-    background-position-x: 34%;
-    overflow: auto;
+    top: 0px;
+    left: -130px;
 }
 
   .brush-wrap {
