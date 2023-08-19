@@ -85,7 +85,7 @@ Blue = #2a85b3
     display: block;
     top: 0px;
     left: 400px;
-    background-image: url('/images/canvas_background-PhotoRoom.png');
+    background-image: url('/images/canvas_background.png');
     background-image: center;
     background-repeat:no-repeat;
     background-size: cover;
@@ -103,7 +103,7 @@ Blue = #2a85b3
     overflow: visible;
     margin-top: 69px;
     position: static;
-    background-image: url('/images/Onitama_board3.png');
+    background-image: url('/images/Onitama_board.png');
     background-size: 535px 990px;
     background-repeat: no-repeat;
     background-position-y: 0px;
@@ -218,7 +218,6 @@ Blue = #2a85b3
      display: block;
      top: 0px;
      left: 400px;
-     background-image: url('/images/canvas_background-PhotoRoom.png');
      background-image: center;
      background-repeat:no-repeat;
      background-size: cover;
@@ -239,7 +238,6 @@ Blue = #2a85b3
      overflow-x: hidden;
      margin-top: 69px;
      position: static;
-     background-image: url('/images/Onitama_board3.png');
      background-size: 350px 615px;
      background-repeat: no-repeat;
      background-position-y: 0px;
@@ -292,7 +290,6 @@ Blue = #2a85b3
          display: block;
          top: 0px;
          left: 400px;
-         background-image: url('/images/canvas_background-PhotoRoom.png');
          background-image: center;
          background-repeat:no-repeat;
          background-size: cover;
@@ -313,7 +310,6 @@ Blue = #2a85b3
          overflow-x: hidden;
          margin-top: 69px;
          position: static;
-         background-image: url('/images/Onitama_board3.png');
          background-size: 350px 615px;
          background-repeat: no-repeat;
          background-position-y: 0px;
@@ -352,10 +348,7 @@ Blue = #2a85b3
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-    .container-fluid {
-        width: 85% !important;
-        margin: inherit !important;
-    }
+
     .gameboard-container{
         overflow-x: hidden;
     }
@@ -363,10 +356,7 @@ Blue = #2a85b3
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-    .container-fluid {
-        width: 85% !important;
-        margin: inherit !important;
-    }
+
     .gameboard-container{
         overflow-x: hidden;
     }
@@ -375,10 +365,7 @@ Blue = #2a85b3
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-    .container-fluid {
-        width: 85% !important;
-        margin: inherit !important;
-    }
+
     .gameboard-container{
         overflow-x: hidden;
     }

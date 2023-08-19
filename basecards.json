@@ -1,0 +1,183 @@
+{
+    "boar": {
+      "color": "red",
+      "image": "images/boar.png",
+      "movement": [
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "cobra": {
+      "color": "red",
+      "image": "images/cobra.png",
+      "movement": [
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "crab": {
+      "color": "blue",
+      "image": "images/crab.png",
+      "movement": [
+        {"x": 0, "y": -1},
+        {"x": -2, "y": 0},
+        {"x": 2, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "crane": {
+      "color": "blue",
+      "image": "images/crane.png",
+      "movement": [
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "dragon": {
+      "color": "red",
+      "image": "images/dragon.png",
+      "movement": [
+        {"x": -2, "y": -1},
+        {"x": 2, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "eel": {
+      "color": "blue",
+      "image": "images/eel.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "elephant": {
+      "color": "red",
+      "image": "images/elephant.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "frog": {
+      "color": "blue",
+      "image": "images/frog.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": -2, "y": 0},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "goose": {
+      "color": "blue",
+      "image": "images/goose.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "horse": {
+      "color": "red",
+      "image": "images/horse.png",
+      "movement": [
+        {"x": 0, "y": 1},
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "mantis": {
+      "color": "red",
+      "image": "images/mantis.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": -1},
+        {"x": 0, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "monkey": {
+      "color": "blue",
+      "image": "images/monkey.png",
+      "movement": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "ox": {
+      "color": "red",
+      "image": "images/ox.png",
+      "movement": [
+        {"x": 0, "y": 1},
+        {"x": 0, "y": -1},
+        {"x": 1, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "rabbit": {
+      "color": "blue",
+      "image": "images/rabbit.png",
+      "movement": [
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 2, "y": 0},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "rooster": {
+      "color": "red",
+      "image": "images/rooster.png",
+      "movement": [
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": -1, "y": 1},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    },
+    "tiger": {
+      "color": "blue",
+      "image": "images/tiger.png",
+      "movement": [
+        {"x": 0, "y": 1},
+        {"x": 0, "y": -2},
+        {"x": 0, "y": 0}
+      ],
+      "selected": false
+    }
+  }
+  

@@ -17,10 +17,17 @@ const gameCards = [];
 const playerCards = gameCards[0,2];
 const AICards = gameCards[2,4];
 let commonCard = gameCards[4];
-const player1 = {
-  color : localStorage.getItem('playercolor'),
-  cards : playerCards
+// const player1 = {
+//  color : localStorage.getItem('playercolor'),
+//  cards : playerCards
+//};
+const canvasReverse = url('/images/canvas_background-reverse.png');
+
+const pieceImgs = {
+  blue: {},
+  red: {}
 };
+const pieceTypes = ['student', 'master'];
 
 let currentPlayer = 1;
 
@@ -49,8 +56,16 @@ const switchPlayers = () => {
       };
 };
 
+const canvasFlip = () => {
+  gameboard.style.backgroundImage = canvasReverse;
+}
+ 
 let opponentColor = 'red';
-if (playercolor === 'red') opponentColor = 'blue';
+if (playercolor === 'red') {
+  opponentColor = 'blue';
+} else {
+  canvasFlip();
+}
 
 
 const AI = {
@@ -58,211 +73,33 @@ const AI = {
   cards : AICards,
   difficulty : localStorage.getItem('difficulty'),
 };
-const movementCards = {
-  boar: {
-    color: 'red',
-    image: 'images/boar.png',
-    movement: [
-      {x: 0, y: -1}, // forward 1 space
-      {x: -1, y: 0}, // left 1 space
-      {x: 1, y: 0}, // right 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false,
-  },
-  cobra: {
-    color: 'red',
-    image: 'images/cobra.png',
-    movement: [
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: -1, y: 0}, // left 1 space
-      {x: 1, y: 1}, // diagonally 1 space down-left
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  crab: {
-    color: 'blue',
-    image: 'images/crab.png',
-    movement: [
-      {x: 0, y: -1}, // forward 1 space
-      {x: -2, y: 0}, // left 2 spaces
-      {x: 2, y: 0}, // right 2 spaces
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  crane: {
-    color: 'blue',
-    image: 'images/crane.png',
-    movement: [
-      {x: 0, y: -1}, // forward 1 space
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x: 1, y: 1}, // diagonally 1 space down-right
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  dragon: {
-    color: 'red',
-    image: 'images/dragon.png',
-    movement: [
-      {x: -2, y: -1}, // diagonally 2 spaces up-left
-      {x: 2, y: -1}, // diagonally 2 spaces up-right
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x: 1, y: 1}, // diagonally 1 space down-right
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  eel: {
-    color: 'blue',
-    image: 'images/eel.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x: 1, y: 0}, // right 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  elephant: {
-    color: 'red',
-    image: 'images/elephant.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: -1, y: 0}, // left 1 space
-      {x: 1, y: 0}, // right 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  frog: {
-    color: 'blue',
-    image: 'images/frog.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: -2, y: 0}, // left 2 space
-      {x: 1, y: 1}, // diagonally 1 space down-right
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  goose: {
-    color: 'blue',
-    image: 'images/goose.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: -1, y: 0}, // left 1 space
-      {x: 1, y: 0}, // right 1 space
-      {x: 1, y: 1}, // diagonally 1 space down-right
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  horse: {
-    color: 'red',
-    image: 'images/horse.png',
-    movement: [
-      {x: 0, y: 1}, // forward 1 space
-      {x: 0, y: -1}, // backward 1 space
-      {x: -1, y: 0}, // left 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  mantis: {
-    color: 'red',
-    image: 'images/mantis.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: 0, y: 1}, // backward 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  monkey: {
-    color: 'blue',
-    image: 'images/monkey.png',
-    movement: [
-      {x: -1, y: -1}, // diagonally 1 space up-left
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x: 1, y: 1}, // diagonally 1 space down-right
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  ox: {
-    color: 'red',
-    image: 'images/ox.png',
-    movement: [
-      {x: 0, y: 1}, // forward 1 space
-      {x: 0, y: -1}, // backward 1 space
-      {x: 1, y: 0}, // right 1 space
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  rabbit: {
-    color: 'blue',
-    image: 'images/rabbit.png',
-    movement: [
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x: 2, y: 0}, // right 2 spaces
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  rooster: {
-    color: 'red',
-    image: 'images/rooster.png',
-    movement: [
-      {x: 1, y: -1}, // diagonally 1 space up-right
-      {x: -1, y: 0}, // left 1 space
-      {x: 1, y: 0}, // right 1 space
-      {x: -1, y: 1}, // diagonally 1 space down-left
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-  tiger: {
-    color: 'blue',
-    image: 'images/tiger.png',
-    movement: [
-      {x: 0, y: 1}, // backward 1 space
-      {x: 0, y: -2}, // forward 2 spaces
-      {x:0, y:0}, // No Movement
-    ],
-    selected: false
-  },
-};
+class Card {
+  constructor(name, color, image, movement) {
+      this.name = name;
+      this.color = color;
+      this.image = image;
+      this.movement = movement;
+      this.selected = false;
+  }
+}
+class Player {
+  constructor(color, cards = []) {
+      this.color = color;
+      this.cards = cards;
+  }
+}
 
-let piecePositions = [
-  { row: 0, col: 0, piece: "student", color: AI.color },
-  { row: 0, col: 1, piece: "student", color: AI.color },
-  { row: 0, col: 4, piece: "student", color: AI.color },
-  { row: 0, col: 3, piece: "student", color: AI.color },
-  { row: 0, col: 2, piece: "master", color: AI.color },
+let player1 = new Player(localStorage.getItem('playercolor'));
+let player2 = new Player(opponentColor);
+class Game { constructor(player1, player2, gameCards = []) 
+  { this.player1 = player1; 
+    this.player2 = player2; 
+    this.gameCards = gameCards; 
+    this.currentPlayer = player1; 
+    this.boardBorder = document.getElementById('gameboard'); 
+  }
 
-  { row: 4, col: 0, piece: "student", color: player1.color },
-  { row: 4, col: 1, piece: "student", color: player1.color },
-  { row: 4, col: 4, piece: "student", color: player1.color },
-  { row: 4, col: 3, piece: "student", color: player1.color },
-  { row: 4, col: 2, piece: "master", color: player1.color },
-];
-
-const pieceImgs = {
-  blue: {},
-  red: {}
-};
-
-const pieceTypes = ['student', 'master'];
-
-  let loadPieceImgs = () => {
+  loadPieceImgs = () => {
     pieceTypes.forEach((pieceType) => {
       const redPiece = new Image();
       redPiece.onload = function() {
@@ -295,6 +132,117 @@ const pieceTypes = ['student', 'master'];
     });
   };
 
+    mouseClick = (event) => {
+    const board = gameboard.getBoundingClientRect();
+    const mouseX = event.clientX - board.left;
+    const mouseY = event.clientY - board.top;
+    cellX = Math.floor(mouseX / cellSize);
+    console.log('cellX', cellX, mouseX)
+    cellY = Math.floor(mouseY / cellSize);
+    console.log('cellY', cellY, mouseY)
+    console.log('selectedPiece', selectedPiece);
+    return { cellX, cellY };
+  };
+  
+    selectPiece = (event) => {
+    const { cellX , cellY } = mouseClick(event);
+    selectedPiece = piecePositions.find((piece) => {
+      return piece.row === cellY && piece.col === cellX;
+    });
+    if (!selectedPiece) pieceSelectionAlert();
+    if (currentPlayer === 1) {
+      if (selectedPiece.color === player1.color) {
+        selectedPiece.selected = true;
+      } else {
+        pieceSelectionAlert();
+      };
+  } else if (currentPlayer === 2) {
+      if (selectedPiece.color === opponentColor) {
+        selectedPiece.selected = true;
+      } else {
+        pieceSelectionAlert();
+      };
+    };
+  };
+  
+    highlightSquare = () => {
+    const alpha = 0.2;
+      pieceColor = colorConverter(player1.color, alpha);
+      opponentPieceColor = colorConverter(opponentColor, alpha)
+      ctx.clearRect (0,0, gameboard.width, gameboard.height);
+      drawGameboard();
+  
+  
+      const validMoves = []
+      clickedCard?.movement.forEach((movement) => {
+        const movementCardX = movement.x;
+        let movementCardY = movement.y;
+          if(selectedPiece.color !== player1.color) {
+              movementCardY = -movement.y;
+              }
+        validMoves.push({x: movementCardX, y: movementCardY});    
+          for (let row = 0; row < numCells; row++) {
+            for (let col = 0; col < numCells; col++) {
+              const x = col * cellSize;
+              const y = row * cellSize;
+              const selectedPieceX = col - movementCardX;
+              const selectedPieceY = row - movementCardY;
+                  if (selectedPieceX === cellX && selectedPieceY === cellY) {
+                    if (selectedPiece.color === player1.color) {  
+                      ctx.fillStyle = pieceColor;
+                      ctx.fillRect(x, y, cellSize, cellSize);
+                    } else {
+                      ctx.fillStyle = opponentPieceColor;
+                      ctx.fillRect(x, y, cellSize, cellSize);
+                    };
+                  };
+              };
+          };
+      });
+    return validMoves;
+  };
+
+
+  
+// …all the functions related to your game logic
+}
+
+let game = new Game(player1, player2)
+
+async function fetchCards() {
+  try {
+      const response = await fetch('./basecards.json');
+      const cards = await response.json();
+      return cards;
+  } catch (error) {
+      console.error("Error fetching cards:", error);
+      throw error;
+  }
+}
+
+(async () => {
+  try {
+      const movementCards = await fetchCards();
+      console.log(movementCards);
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+  }
+})();
+
+let piecePositions = [
+  { row: 0, col: 0, piece: "student", color: AI.color },
+  { row: 0, col: 1, piece: "student", color: AI.color },
+  { row: 0, col: 4, piece: "student", color: AI.color },
+  { row: 0, col: 3, piece: "student", color: AI.color },
+  { row: 0, col: 2, piece: "master", color: AI.color },
+
+  { row: 4, col: 0, piece: "student", color: player1.color },
+  { row: 4, col: 1, piece: "student", color: player1.color },
+  { row: 4, col: 4, piece: "student", color: player1.color },
+  { row: 4, col: 3, piece: "student", color: player1.color },
+  { row: 4, col: 2, piece: "master", color: player1.color },
+];
+
 // Canvas (Gameboard)
 const gameboard = document.getElementById("gameboard");
 const ctx = gameboard.getContext("2d");
@@ -324,75 +272,6 @@ updateBoard();
 
 let highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
 
-const mouseClick = (event) => {
-  const board = gameboard.getBoundingClientRect();
-  const mouseX = event.clientX - board.left;
-  const mouseY = event.clientY - board.top;
-  cellX = Math.floor(mouseX / cellSize);
-  console.log('cellX', cellX, mouseX)
-  cellY = Math.floor(mouseY / cellSize);
-  console.log('cellY', cellY, mouseY)
-  console.log('selectedPiece', selectedPiece);
-  return { cellX, cellY };
-};
-
-const selectPiece = (event) => {
-  const { cellX , cellY } = mouseClick(event);
-  selectedPiece = piecePositions.find((piece) => {
-    return piece.row === cellY && piece.col === cellX;
-  });
-  if (!selectedPiece) pieceSelectionAlert();
-  if (currentPlayer === 1) {
-    if (selectedPiece.color === player1.color) {
-      selectedPiece.selected = true;
-    } else {
-      pieceSelectionAlert();
-    };
-} else if (currentPlayer === 2) {
-    if (selectedPiece.color === opponentColor) {
-      selectedPiece.selected = true;
-    } else {
-      pieceSelectionAlert();
-    };
-  };
-};
-
-const highlightSquare = () => {
-  const alpha = 0.2;
-    pieceColor = colorConverter(player1.color, alpha);
-    opponentPieceColor = colorConverter(opponentColor, alpha)
-    ctx.clearRect (0,0, gameboard.width, gameboard.height);
-    drawGameboard();
-
-
-    const validMoves = []
-    clickedCard?.movement.forEach((movement) => {
-      const movementCardX = movement.x;
-      let movementCardY = movement.y;
-        if(selectedPiece.color !== player1.color) {
-            movementCardY = -movement.y;
-            }
-      validMoves.push({x: movementCardX, y: movementCardY});    
-        for (let row = 0; row < numCells; row++) {
-          for (let col = 0; col < numCells; col++) {
-            const x = col * cellSize;
-            const y = row * cellSize;
-            const selectedPieceX = col - movementCardX;
-            const selectedPieceY = row - movementCardY;
-                if (selectedPieceX === cellX && selectedPieceY === cellY) {
-                  if (selectedPiece.color === player1.color) {  
-                    ctx.fillStyle = pieceColor;
-                    ctx.fillRect(x, y, cellSize, cellSize);
-                  } else {
-                    ctx.fillStyle = opponentPieceColor;
-                    ctx.fillRect(x, y, cellSize, cellSize);
-                  };
-                };
-            };
-        };
-    });
-  return validMoves;
-};
 
 
 const switchCards = () => {
