@@ -11,17 +11,13 @@ difflevel.forEach((difficulty) => {
     })
 });
 
-const playercolor = localStorage.getItem('playercolor');
 const difficulty = localStorage.getItem('difficulty');
+
 const gameCards = [];
-const playerCards = gameCards[0,2];
-const AICards = gameCards[2,4];
 let commonCard = gameCards[4];
-// const player1 = {
-//  color : localStorage.getItem('playercolor'),
-//  cards : playerCards
-//};
-const canvasReverse = url('/images/canvas_background-reverse.png');
+let movementCards = {};
+
+const canvasReverse = '/images/canvas_background-reverse.png';
 
 const pieceImgs = {
   blue: {},
@@ -35,6 +31,27 @@ const getCurrentPlayerColor = () => {
   if(currentPlayer === 1) return player1.color
   return opponentColor;
 };
+
+async function fetchCards() {
+  try {
+      const response = await fetch('./basecards.json');
+      const cards = await response.json();
+      return cards;
+  } catch (error) {
+      console.error("Error fetching cards:", error);
+      throw error;
+  }
+}
+
+(async () => {
+  try {
+      movementCards = await fetchCards();
+      console.log(movementCards);
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+  }
+})();
+
 
 const stopClick = (card) => {
   card.removeAttribute('onclick')
@@ -56,23 +73,6 @@ const switchPlayers = () => {
       };
 };
 
-const canvasFlip = () => {
-  gameboard.style.backgroundImage = canvasReverse;
-}
- 
-let opponentColor = 'red';
-if (playercolor === 'red') {
-  opponentColor = 'blue';
-} else {
-  canvasFlip();
-}
-
-
-const AI = {
-  color : opponentColor,
-  cards : AICards,
-  difficulty : localStorage.getItem('difficulty'),
-};
 class Card {
   constructor(name, color, image, movement) {
       this.name = name;
@@ -88,51 +88,30 @@ class Player {
       this.cards = cards;
   }
 }
-
-let player1 = new Player(localStorage.getItem('playercolor'));
-let player2 = new Player(opponentColor);
-class Game { constructor(player1, player2, gameCards = []) 
-  { this.player1 = player1; 
-    this.player2 = player2; 
+class Game { 
+  constructor(player1, player2, gameCards = []) 
+  { this.player1 = new Player(localStorage.getItem('playercolor'), gameCards[0,2]); 
+    this.player2 = new Player(opponentColor, gameCards[2,4]);
     this.gameCards = gameCards; 
     this.currentPlayer = player1; 
     this.boardBorder = document.getElementById('gameboard'); 
-  }
-
-  loadPieceImgs = () => {
-    pieceTypes.forEach((pieceType) => {
-      const redPiece = new Image();
-      redPiece.onload = function() {
-        piecePositions.forEach((position) => {
-          const { row, col, piece, color } = position;
-      
-          const x = col * cellSize;
-          const y = row * cellSize;
-      
-          const img = pieceImgs[color][piece];
-          ctx.drawImage(img, x, y, cellSize, cellSize);
-        });
-      };
-      redPiece.src = `images/red_${pieceType}.png`;
-      pieceImgs.red[pieceType] = redPiece;
-  
-      const bluePiece = new Image();
-      bluePiece.onload = function() {
-        piecePositions.forEach((position) => {
-          const { row, col, piece, color } = position;
-          const x = col * cellSize;
-          const y = row * cellSize;
-      
-          const img = pieceImgs[color][piece];
-          ctx.drawImage(img, x, y, cellSize, cellSize);
-        });
-      };
-      bluePiece.src = `images/blue_${pieceType}.png`;
-      pieceImgs.blue[pieceType] = bluePiece;
-    });
   };
 
-    mouseClick = (event) => {
+  canvasFlip = () => {
+    gameboard.style.backgroundImage = canvasReverse;
+  }
+  getOpponentColor = () => {
+    if (currentPlayer === 1) return opponentColor;
+    return player1.color;
+  }
+   
+  opponentColor = 'red';
+  if (player1.color === 'red') {
+    opponentColor = 'blue';
+  } else {
+    canvasFlip();
+  }
+  mouseClick = (event) => {
     const board = gameboard.getBoundingClientRect();
     const mouseX = event.clientX - board.left;
     const mouseY = event.clientY - board.top;
@@ -202,73 +181,167 @@ class Game { constructor(player1, player2, gameCards = [])
     return validMoves;
   };
 
+  selectCard = (cardId, cardIndex, playerColor) => {
+    if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
+      return;
+    };
+    const selectedCard = document.getElementById(cardId);
+    gameCards.forEach((card) => {
+      card.selected = false;
+    });
+    const allCards = Array.from(document.getElementsByClassName('card'));
+    allCards.forEach((card) => {
+      card.style.borderWidth = '0px';
+    });
+    updateBoard();
+    if (currentPlayer === 1) {
+      if (player1.color) {
+        clickedCard = gameCards[cardIndex];
+        clickedCard.selected = true;
+        selectedCard.style.borderColor = playerColor;
+        selectedCard.style.borderWidth = '2px';
+        if (selectedPiece?.color === player1.color) highlightSquare();
+      } else {
+        cardSelectionAlert();
+      };
+    } else if (currentPlayer === 2) {
+      if (opponentColor) {
+        clickedCard = gameCards[cardIndex];
+        clickedCard.selected = true;
+        selectedCard.style.borderColor = playerColor;
+        selectedCard.style.borderWidth = '2px';
+        if (selectedPiece?.color === opponentColor) highlightSquare();
+      } else {
+        cardSelectionAlert();
+      };
+    };
+  };
+  createImages = (createCard, i) => {
+    const imgArray = document.getElementById("card" + (i + 1));
+    imgArray.src = createCard.image;
+  };
 
+initializeGame = () => {
   
+  // Canvas (Gameboard)
+  const gameboard = document.getElementById("gameboard");
+  const ctx = gameboard.getContext("2d");
+  const boardSize = gameboard.width;
+  const numCells = 5;
+  const cellSize = boardSize / numCells;
+
+class Piece {
+  constructor(row,col,piece,color) {
+  this.row = row;
+  this.col = col;
+  this.piece = piece;
+  this.color = color;
+  };
+};
+
+const bluepawn = new Piece (0,0, "student", this.player2.color);
+console.log(bluepawn)
+
+  let piecePositions = [
+    { row: 0, col: 0, piece: "student", color: this.player2.color },
+    { row: 0, col: 1, piece: "student", color: this.player2.color },
+    { row: 0, col: 4, piece: "student", color: this.player2.color },
+    { row: 0, col: 3, piece: "student", color: this.player2.color },
+    { row: 0, col: 2, piece: "master", color: this.player2.color },
+  
+    { row: 4, col: 0, piece: "student", color: this.player1.color },
+    { row: 4, col: 1, piece: "student", color: this.player1.color },
+    { row: 4, col: 4, piece: "student", color: this.player1.color },
+    { row: 4, col: 3, piece: "student", color: this.player1.color },
+    { row: 4, col: 2, piece: "master", color: this.player1.color },
+  ];
+
+  const loadPieceImgs = () => {
+    pieceTypes.forEach((pieceType) => {
+      const redPiece = new Image();
+      redPiece.onload = function() {
+        piecePositions.forEach((position) => {
+          const { row, col, piece, color } = position;
+      
+          const x = col * cellSize;
+          const y = row * cellSize;
+      
+          const img = pieceImgs[color][piece];
+          ctx.drawImage(img, x, y, cellSize, cellSize);
+        });
+      };
+      redPiece.src = `images/red_${pieceType}.png`;
+      pieceImgs.red[pieceType] = redPiece;
+  
+      const bluePiece = new Image();
+      bluePiece.onload = function() {
+        piecePositions.forEach((position) => {
+          const { row, col, piece, color } = position;
+          const x = col * cellSize;
+          const y = row * cellSize;
+      
+          const img = pieceImgs[color][piece];
+          ctx.drawImage(img, x, y, cellSize, cellSize);
+        });
+      };
+      bluePiece.src = `images/blue_${pieceType}.png`;
+      pieceImgs.blue[pieceType] = bluePiece;
+    });
+  };
+
+  const drawGameboard = () => {
+    ctx.beginPath();
+    for (let x = 0; x <= boardSize; x += cellSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, boardSize);
+        }
+    for (let y = 0; y <= boardSize; y += cellSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(boardSize, y);
+        }
+    ctx.strokeStyle = "894E24";
+    ctx.stroke();
+    };
+    const updateBoard = () => {
+      ctx.clearRect (0,0, gameboard.width, gameboard.height);
+      loadPieceImgs();
+      drawGameboard();
+    }
+    updateBoard();
+
+// Select random cards for game use out of possible 16.
+  for (let i = 0; i < 5; i++) {
+    const selectedCards = Object.keys(movementCards);
+    console.log(selectedCards);
+    const randomIndex = Math.floor(Math.random() * selectedCards.length);
+    console.log(randomIndex, 'Random Index');
+    const selectedCard = selectedCards[randomIndex];
+    console.log(selectedCard, 'Selected Card');
+    const chosenOne = movementCards[selectedCard]
+    console.log(chosenOne, 'Chosen One');
+    gameCards.push(chosenOne);
+    console.log(gameCards, 'GameCards');
+    delete movementCards[selectedCard];
+    selectedCards.splice(randomIndex, 1);
+    createImages(gameCards[i], i);
+    };
+
+gameboard.addEventListener('click', handlePlayerClick, selectPiece);
+gameboard.addEventListener('click', highlightSquare);
+
 // …all the functions related to your game logic
-}
+  };
+};
 
 let game = new Game(player1, player2)
 
-async function fetchCards() {
-  try {
-      const response = await fetch('./basecards.json');
-      const cards = await response.json();
-      return cards;
-  } catch (error) {
-      console.error("Error fetching cards:", error);
-      throw error;
-  }
-}
 
-(async () => {
-  try {
-      const movementCards = await fetchCards();
-      console.log(movementCards);
-  } catch (error) {
-    console.error("Error fetching cards:", error);
-  }
-})();
 
-let piecePositions = [
-  { row: 0, col: 0, piece: "student", color: AI.color },
-  { row: 0, col: 1, piece: "student", color: AI.color },
-  { row: 0, col: 4, piece: "student", color: AI.color },
-  { row: 0, col: 3, piece: "student", color: AI.color },
-  { row: 0, col: 2, piece: "master", color: AI.color },
 
-  { row: 4, col: 0, piece: "student", color: player1.color },
-  { row: 4, col: 1, piece: "student", color: player1.color },
-  { row: 4, col: 4, piece: "student", color: player1.color },
-  { row: 4, col: 3, piece: "student", color: player1.color },
-  { row: 4, col: 2, piece: "master", color: player1.color },
-];
 
-// Canvas (Gameboard)
-const gameboard = document.getElementById("gameboard");
-const ctx = gameboard.getContext("2d");
-const boardSize = gameboard.width;
-const numCells = 5;
-const cellSize = boardSize / numCells;
 
-const drawGameboard = () => {
-ctx.beginPath();
-for (let x = 0; x <= boardSize; x += cellSize) {
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, boardSize);
-    }
-for (let y = 0; y <= boardSize; y += cellSize) {
-    ctx.moveTo(0, y);
-    ctx.lineTo(boardSize, y);
-    }
-ctx.strokeStyle = "894E24";
-ctx.stroke();
-};
-const updateBoard = () => {
-  ctx.clearRect (0,0, gameboard.width, gameboard.height);
-  loadPieceImgs();
-  drawGameboard();
-}
-updateBoard();
+
+
 
 let highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
 
@@ -295,46 +368,9 @@ const resetCards = () => {
 });
 };
 
-const selectCard = (cardId, cardIndex, playerColor) => {
-  if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
-    return;
-  };
-  const selectedCard = document.getElementById(cardId);
-  gameCards.forEach((card) => {
-    card.selected = false;
-  });
-  const allCards = Array.from(document.getElementsByClassName('card'));
-  allCards.forEach((card) => {
-    card.style.borderWidth = '0px';
-  });
-  updateBoard();
-  if (currentPlayer === 1) {
-    if (player1.color) {
-      clickedCard = gameCards[cardIndex];
-      clickedCard.selected = true;
-      selectedCard.style.borderColor = playerColor;
-      selectedCard.style.borderWidth = '2px';
-      if (selectedPiece?.color === player1.color) highlightSquare();
-    } else {
-      cardSelectionAlert();
-    };
-  } else if (currentPlayer === 2) {
-    if (opponentColor) {
-      clickedCard = gameCards[cardIndex];
-      clickedCard.selected = true;
-      selectedCard.style.borderColor = playerColor;
-      selectedCard.style.borderWidth = '2px';
-      if (selectedPiece?.color === opponentColor) highlightSquare();
-    } else {
-      cardSelectionAlert();
-    };
-  };
-};
 
-const createImages = (createCard, i) => {
-  const imgArray = document.getElementById("card" + (i + 1));
-  imgArray.src = createCard.image;
-};
+
+
 
 const removeStart = () => {
   const newGameButton = document.getElementById('start');
@@ -406,11 +442,6 @@ const pieceSelectionAlert = () => {
   removePass();
   updateBoard();
   resetGameboard();
-};
-
-const getOpponentColor = () => {
-  if (currentPlayer === 1) return opponentColor;
-  return player1.color;
 };
 
 const removePiece = () => {
@@ -530,21 +561,7 @@ const colorConverter = (color, alpha) => {
   const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
   return `rgba(${r}, ${g}, ${b}, ${a / 255})`;
 };
-
-gameboard.addEventListener('click', handlePlayerClick, selectPiece);
-gameboard.addEventListener('click', highlightSquare);
-
-// Select random cards for game use out of possible 16.
-for (let i = 0; i < 5; i++) {
-  const selectedCards = Object.keys(movementCards);
-  const randomIndex = Math.floor(Math.random() * selectedCards.length);
-  const selectedCard = selectedCards[randomIndex];
-  const chosenOne = movementCards[selectedCard]
-  gameCards.push(chosenOne);
-  delete movementCards[selectedCard];
-  selectedCards.splice(randomIndex, 1);
-  createImages(gameCards[i], i)
-};
+game.initializeGame();
 
 // Visual cue to show whos turn it is.
 const boardBorder = document.getElementById('gameboard');
