@@ -11,21 +11,6 @@ difflevel.forEach((difficulty) => {
     })
 });
 
-window.addEventListener('load', function(){
-  // Canvas (Gameboard)
-  const gameboard = document.getElementById("gameboard");
-  const ctx = gameboard.getContext("2d");
-  const boardSize = gameboard.width;
-  const numCells = 5;
-  const cellSize = boardSize / numCells;
-
-  const pieceImgs = {
-    blue: {},
-    red: {}
-  };
-  
-  const pieceTypes = ['student', 'master'];
-
 const difficulty = localStorage.getItem('difficulty');
 
 let gameCards = [];
@@ -34,7 +19,7 @@ let movementCards = {};
 
 const canvasReverse = '/images/canvas_background-reverse.png';
 
-let piecePositions = [], currentPlayer = 1,highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
+let piecePositions = [], currentPlayer = 1, highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0
 
 
 
@@ -46,63 +31,6 @@ let piecePositions = [], currentPlayer = 1,highlightedSquare, selectedPiece, pie
       this.movement = movement;
       this.selected = false;
   };
-
-      selectCard(cardId, cardIndex, playerColor) {
-        if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
-          return;
-        };
-        const selectedCard = document.getElementById(cardId);
-        gameCards.forEach((card) => {
-          card.selected = false;
-        });
-        const allCards = Array.from(document.getElementsByClassName('card'));
-        allCards.forEach((card) => {
-          card.style.borderWidth = '0px';
-        });
-        updateBoard();
-        if (currentPlayer === 1) {
-          if (player1.color) {
-            clickedCard = gameCards[cardIndex];
-            clickedCard.selected = true;
-            selectedCard.style.borderColor = playerColor;
-            selectedCard.style.borderWidth = '2px';
-            if (selectedPiece?.color === player1.color) highlightSquare();
-          } else {
-            cardSelectionAlert();
-          };
-        } else if (currentPlayer === 2) {
-          if (opponentColor) {
-            clickedCard = gameCards[cardIndex];
-            clickedCard.selected = true;
-            selectedCard.style.borderColor = playerColor;
-            selectedCard.style.borderWidth = '2px';
-            if (selectedPiece?.color === opponentColor) highlightSquare();
-          } else {
-            cardSelectionAlert();
-          };
-        };
-      };
-
-      switchCards() {
-        commonCard = gameCards.pop();
-        gameCards.push(clickedCard);
-        const temp = gameCards.indexOf(clickedCard);
-        gameCards[temp] = commonCard;
-        commonCard = gameCards[temp];
-        gameCards.forEach((gameCard, i) => {
-          createImages(gameCard, i)
-          });
-          clickedCard.selected = false;
-          resetCards();
-      };
-      
-      resetCards() {
-        const allCards = Array.from(document.getElementsByClassName('card'));
-        allCards.forEach((card) => {
-          card.style.borderWidth = '0px'
-          card.selected = false
-      });
-      };
     };
 class Player {
   constructor(color, cards = []) {
@@ -125,15 +53,21 @@ class Player {
 };
 class Game { 
 
-  constructor(player1, player2, gameCards = []) 
+  constructor(player1, player2, gameCards) 
   { this.player1 = player1;
     this.player2 = player2;
-    this.gameCards = gameCards; 
+    this.gameCards = gameCards;
     this.currentPlayer = player1;
     this.boardBorder = document.getElementById('gameboard'); 
   };
 
   initializeGame() {
+  // Canvas (Gameboard)
+    const gameboard = document.getElementById("gameboard");
+    const ctx = gameboard.getContext("2d");
+    const boardSize = gameboard.width;
+    const numCells = 5;
+    const cellSize = boardSize / numCells;
 
     async function fetchCards() {
       try {
@@ -167,36 +101,28 @@ class Game {
       const randomIndex = Math.floor(Math.random() * selectedCards.length);
       const selectedCard = selectedCards[randomIndex];
       const chosenOne = movementCards[selectedCard]
-      console.log(gameCards) 
       gameCards.push(chosenOne);
       delete movementCards[selectedCard];
       selectedCards.splice(randomIndex, 1);
       createImages(gameCards[i], i);
       };
+      console.log(gameCards);
   };
+  let opponentColor = 'red';
 
-    const player1 = new Player(localStorage.getItem('playercolor'), gameCards[0,2]); 
-    console.log(player1)
+  const getOpponentColor = () => {
+    if (currentPlayer === 1) return opponentColor;
+    return player1.color;
+  };
+  const getCurrentPlayerColor = () => {
+    if(currentPlayer === 1) return player1.color
+    return opponentColor;
+  };
+    getOpponentColor()
+    getCurrentPlayerColor()
 
-    let opponentColor = 'red';
-    if (player1.color === 'red') opponentColor = 'blue'
+    if (this.player1.color === 'red') opponentColor = 'blue'
 
-    const player2 = new Player(opponentColor, gameCards[2,4]);
-    console.log(player2)
-
-    const getOpponentColor = () => {
-      if (currentPlayer === 1) return opponentColor;
-      return player1.color;
-    };
-
-    getOpponentColor();
-  
-    const getCurrentPlayerColor = () => {
-      if(currentPlayer === 1) return player1.color
-      return opponentColor;
-    };
-
-    getCurrentPlayerColor();
 
     const drawGameboard = () => {
       ctx.beginPath();
@@ -213,7 +139,7 @@ class Game {
       };
 
       const loadPieceImgs = () => {
-      
+    
         piecePositions = [
           { row: 0, col: 0, piece: "student", color: player2.color },
           { row: 0, col: 1, piece: "student", color: player2.color },
@@ -230,7 +156,18 @@ class Game {
       };
       
       const assignPieces = () => {
+
+
+
         loadPieceImgs();
+
+        const pieceImgs = {
+          blue: {},
+          red: {}
+        };
+        
+        const pieceTypes = ['student', 'master'];
+
         pieceTypes.forEach((pieceType) => {
           const redPiece = new Image();
           redPiece.onload = function() {
@@ -271,9 +208,10 @@ class Game {
       };
 
       updateBoard();
-
+      this.updateBoardColor();
   }
-  mouseClick = (event) => {
+
+  mouseClick(event){
     const board = gameboard.getBoundingClientRect();
     const mouseX = event.clientX - board.left;
     const mouseY = event.clientY - board.top;
@@ -285,12 +223,12 @@ class Game {
     return { cellX, cellY };
   };
    
-    highlightSquare() {
+    highlightSquare = () => {
     const alpha = 0.2;
-      pieceColor = colorConverter(player1.color, alpha);
-      opponentPieceColor = colorConverter(opponentColor, alpha)
+      pieceColor = this.colorConverter(this.player1.color, alpha);
+      opponentPieceColor = this.colorConverter(this.opponentColor, alpha)
       ctx.clearRect (0,0, gameboard.width, gameboard.height);
-      drawGameboard();
+      this.drawGameboard();
   
   
       const validMoves = []
@@ -338,7 +276,8 @@ class Game {
 // Visual cue to show whos turn it is.
 updateBoardColor() {
   const boardBorder = document.getElementById('gameboard');
-if (gameCards[4].color === player1.color) {
+  console.log(gameCards);
+if (this.gameCards[4].color === this.player1.color) {
   currentPlayer = 1
   boardBorder.style.borderWidth = "5px"
   boardBorder.style.borderColor = player1.color;
@@ -351,21 +290,169 @@ if (gameCards[4].color === player1.color) {
   };
 };
 
-handlePlayerClick(event) {
+handlePlayerClick(event){
   const selectedPiece = piecePositions.find((piece) => piece.selected === true)
   if (clickedCard) {
     if (selectedPiece) {
-      movePiece(event, selectedPiece)
-    } else { selectPiece(event)
-      updateBoard();
+      Movement.movePiece(event, selectedPiece)
+    } else { this.selectPiece(event)
+      this.updateBoard();
       };
     } else {
-      cardSelectionAlert();
-      updateBoard();
+      this.cardSelectionAlert;
+      this.updateBoard;
     };
 };
 
+selectCard(cardId, cardIndex, playerColor){
+  if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
+    return;
+  };
+  const selectedCard = document.getElementById(cardId);
+  gameCards.forEach((card) => {
+    card.selected = false;
+  });
+  const allCards = Array.from(document.getElementsByClassName('card'));
+  allCards.forEach((card) => {
+    card.style.borderWidth = '0px';
+  });
+  updateBoard();
+  if (currentPlayer === 1) {
+    if (player1.color) {
+      clickedCard = gameCards[cardIndex];
+      clickedCard.selected = true;
+      selectedCard.style.borderColor = playerColor;
+      selectedCard.style.borderWidth = '2px';
+      if (selectedPiece?.color === player1.color) highlightSquare();
+    } else {
+      cardSelectionAlert();
+    };
+  } else if (currentPlayer === 2) {
+    if (opponentColor) {
+      clickedCard = gameCards[cardIndex];
+      clickedCard.selected = true;
+      selectedCard.style.borderColor = playerColor;
+      selectedCard.style.borderWidth = '2px';
+      if (selectedPiece?.color === opponentColor) highlightSquare();
+    } else {
+      cardSelectionAlert();
+    };
+  };
+};
 
+selectPiece(event) {
+  const { cellX , cellY } = mouseClick(event);
+  selectedPiece = piecePositions.find((piece) => {
+    return piece.row === cellY && piece.col === cellX;
+  });
+  if (!selectedPiece) this.pieceSelectionAlert;
+  if (currentPlayer === 1) {
+    if (selectedPiece.color === player1.color) {
+      selectedPiece.selected = true;
+    } else {
+      this.pieceSelectionAlert;
+    };
+} else if (currentPlayer === 2) {
+    if (selectedPiece.color === opponentColor) {
+      selectedPiece.selected = true;
+    } else {
+      this.pieceSelectionAlert;
+    };
+  };
+};
+
+switchCards() {
+  commonCard = gameCards.pop();
+  gameCards.push(clickedCard);
+  const temp = gameCards.indexOf(clickedCard);
+  gameCards[temp] = commonCard;
+  commonCard = gameCards[temp];
+  gameCards.forEach((gameCard, i) => {
+    createImages(gameCard, i)
+    });
+    clickedCard.selected = false;
+    resetCards();
+};
+
+resetCards() {
+  const allCards = Array.from(document.getElementsByClassName('card'));
+  allCards.forEach((card) => {
+    card.style.borderWidth = '0px'
+    card.selected = false
+});
+};
+
+removeStart() {
+  const newGameButton = document.getElementById('start');
+  newGameButton.style.display = 'none'
+};
+
+removePass() {
+  const passTurn = document.getElementById('pass');
+  passTurn.style.display = 'none'
+};
+
+triggerAlert(alertMessage) {
+  const myModal = new bootstrap.Modal(document.getElementById('alert'));
+myModal.show();
+  document.getElementById('modalText').innerText = alertMessage;
+};
+
+gameOver() {
+  const winner = getCurrentPlayerColor();
+  this.triggerAlert(`Game Over. ${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`);
+  const newGameButton = document.getElementById('start');
+  newGameButton.style.display = 'block'
+  removePass();
+  removeClose();
+};
+
+removeClose() {
+  const closeButton1 = document.getElementById('closeButtonAlert')
+  const closeButton2 = document.getElementById('newGameCloseButton')
+  closeButton1.style.visibility = 'hidden'
+  closeButton2.style.visibility = 'hidden'
+};
+
+invalidMoveAlert() {
+  if (invalidMoveCounter < 3) {
+  triggerAlert('Invalid Move');
+  removeStart();
+  invalidMoveCounter ++;
+  console.log(invalidMoveCounter);
+  removePass();
+} else {
+    passAlert()
+  };
+};
+
+passAlert() {
+  this.triggerAlert('Would you like to pass?')
+  this.removeStart
+  const passTurn = document.getElementById('pass');
+  passTurn.style.display = 'block'
+  invalidMoveCounter = 0;
+};
+
+passTrigger() {
+  switchCards();
+  switchPlayers();
+};
+
+cardSelectionAlert() {
+  this.triggerAlert('Please select a Card')
+  this.removeStart();
+  this.removePass();
+  resetCards();
+};
+
+pieceSelectionAlert() {
+  triggerAlert('Select A Piece')
+  removeStart();
+  removePass();
+  updateBoard();
+  resetGameboard();
+};
 
   };
 
@@ -375,27 +462,6 @@ class Piece {
   this.col = col;
   this.piece = piece;
   this.color = color;
-  };
-
-  selectPiece(event) {
-    const { cellX , cellY } = mouseClick(event);
-    selectedPiece = piecePositions.find((piece) => {
-      return piece.row === cellY && piece.col === cellX;
-    });
-    if (!selectedPiece) pieceSelectionAlert();
-    if (currentPlayer === 1) {
-      if (selectedPiece.color === player1.color) {
-        selectedPiece.selected = true;
-      } else {
-        pieceSelectionAlert();
-      };
-  } else if (currentPlayer === 2) {
-      if (selectedPiece.color === opponentColor) {
-        selectedPiece.selected = true;
-      } else {
-        pieceSelectionAlert();
-      };
-    };
   };
 
   loadPieceImgs() {
@@ -455,80 +521,6 @@ class Piece {
     });
   };
 };
-class Alerts {
-
-  removeStart() {
-    const newGameButton = document.getElementById('start');
-    newGameButton.style.display = 'none'
-  };
-  
-  removePass() {
-    const passTurn = document.getElementById('pass');
-    passTurn.style.display = 'none'
-  };
-  
-  triggerAlert(alertMessage) {
-    const myModal = new bootstrap.Modal(document.getElementById('alert'));
-  myModal.show();
-    document.getElementById('modalText').innerText = alertMessage;
-  };
-  
-  gameOver() {
-    const winner = getCurrentPlayerColor();
-    triggerAlert(`Game Over. ${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`);
-    const newGameButton = document.getElementById('start');
-    newGameButton.style.display = 'block'
-    removePass();
-    removeClose();
-  };
-  
-  removeClose() {
-    const closeButton1 = document.getElementById('closeButtonAlert')
-    const closeButton2 = document.getElementById('newGameCloseButton')
-    closeButton1.style.visibility = 'hidden'
-    closeButton2.style.visibility = 'hidden'
-  };
-  
-  invalidMoveAlert() {
-    if (invalidMoveCounter < 3) {
-    triggerAlert('Invalid Move');
-    removeStart();
-    invalidMoveCounter ++;
-    console.log(invalidMoveCounter);
-    removePass();
-  } else {
-      passAlert()
-    };
-  };
-  
-  passAlert() {
-    triggerAlert('Would you like to pass?')
-    removeStart();
-    const passTurn = document.getElementById('pass');
-    passTurn.style.display = 'block'
-    invalidMoveCounter = 0;
-  };
-  
-  passTrigger() {
-    switchCards();
-    switchPlayers();
-  };
-  
-  cardSelectionAlert() {
-    triggerAlert('Please select a Card')
-    removeStart();
-    removePass();
-    resetCards();
-  };
-  
-  pieceSelectionAlert() {
-    triggerAlert('Select A Piece')
-    removeStart();
-    removePass();
-    updateBoard();
-    resetGameboard();
-  };
-};
 
 class Movement {
 
@@ -566,7 +558,7 @@ class Movement {
         removePiece();
         switchPlayers();  
       } else {
-          invalidMoveAlert();
+          Alerts.invalidMoveAlert();
           };
     resetGameboard();
     clickedCard = null;
@@ -624,12 +616,11 @@ class Movement {
   };
 
 };
+const player1 = new Player(localStorage.getItem('playercolor'), gameCards[0,2]); 
+const player2 = new Player(Game.opponentColor, gameCards[2,4]);
 
-  const game = new Game(Player.player1, Player.player2)
+  const game = new Game(player1, player2, Game.gameCards)
   game.initializeGame(); 
 
-gameboard.addEventListener('click', game.handlePlayerClick, piece.selectPiece);
-gameboard.addEventListener('click', game.highlightSquare);
-
-
-});
+  gameboard.addEventListener('click', game.handlePlayerClick, Game.selectPiece);
+  gameboard.addEventListener('click', game.highlightSquare);
