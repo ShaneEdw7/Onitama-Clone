@@ -13,8 +13,9 @@ difflevel.forEach((difficulty) => {
 
 const difficulty = localStorage.getItem('difficulty');  
 const playercolor = localStorage.getItem('playercolor');
+let player1, player2, game, movementCards = {}, commonCard
 
-let movement, player1, player2, game, pieceToRemove, movementCards = {}, pieceTypes, pieceImgs = {}, piecePositions =  [], commonCard, currentPlayer = 1, highlightedSquare, selectedPiece, pieceColor, opponentPieceColor, clickedCard, cellX, cellY, animationStep = 0, invalidMoveCounter = 0,selectedPieces;
+
 
 const canvasReverse = '/images/canvas_background-reverse.png';
 
@@ -87,9 +88,32 @@ class Game {
     this.gameCards = gameCards;
     this.currentPlayer = player1;
     this.boardBorder = document.getElementById('gameboard');
-  };
+    this.pieceImgs = {
+      blue: {},
+      red: {}
+    };
+    this.pieceTypes = ['student', 'master'];
   
-
+    this.piecePositions = [
+    { row: 0, col: 0, piece: "student", color: this.player2.color },
+    { row: 0, col: 1, piece: "student", color: this.player2.color },
+    { row: 0, col: 4, piece: "student", color: this.player2.color },
+    { row: 0, col: 3, piece: "student", color: this.player2.color },
+    { row: 0, col: 2, piece: "master", color: this.player2.color },
+  
+    { row: 4, col: 0, piece: "student", color: this.player1.color },
+    { row: 4, col: 1, piece: "student", color: this.player1.color },
+    { row: 4, col: 4, piece: "student", color: this.player1.color },
+    { row: 4, col: 3, piece: "student", color: this.player1.color },
+    { row: 4, col: 2, piece: "master", color: this.player1.color },
+  ];
+  this.selectedPiece
+  this.pieceColor
+  this.opponentPieceColor
+  this.clickedCard
+  this.animationStep = 0
+  this.invalidMoveCounter = 0;
+};
   // Visual cue to show whos turn it is.
 updateBoardColor() {
   console.log('updateBoardColor function')
@@ -97,12 +121,10 @@ updateBoardColor() {
   console.log(this.gameCards);
   console.log(this.getCurrentPlayerColor())
 if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
-  currentPlayer = 1
   boardBorder.style.borderWidth = "5px"
   boardBorder.style.borderColor = this.getCurrentPlayerColor();
   boardBorder.style.borderSpacing = '5px';
 } else {
-  currentPlayer = 2
   boardBorder.style.borderWidth = "5px"
   boardBorder.style.borderColor = this.getCurrentPlayerColor();
   boardBorder.style.borderSpacing = '5px';
@@ -111,8 +133,8 @@ if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
 
 getCurrentPlayerColor = () => {
   
-  if(currentPlayer === 1) return player1.color
-  console.log('getCurrentPlayerColor function', 'this.player2.color')
+  if(this.currentPlayer.color === this.player1.color) return player1.color
+  console.log(this.currentPlayer.color === this.player1.color,'currentplayer = this.player')
   return this.player2.color;
 };
 
@@ -133,70 +155,47 @@ drawGameboard = () => {
 
 switchPlayers() {
   console.log('switchPlayers function')
-  if (currentPlayer === 1) {
-    currentPlayer = 2
+  if (this.currentPlayer.color === this.player1.color) {
+    this.currentPlayer = this.player2
     this.boardBorder.style.borderColor = player2.color
     this.boardBorder.style.borderSpacing = '5px';
     } else {
-      currentPlayer = 1
+      this.currentPlayer = this.player2
       this.boardBorder.style.borderColor = player1.color;
       this.boardBorder.style.borderSpacing = '5px';
       };
   };
-  assignPiecePositions = () => {
-    pieceImgs = {
-      blue: {},
-      red: {}
-    };
-    
-    pieceTypes = ['student', 'master'];
-    
-    piecePositions = [
-      { row: 0, col: 0, piece: "student", color: this.player2.color },
-      { row: 0, col: 1, piece: "student", color: this.player2.color },
-      { row: 0, col: 4, piece: "student", color: this.player2.color },
-      { row: 0, col: 3, piece: "student", color: this.player2.color },
-      { row: 0, col: 2, piece: "master", color: this.player2.color },
-    
-      { row: 4, col: 0, piece: "student", color: this.player1.color },
-      { row: 4, col: 1, piece: "student", color: this.player1.color },
-      { row: 4, col: 4, piece: "student", color: this.player1.color },
-      { row: 4, col: 3, piece: "student", color: this.player1.color },
-      { row: 4, col: 2, piece: "master", color: this.player1.color },
-    ];
-  }
 
   loadPieceImgs = () => {
     console.log('loadpieceimgs function')
-    pieceTypes.forEach((pieceType) => {
+    console.log(this.piecePositions,'piecepositions')
+    this.pieceTypes.forEach((pieceType) => {
       const redPiece = new Image();
-      redPiece.onload = function() {
-        piecePositions.forEach((position) => {
+      redPiece.onload = () => {
+        this.piecePositions.forEach((position) => {
           const { row, col, piece, color } = position;
-      
           const x = col * cellSize;
           const y = row * cellSize;
-      
-          const img = pieceImgs[color][piece];
+          const img = this.pieceImgs[color][piece];
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
-      };
+      }
       redPiece.src = `images/red_${pieceType}.png`;
-      pieceImgs.red[pieceType] = redPiece;
+      this.pieceImgs.red[pieceType] = redPiece;
   
       const bluePiece = new Image();
-      bluePiece.onload = function() {
-        piecePositions.forEach((position) => {
+      bluePiece.onload = () => {
+        this.piecePositions.forEach((position) => {
           const { row, col, piece, color } = position;
           const x = col * cellSize;
           const y = row * cellSize;
       
-          const img = pieceImgs[color][piece];
+          const img = this.pieceImgs[color][piece];
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
       };
       bluePiece.src = `images/blue_${pieceType}.png`;
-      pieceImgs.blue[pieceType] = bluePiece;
+      this.pieceImgs.blue[pieceType] = bluePiece;
     });
   };
 
@@ -211,7 +210,6 @@ switchPlayers() {
     console.log('initializing')
     this.getCurrentPlayerColor();
     this.drawGameboard();
-    this.assignPiecePositions();
     this.loadPieceImgs();
     this.updateBoardColor();
   };
@@ -242,22 +240,22 @@ switchPlayers() {
 
   handlePlayerClick = (event) => {
     console.log('handlePlayerclick')
-    console.log(selectedPiece)
-    selectedPiece = piecePositions.find((piece) => piece.selected === true)
-    console.log(clickedCard)
-    console.log(selectedPiece)
-    if (clickedCard) {
-      console.log('clickedCard true')
-      if (selectedPiece) {
-        console.log('selectedPiece true')
-        this.movePiece(event, selectedPiece)
+    console.log(this.selectedPiece)
+    this.selectedPiece = this.piecePositions.find((piece) => piece.selected === true)
+    console.log(this.clickedCard)
+    console.log(this.selectedPiece)
+    if (this.clickedCard) {
+      console.log('this.clickedCard true')
+      if (this.selectedPiece) {
+        console.log('this.selectedPiece true')
+        this.movePiece(event, this.selectedPiece)
       } else { 
-        console.log('selectedPiece false')
+        console.log('this.selectedPiece false')
         this.selectPiece(event);
         this.updateBoard();
         };
       } else {
-        console.log('clickedCard false')
+        console.log('this.clickedCard false')
         this.cardSelectionAlert;
         this.updateBoard;
       };
@@ -266,26 +264,26 @@ switchPlayers() {
   selectPiece = (event) => {
     console.log('selectPiece function')
     const { cellX , cellY } = this.mouseClick(event);
-    selectedPiece = piecePositions.find((piece) => {
+    this.selectedPiece = this.piecePositions.find((piece) => {
     return piece.row === cellY && piece.col === cellX;
     });
-    if (!selectedPiece) this.pieceSelectionAlert();
-    if (currentPlayer === 1) {
-      if (selectedPiece.color === this.player1.color) {
-        selectedPiece.selected = true;
+    if (!this.selectedPiece) this.pieceSelectionAlert();
+    if (this.currentPlayer === this.player1) {
+      if (this.selectedPiece.color === this.player1.color) {
+        this.selectedPiece.selected = true;
       } else {
         this.pieceSelectionAlert();
       };
-  } else if (currentPlayer === 2) {
-      if (selectedPiece.color === this.player2.color) {
-        selectedPiece.selected = true;
+  } else if (this.currentPlayer === this.player2) {
+      if (this.selectedPiece.color === this.player2.color) {
+        this.selectedPiece.selected = true;
       } else {
         this.pieceSelectionAlert;
       };
     };
-    console.log(selectedPiece)
+    console.log(this.selectedPiece)
     // this.updateBoard();
-   // return selectedPiece
+   // return this.selectedPiece
   };
 
    
@@ -293,23 +291,23 @@ switchPlayers() {
       console.log('highlightSquare function')
       const { cellX , cellY } = this.mouseClick(event);
     const alpha = 0.2;
-      pieceColor = this.colorConverter(this.player1.color, alpha);
-      opponentPieceColor = this.colorConverter(this.player2.color, alpha)
+      this.pieceColor = this.colorConverter(this.player1.color, alpha);
+      this.opponentPieceColor = this.colorConverter(this.player2.color, alpha)
       ctx.clearRect(0,0, gameboard.width, gameboard.height);
       this.drawGameboard();
   
   
       const validMoves = []
-      console.log('selectedPiece.color', selectedPiece.color);
-      console.log('clickedCard', clickedCard);
-      clickedCard?.movement.forEach((movement) => {
-        console.log('clickedCard.movement', clickedCard.movement)
+      console.log('this.selectedPiece.color', this.selectedPiece.color);
+      console.log('this.clickedCard', this.clickedCard);
+      this.clickedCard?.movement.forEach((movement) => {
+        console.log('this.clickedCard.movement', this.clickedCard.movement)
         const movementCardX = movement.x;
         let movementCardY = movement.y;
         console.log(movementCardY,'movementcardY before')
-        console.log('does selectedPiece.color = player1.color?', selectedPiece.color !== this.player1.color)
-          if(selectedPiece.color !== this.player1.color) {
-            console.log(selectedPiece.color !== this.player1.color,'piece != player color')
+        console.log('does this.selectedPiece.color = player1.color?', this.selectedPiece.color !== this.player1.color)
+          if(this.selectedPiece.color !== this.player1.color) {
+            console.log(this.selectedPiece.color !== this.player1.color,'piece != player color')
               movementCardY = -movement.y;
               console.log(movementCardY,'movementcardY after')
               }
@@ -324,13 +322,13 @@ switchPlayers() {
                   if (selectedPieceX === cellX && selectedPieceY === cellY) 
                   console.log(selectedPieceX === cellX && selectedPieceY === cellY,'pieceX = cellX and pieceY = cellY')
                   {
-                    if (selectedPiece.color === this.player1.color) {
-                      console.log(selectedPiece.color === this.player1.color, '*** piece color = player color')  
-                      ctx.fillStyle = pieceColor;
+                    if (this.selectedPiece.color === this.player1.color) {
+                      console.log(this.selectedPiece.color === this.player1.color, '*** piece color = player color')  
+                      ctx.fillStyle = this.pieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
                     } else {
-                      console.log(selectedPiece.color !== this.player1.color, '*** * piece color != player color')
-                      ctx.fillStyle = opponentPieceColor;
+                      console.log(this.selectedPiece.color !== this.player1.color, '*** * piece color != player color')
+                      ctx.fillStyle = this.opponentPieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
                     };
                   };
@@ -343,8 +341,8 @@ switchPlayers() {
 
 selectCard(cardId, cardIndex, playerColor){
   console.log('selectCard function')
-  console.log(currentPlayer,'currentPlayer', '=', cardIndex, 'cardIndex')
-  if ((currentPlayer === 1 && cardIndex > 1) || (currentPlayer === 2 && cardIndex < 2)) {
+  console.log(this.currentPlayer,'this.currentPlayer', '=', cardIndex, 'cardIndex')
+  if ((this.currentPlayer === this.player1 && cardIndex > 1) || (this.currentPlayer === this.player2 && cardIndex < 2)) {
     return;
   };
   const selectedCard = document.getElementById(cardId);
@@ -356,29 +354,29 @@ selectCard(cardId, cardIndex, playerColor){
     card.style.borderWidth = '0px';
   });
   const updateBoard = () => {
-  if (currentPlayer === 1) {
-    console.log('currentPlayer === 1 true')
+  if (this.currentPlayer === this.player1) {
+    console.log('this.currentPlayer === 1 true')
     if (player1.color) {
       console.log('player1.color true')
-      clickedCard = this.gameCards[cardIndex];
-      clickedCard.selected = true;
-      console.log('clickedCard.selected true')
+      this.clickedCard = this.gameCards[cardIndex];
+      this.clickedCard.selected = true;
+      console.log('this.clickedCard.selected true')
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (selectedPiece?.color === player1.color) console.log('piece.color = playercolor'), this.highlightSquare(event);
+      if (this.selectedPiece?.color === player1.color) console.log('piece.color = playercolor'), this.highlightSquare(event);
     } else {
       console.log('player.color false')
       this.cardSelectionAlert();
     };
-  } else if (currentPlayer === 2) {
-    console.log('currentPlayer = 2')
+  } else if (this.currentPlayer === this.player2) {
+    console.log('this.currentPlayer = 2')
     if (this.player2.color) {
       console.log('player2.color true')
-      clickedCard = this.gameCards[cardIndex];
-      clickedCard.selected = true;
+      this.clickedCard = this.gameCards[cardIndex];
+      this.clickedCard.selected = true;
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (selectedPiece?.color === this.player2.color) console.log('piece.color = playercolor'),this.highlightSquare(event);
+      if (this.selectedPiece?.color === this.player2.color) console.log('piece.color = playercolor'),this.highlightSquare(event);
     } else {
       console.log('player.color false')
       this.cardSelectionAlert();
@@ -388,42 +386,43 @@ selectCard(cardId, cardIndex, playerColor){
   updateBoard();
   this.loadPieceImgs()
   this.updateBoard();
-  console.log(clickedCard)
+  console.log(this.clickedCard)
 };
 
 switchCards() {
   console.log('switchCards function')
   commonCard = this.gameCards.pop();
-  this.gameCards.push(clickedCard);
-  const temp = this.gameCards.indexOf(clickedCard);
+  this.gameCards.push(this.clickedCard);
+  const temp = this.gameCards.indexOf(this.clickedCard);
   this.gameCards[temp] = commonCard;
   commonCard = this.gameCards[temp];
   this.gameCards.forEach((gameCard, i) => {
     createImages(gameCard, i)
     });
-    clickedCard.selected = false;
+    this.clickedCard.selected = false;
     this.resetCards();
 };
 
-removePiece = () => {
+removePiece = (cellX,cellY) => {
   console.log('removePiece function')
-  pieceToRemove = piecePositions.find((piece) => {
-    return piece.row === cellY && piece.col === cellX && piece.color === this.getOpponentColor();
+  const pieceToRemove = this.piecePositions.find((piece) => {
+    return piece.row === cellY && piece.col === cellX && piece.color === getOpponentColor();
   });
+  console.log(piecetoRemove, 'piecetoRemove')
   if (pieceToRemove) {
     if(pieceToRemove.piece === 'master') {
       this.gameOver();
      };
-    const index = piecePositions.indexOf(pieceToRemove);
-    piecePositions.splice(index, 1);
+    const index = this.piecePositions.indexOf(pieceToRemove);
+    this.piecePositions.splice(index, 1);
   };
 };
 
 createValidMoves = (moves) => {
   console.log('createValidMoves function')
-  console.log(selectedPiece)
+  console.log(this.selectedPiece)
   const newMoves = moves?.map((move) => {
-    return {x: move.x + selectedPiece.col, y: move.y + selectedPiece.row}
+    return {x: move.x + this.selectedPiece.col, y: move.y + this.selectedPiece.row}
   });
   return newMoves;
 };
@@ -441,14 +440,14 @@ movePiece = (event, selectedPiece) => {
   selectedPiece.startY = selectedPiece.row * cellSize;
   selectedPiece.targetX = cellX * cellSize;
   selectedPiece.targetY = cellY * cellSize;
-  animationStep = 0;
+  this.animationStep = 0;
 
-  const pieceCheck = piecePositions.find((piece) => {
+  const pieceCheck = this.piecePositions.find((piece) => {
     const pieceColorCheck = piece.color === this.getCurrentPlayerColor();
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
   });
   console.log(pieceCheck,'pieceCheck');
-  console.log(piecePositions, 'piecePositions');
+  console.log(this.piecePositions, 'this.piecePositions');
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
     console.log('resetGame')
     this.resetGameboard();
@@ -461,17 +460,17 @@ movePiece = (event, selectedPiece) => {
       this.switchCards();
       this.animatePiece();
   
-        if (cellX === 2 && cellY === 0 && currentPlayer === 1
-            || cellX === 2 && cellY === 4 && currentPlayer === 2) 
+        if (cellX === 2 && cellY === 0 && this.currentPlayer === this.player1
+            || cellX === 2 && cellY === 4 && this.currentPlayer === this.player2) 
             this.gameOver(); 
 
-      this.removePiece();
+      this.removePiece(cellX,cellY);
       this.switchPlayers();  
     } else {
         this.invalidMoveAlert();
         };
   this.resetGameboard();
-  clickedCard = null;
+  this.clickedCard = null;
   this.loadPieceImgs();
   };
 };
@@ -479,29 +478,29 @@ movePiece = (event, selectedPiece) => {
 animatePiece = () => {
   console.log('animatePiece function')
   const totalSteps = 30;
-  if (animationStep < totalSteps) {
-    const currentX = selectedPiece.startX + (selectedPiece.targetX - selectedPiece.startX) * (animationStep / totalSteps);
-    const currentY = selectedPiece.startY + (selectedPiece.targetY - selectedPiece.startY) * (animationStep / totalSteps);
+  if (this.animationStep < totalSteps) {
+    const currentX = this.selectedPiece.startX + (this.selectedPiece.targetX - this.selectedPiece.startX) * (this.animationStep / totalSteps);
+    const currentY = this.selectedPiece.startY + (this.selectedPiece.targetY - this.selectedPiece.startY) * (this.animationStep / totalSteps);
     ctx.clearRect(0, 0, gameboard.width, gameboard.height);
     this.drawGameboard();
-    piecePositions.forEach((piece) => {
-      if (piece !== selectedPiece) {
-        const img = pieceImgs[piece.color][piece.piece];
+    this.piecePositions.forEach((piece) => {
+      if (piece !== this.selectedPiece) {
+        const img = this.pieceImgs[piece.color][piece.piece];
         ctx.drawImage(img, piece.col * cellSize, piece.row * cellSize, cellSize, cellSize);
       }
     });
-    const img = pieceImgs[selectedPiece.color][selectedPiece.piece];
+    const img = this.pieceImgs[this.selectedPiece.color][this.selectedPiece.piece];
     ctx.drawImage(img, currentX, currentY, cellSize, cellSize);
-    animationStep++;
+    this.animationStep++;
     requestAnimationFrame(this.animatePiece);
   };
 };
 
 resetGameboard = () => {
   console.log('resetGameboard function')
-  clickedCard.selected = false;
-  selectedPiece.selected = false;
- // clickedCard = null;
+  this.clickedCard.selected = false;
+  this.selectedPiece.selected = false;
+ // this.clickedCard = null;
   cellX = null;
   cellY = null;
  // resetCards();
@@ -563,11 +562,11 @@ removeClose = () => {
 
 invalidMoveAlert = () => {
   console.log('invalidMoveAlert function')
-  if (invalidMoveCounter < 3) {
+  if (this.invalidMoveCounter < 3) {
   this.triggerAlert('Invalid Move');
   this.removeStart();
-  invalidMoveCounter ++;
-  console.log(invalidMoveCounter);
+  this.invalidMoveCounter ++;
+  console.log(this.invalidMoveCounter);
   this.removePass();
 } else {
     this.passAlert()
@@ -580,7 +579,7 @@ passAlert = () => {
   this.removeStart
   const passTurn = document.getElementById('pass');
   passTurn.style.display = 'block'
-  invalidMoveCounter = 0;
+  this.invalidMoveCounter = 0;
 };
 
 passTrigger = () => {
@@ -613,6 +612,7 @@ randomCard().then((gameCards) => {
   player1 = new Player(localStorage.getItem('playercolor'), gameCards.slice(0,2)); 
   player2 = new Player(getOpponentColor(), gameCards.slice(2,4));
   game = new Game(player1, player2, gameCards)
+  console.log(game.piecePositions,'piecepositions')
   game.initializeGame();
   gameboard.addEventListener('click', game.handlePlayerClick, game.selectPiece);
   gameboard.addEventListener('click', game.highlightSquare);
