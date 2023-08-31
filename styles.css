@@ -142,6 +142,13 @@ Blue = #2a85b3
     top: 0px;
     left: -130px;
 }
+#card3 {
+    transform: scaleY(-1); 
+}
+
+#card4 {
+    transform: scaleY(-1);
+}
 
   .brush-wrap {
     position: relative;
