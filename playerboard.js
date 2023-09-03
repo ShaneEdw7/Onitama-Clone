@@ -15,12 +15,7 @@ const difficulty = localStorage.getItem('difficulty');
 const playercolor = localStorage.getItem('playercolor');
 let player1, player2, game, movementCards = {}, commonCard
 
-
-
-const canvasReverse = '/images/canvas_background-reverse.png';
-
 const createImages = (createCard, i) => {
-  console.log('createImages function')
   const imgArray = document.getElementById("card" + (i + 1));
   imgArray.src = createCard.image;
   };
@@ -35,9 +30,8 @@ const createImages = (createCard, i) => {
         throw error;
     }
   } 
-// Select random cards for game use out of possible 16.
+// Select random cards for game use out of base cards.
 const randomCard = async () => {
-  console.log('randomCard function')
   try {
     const movementCards = await fetchCards();
     const gameCards = [];
@@ -59,8 +53,6 @@ const randomCard = async () => {
 }
 
 const getOpponentColor = () => {
-  console.log('getOpponentColor function')
-  console.log(playercolor)
   if (playercolor === 'red') return 'blue'
   return 'red'
 };
@@ -86,8 +78,7 @@ class Game {
   { this.player1 = player1;
     this.player2 = player2;
     this.gameCards = gameCards;
-    this.currentPlayer = player1;
-    this.boardBorder = document.getElementById('gameboard');
+    this.currentPlayer = player1
     this.pieceImgs = {
       blue: {},
       red: {}
@@ -107,39 +98,33 @@ class Game {
     { row: 4, col: 3, piece: "student", color: this.player1.color },
     { row: 4, col: 2, piece: "master", color: this.player1.color },
   ];
-  this.selectedPiece
-  this.pieceColor
-  this.opponentPieceColor
+  this.selectedPiece = null
   this.clickedCard
   this.animationStep = 0
   this.invalidMoveCounter = 0;
 };
-  // Visual cue to show whos turn it is.
-updateBoardColor() {
-  console.log('updateBoardColor function')
-  const boardBorder = document.getElementById('gameboard');
-  console.log(this.gameCards);
-  console.log(this.getCurrentPlayerColor())
+// Determine Start Player & Visual cue to show whos turn it is.
+determineStartPlayer = () => {
+  const board = document.getElementById('gameboard');
 if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
-  boardBorder.style.borderWidth = "5px"
-  boardBorder.style.borderColor = this.getCurrentPlayerColor();
-  boardBorder.style.borderSpacing = '5px';
+  this.currentPlayer = this.player1
+  board.style.borderWidth = "5px"
+  board.style.borderColor = this.getCurrentPlayerColor();
+  board.style.borderSpacing = '5px'; 
 } else {
-  boardBorder.style.borderWidth = "5px"
-  boardBorder.style.borderColor = this.getCurrentPlayerColor();
-  boardBorder.style.borderSpacing = '5px';
+  this.currentPlayer = this.player2
+  board.style.borderWidth = "5px"
+  board.style.borderColor = getOpponentColor();
+  board.style.borderSpacing = '5px';
   };
 };
 
-getCurrentPlayerColor = () => {
-  
-  if(this.currentPlayer.color === this.player1.color) return player1.color
-  console.log(this.currentPlayer.color === this.player1.color,'currentplayer = this.player')
+getCurrentPlayerColor = () => { 
+  if(this.currentPlayer.color === this.player1.color) return this.player1.color 
   return this.player2.color;
 };
 
 drawGameboard = () => {
-  console.log('drawGameboard function')
   ctx.beginPath();
   for (let x = 0; x <= boardSize; x += cellSize) {
       ctx.moveTo(x, 0);
@@ -154,21 +139,19 @@ drawGameboard = () => {
   };
 
 switchPlayers() {
-  console.log('switchPlayers function')
-  if (this.currentPlayer.color === this.player1.color) {
+  const board = document.getElementById('gameboard');
+  if (this.currentPlayer === this.player1) {
     this.currentPlayer = this.player2
-    this.boardBorder.style.borderColor = player2.color
-    this.boardBorder.style.borderSpacing = '5px';
+    board.style.borderColor = this.player2.color
+    board.style.borderSpacing = '5px';
     } else {
-      this.currentPlayer = this.player2
-      this.boardBorder.style.borderColor = player1.color;
-      this.boardBorder.style.borderSpacing = '5px';
+      this.currentPlayer = this.player1
+      board.style.borderColor = this.player1.color;
+      board.style.borderSpacing = '5px';
       };
   };
 
   loadPieceImgs = () => {
-    console.log('loadpieceimgs function')
-    console.log(this.piecePositions,'piecepositions')
     this.pieceTypes.forEach((pieceType) => {
       const redPiece = new Image();
       redPiece.onload = () => {
@@ -200,22 +183,21 @@ switchPlayers() {
   };
 
   updateBoard = () => {
-    console.log('updateboard function')
     ctx.clearRect(0,0, gameboard.width, gameboard.height);
+   // this.drawGameboard();
     this.loadPieceImgs();
-    this.drawGameboard();
     };
 
   initializeGame() {
     console.log('initializing')
     this.getCurrentPlayerColor();
-    this.drawGameboard();
+   // this.drawGameboard();
     this.loadPieceImgs();
-    this.updateBoardColor();
+    this.determineStartPlayer();
+    console.log('finished initializing')
   };
 
   mouseClick = (event) => {
-    console.log('mouseClick function')
     const board = gameboard.getBoundingClientRect();
     const mouseX = event.clientX - board.left;
     const mouseY = event.clientY - board.top;
@@ -226,7 +208,6 @@ switchPlayers() {
 
   // Convert color to include alpha for transparency on the board.
   colorConverter(color, alpha) {
-    console.log('colorConverter function')
     const canvas = document.createElement('canvas');
     canvas.width = 1;
     canvas.height = 1;
@@ -239,30 +220,21 @@ switchPlayers() {
   };
 
   handlePlayerClick = (event) => {
-    console.log('handlePlayerclick')
-    console.log(this.selectedPiece)
     this.selectedPiece = this.piecePositions.find((piece) => piece.selected === true)
-    console.log(this.clickedCard)
-    console.log(this.selectedPiece)
     if (this.clickedCard) {
-      console.log('this.clickedCard true')
       if (this.selectedPiece) {
-        console.log('this.selectedPiece true')
         this.movePiece(event, this.selectedPiece)
       } else { 
-        console.log('this.selectedPiece false')
         this.selectPiece(event);
         this.updateBoard();
         };
       } else {
-        console.log('this.clickedCard false')
         this.cardSelectionAlert;
         this.updateBoard;
       };
-  };
+    }; 
 
   selectPiece = (event) => {
-    console.log('selectPiece function')
     const { cellX , cellY } = this.mouseClick(event);
     this.selectedPiece = this.piecePositions.find((piece) => {
     return piece.row === cellY && piece.col === cellX;
@@ -281,37 +253,24 @@ switchPlayers() {
         this.pieceSelectionAlert;
       };
     };
-    console.log(this.selectedPiece)
-    // this.updateBoard();
-   // return this.selectedPiece
   };
 
    
     highlightSquare = (event) => {
-      console.log('highlightSquare function')
       const { cellX , cellY } = this.mouseClick(event);
     const alpha = 0.2;
-      this.pieceColor = this.colorConverter(this.player1.color, alpha);
-      this.opponentPieceColor = this.colorConverter(this.player2.color, alpha)
+    const pieceColor = this.colorConverter(this.player1.color, alpha);
+    const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
       ctx.clearRect(0,0, gameboard.width, gameboard.height);
-      this.drawGameboard();
-  
-  
+     // this.drawGameboard();
+
       const validMoves = []
-      console.log('this.selectedPiece.color', this.selectedPiece.color);
-      console.log('this.clickedCard', this.clickedCard);
       this.clickedCard?.movement.forEach((movement) => {
-        console.log('this.clickedCard.movement', this.clickedCard.movement)
         const movementCardX = movement.x;
         let movementCardY = movement.y;
-        console.log(movementCardY,'movementcardY before')
-        console.log('does this.selectedPiece.color = player1.color?', this.selectedPiece.color !== this.player1.color)
           if(this.selectedPiece.color !== this.player1.color) {
-            console.log(this.selectedPiece.color !== this.player1.color,'piece != player color')
               movementCardY = -movement.y;
-              console.log(movementCardY,'movementcardY after')
               }
-              console.log(validMoves, 'validMoves')
         validMoves.push({x: movementCardX, y: movementCardY});    
           for (let row = 0; row < numCells; row++) {
             for (let col = 0; col < numCells; col++) {
@@ -320,28 +279,22 @@ switchPlayers() {
               const selectedPieceX = col - movementCardX;
               const selectedPieceY = row - movementCardY;
                   if (selectedPieceX === cellX && selectedPieceY === cellY) 
-                  console.log(selectedPieceX === cellX && selectedPieceY === cellY,'pieceX = cellX and pieceY = cellY')
                   {
                     if (this.selectedPiece.color === this.player1.color) {
-                      console.log(this.selectedPiece.color === this.player1.color, '*** piece color = player color')  
-                      ctx.fillStyle = this.pieceColor;
+                      ctx.fillStyle = pieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
                     } else {
-                      console.log(this.selectedPiece.color !== this.player1.color, '*** * piece color != player color')
-                      ctx.fillStyle = this.opponentPieceColor;
+                      ctx.fillStyle = opponentPieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
                     };
                   };
               };
           };
       });
-      console.log('validMoves', validMoves)
     return validMoves;
   };
 
 selectCard(cardId, cardIndex, playerColor){
-  console.log('selectCard function')
-  console.log(this.currentPlayer,'this.currentPlayer', '=', cardIndex, 'cardIndex')
   if ((this.currentPlayer === this.player1 && cardIndex > 1) || (this.currentPlayer === this.player2 && cardIndex < 2)) {
     return;
   };
@@ -355,42 +308,33 @@ selectCard(cardId, cardIndex, playerColor){
   });
   const updateBoard = () => {
   if (this.currentPlayer === this.player1) {
-    console.log('this.currentPlayer === 1 true')
-    if (player1.color) {
-      console.log('player1.color true')
+    if (this.player1.color) {
       this.clickedCard = this.gameCards[cardIndex];
       this.clickedCard.selected = true;
-      console.log('this.clickedCard.selected true')
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (this.selectedPiece?.color === player1.color) console.log('piece.color = playercolor'), this.highlightSquare(event);
+      if (this.selectedPiece?.color === this.player1.color) this.highlightSquare();
     } else {
-      console.log('player.color false')
       this.cardSelectionAlert();
     };
   } else if (this.currentPlayer === this.player2) {
-    console.log('this.currentPlayer = 2')
     if (this.player2.color) {
-      console.log('player2.color true')
       this.clickedCard = this.gameCards[cardIndex];
       this.clickedCard.selected = true;
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (this.selectedPiece?.color === this.player2.color) console.log('piece.color = playercolor'),this.highlightSquare(event);
+      if (this.selectedPiece?.color === this.player2.color) this.highlightSquare();
     } else {
-      console.log('player.color false')
       this.cardSelectionAlert();
       };
     };
+    console.log(this.clickedCard)
   };
   updateBoard();
-  this.loadPieceImgs()
   this.updateBoard();
-  console.log(this.clickedCard)
 };
 
 switchCards() {
-  console.log('switchCards function')
   commonCard = this.gameCards.pop();
   this.gameCards.push(this.clickedCard);
   const temp = this.gameCards.indexOf(this.clickedCard);
@@ -404,11 +348,9 @@ switchCards() {
 };
 
 removePiece = (cellX,cellY) => {
-  console.log('removePiece function')
   const pieceToRemove = this.piecePositions.find((piece) => {
-    return piece.row === cellY && piece.col === cellX && piece.color === getOpponentColor();
+    return piece.row === cellY && piece.col === cellX && piece.color !== this.getCurrentPlayerColor();
   });
-  console.log(piecetoRemove, 'piecetoRemove')
   if (pieceToRemove) {
     if(pieceToRemove.piece === 'master') {
       this.gameOver();
@@ -419,8 +361,6 @@ removePiece = (cellX,cellY) => {
 };
 
 createValidMoves = (moves) => {
-  console.log('createValidMoves function')
-  console.log(this.selectedPiece)
   const newMoves = moves?.map((move) => {
     return {x: move.x + this.selectedPiece.col, y: move.y + this.selectedPiece.row}
   });
@@ -428,9 +368,7 @@ createValidMoves = (moves) => {
 };
 
 movePiece = (event, selectedPiece) => {
-  console.log('movePiece function')
   if (selectedPiece.color !== this.getCurrentPlayerColor()) {
-    console.log('selectedPiece.color != currentplayercolor')
     return;
   };
   const moves = this.createValidMoves(this.highlightSquare(event));
@@ -443,18 +381,14 @@ movePiece = (event, selectedPiece) => {
   this.animationStep = 0;
 
   const pieceCheck = this.piecePositions.find((piece) => {
-    const pieceColorCheck = piece.color === this.getCurrentPlayerColor();
+    const pieceColorCheck = this.getCurrentPlayerColor() === piece.color;
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
   });
-  console.log(pieceCheck,'pieceCheck');
-  console.log(this.piecePositions, 'this.piecePositions');
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
-    console.log('resetGame')
     this.resetGameboard();
     this.loadPieceImgs();
   } else {
     if (isValidMove && !pieceCheck) {
-      console.log('isValidMove & !pieceCheck', isValidMove && !pieceCheck)
       selectedPiece.row = cellY;
       selectedPiece.col = cellX;
       this.switchCards();
@@ -463,7 +397,6 @@ movePiece = (event, selectedPiece) => {
         if (cellX === 2 && cellY === 0 && this.currentPlayer === this.player1
             || cellX === 2 && cellY === 4 && this.currentPlayer === this.player2) 
             this.gameOver(); 
-
       this.removePiece(cellX,cellY);
       this.switchPlayers();  
     } else {
@@ -476,13 +409,12 @@ movePiece = (event, selectedPiece) => {
 };
 
 animatePiece = () => {
-  console.log('animatePiece function')
-  const totalSteps = 30;
+  const totalSteps = 50;
   if (this.animationStep < totalSteps) {
     const currentX = this.selectedPiece.startX + (this.selectedPiece.targetX - this.selectedPiece.startX) * (this.animationStep / totalSteps);
     const currentY = this.selectedPiece.startY + (this.selectedPiece.targetY - this.selectedPiece.startY) * (this.animationStep / totalSteps);
     ctx.clearRect(0, 0, gameboard.width, gameboard.height);
-    this.drawGameboard();
+   // this.drawGameboard();
     this.piecePositions.forEach((piece) => {
       if (piece !== this.selectedPiece) {
         const img = this.pieceImgs[piece.color][piece.piece];
@@ -497,17 +429,15 @@ animatePiece = () => {
 };
 
 resetGameboard = () => {
-  console.log('resetGameboard function')
   this.clickedCard.selected = false;
   this.selectedPiece.selected = false;
  // this.clickedCard = null;
-  cellX = null;
-  cellY = null;
- // resetCards();
+  this.cellX = null;
+  this.cellY = null;
+ // this.resetCards();
 };
 
 cardSelectionAlert = () => {
-  console.log('cardSelectionAlert function')
   this.triggerAlert('Please select a Card')
   this.removeStart();
   this.removePass();
@@ -515,7 +445,6 @@ cardSelectionAlert = () => {
 };
 
 resetCards = () => {
-  console.log('resetCards function')
   const allCards = Array.from(document.getElementsByClassName('card'));
   allCards.forEach((card) => {
     card.style.borderWidth = '0px'
@@ -524,27 +453,23 @@ resetCards = () => {
 };
 
 removeStart = () => {
-  console.log('removeStart function')
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'none'
 };
 
 removePass = () => {
-  console.log('removePass function')
   const passTurn = document.getElementById('pass');
   passTurn.style.display = 'none'
 };
 
 triggerAlert = (alertMessage) => {
-  console.log('triggerAlert function')
   const myModal = new bootstrap.Modal(document.getElementById('alert'));
   myModal.show();
   document.getElementById('modalText').innerText = alertMessage;
 };
 
 gameOver = () => {
-  console.log('gameOver function')
-  const winner = getCurrentPlayerColor();
+  const winner = this.getCurrentPlayerColor();
   this.triggerAlert(`Game Over. ${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`);
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'block'
@@ -553,7 +478,6 @@ gameOver = () => {
 };
 
 removeClose = () => {
-  console.log('removeClose function')
   const closeButton1 = document.getElementById('closeButtonAlert')
   const closeButton2 = document.getElementById('newGameCloseButton')
   closeButton1.style.visibility = 'hidden'
@@ -561,12 +485,10 @@ removeClose = () => {
 };
 
 invalidMoveAlert = () => {
-  console.log('invalidMoveAlert function')
   if (this.invalidMoveCounter < 3) {
   this.triggerAlert('Invalid Move');
   this.removeStart();
   this.invalidMoveCounter ++;
-  console.log(this.invalidMoveCounter);
   this.removePass();
 } else {
     this.passAlert()
@@ -574,7 +496,6 @@ invalidMoveAlert = () => {
 };
 
 passAlert = () => {
-  console.log('passAlert function')
   this.triggerAlert('Would you like to pass?')
   this.removeStart
   const passTurn = document.getElementById('pass');
@@ -583,20 +504,17 @@ passAlert = () => {
 };
 
 passTrigger = () => {
-  console.log('passTrigger function')
   this.switchCards();
   this.switchPlayers();
 };
 
 pieceSelectionAlert = () => {
-  console.log('pieceSelectionAlert function')
   this.triggerAlert('Select A Piece')
   this.removeStart();
   this.removePass();
   this.updateBoard();
-  // this.resetGameboard();
-};
-
+  this.resetGameboard();
+  };
 };
 
       // Canvas (Gameboard)
@@ -612,7 +530,6 @@ randomCard().then((gameCards) => {
   player1 = new Player(localStorage.getItem('playercolor'), gameCards.slice(0,2)); 
   player2 = new Player(getOpponentColor(), gameCards.slice(2,4));
   game = new Game(player1, player2, gameCards)
-  console.log(game.piecePositions,'piecepositions')
   game.initializeGame();
   gameboard.addEventListener('click', game.handlePlayerClick, game.selectPiece);
   gameboard.addEventListener('click', game.highlightSquare);
