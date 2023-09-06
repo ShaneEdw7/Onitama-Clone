@@ -229,8 +229,8 @@ switchPlayers() {
         this.updateBoard();
         };
       } else {
-        this.cardSelectionAlert;
-        this.updateBoard;
+        this.cardSelectionAlert();
+        this.updateBoard();
       };
     }; 
 
@@ -250,7 +250,7 @@ switchPlayers() {
       if (this.selectedPiece.color === this.player2.color) {
         this.selectedPiece.selected = true;
       } else {
-        this.pieceSelectionAlert;
+        this.pieceSelectionAlert();
       };
     };
   };
@@ -262,7 +262,7 @@ switchPlayers() {
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
       ctx.clearRect(0,0, gameboard.width, gameboard.height);
-     // this.drawGameboard();
+      // this.drawGameboard();
 
       const validMoves = []
       this.clickedCard?.movement.forEach((movement) => {
@@ -278,8 +278,7 @@ switchPlayers() {
               const y = row * cellSize;
               const selectedPieceX = col - movementCardX;
               const selectedPieceY = row - movementCardY;
-                  if (selectedPieceX === cellX && selectedPieceY === cellY) 
-                  {
+                  if (selectedPieceX === cellX && selectedPieceY === cellY){
                     if (this.selectedPiece.color === this.player1.color) {
                       ctx.fillStyle = pieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
@@ -306,7 +305,7 @@ selectCard(cardId, cardIndex, playerColor){
   allCards.forEach((card) => {
     card.style.borderWidth = '0px';
   });
-  const updateBoard = () => {
+  this.updateBoard();
   if (this.currentPlayer === this.player1) {
     if (this.player1.color) {
       this.clickedCard = this.gameCards[cardIndex];
@@ -330,9 +329,7 @@ selectCard(cardId, cardIndex, playerColor){
     };
     console.log(this.clickedCard)
   };
-  updateBoard();
-  this.updateBoard();
-};
+
 
 switchCards() {
   commonCard = this.gameCards.pop();
@@ -431,10 +428,10 @@ animatePiece = () => {
 resetGameboard = () => {
   this.clickedCard.selected = false;
   this.selectedPiece.selected = false;
- // this.clickedCard = null;
-  this.cellX = null;
-  this.cellY = null;
- // this.resetCards();
+  //this.cellX = null;
+  //this.cellY = null;
+  // this.resetCards();
+  //ctx.clearRect(0, 0, gameboard.width, gameboard.height);
 };
 
 cardSelectionAlert = () => {
