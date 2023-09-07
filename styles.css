@@ -112,13 +112,16 @@ Blue = #2a85b3
 
 .board {
     display: flex;
-   /* flex: 33%; */
     padding: 5px;
     align-items: center;
     justify-content: center;
     position: relative;
     left: 0px;
     top: 121px;
+    background-image: url('/images/japan-temple.png');
+    background-size: contain;
+    background-position-x: right;
+    background-repeat: no-repeat;
 }
 
 .cardContainer {
@@ -139,8 +142,7 @@ Blue = #2a85b3
     border-width: 0px;
 }
 #card5 {
-    top: 0px;
-    left: -130px;
+    left: -7rem;
 }
 #card3 {
     transform: scaleY(-1); 
@@ -148,6 +150,10 @@ Blue = #2a85b3
 
 #card4 {
     transform: scaleY(-1);
+}
+
+#sideboard {
+    margin-left: 20%;
 }
 
   .brush-wrap {

@@ -1,3 +1,9 @@
+setTimeout(() => {
+    const stratTips = document.getElementById('strategyTips');
+    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
+                stratToast.show()}, Math.random() * 1000)
+
+
 const colordisplay = document.getElementsByName('color');
 colordisplay.forEach((color) => {
     color.addEventListener('click', (event) => {
