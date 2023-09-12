@@ -1,7 +1,7 @@
-setTimeout(() => {
-    const stratTips = document.getElementById('strategyTips');
-    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
-                stratToast.show()}, Math.random() * 1000)
+//setTimeout(() => {
+//    const stratTips = document.getElementById('strategyTips');
+//    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
+//                stratToast.show()}, Math.random() * 1000)
 
 
 const colordisplay = document.getElementsByName('color');
@@ -19,7 +19,7 @@ difflevel.forEach((difficulty) => {
 
 const difficulty = localStorage.getItem('difficulty');  
 const playercolor = localStorage.getItem('playercolor');
-let player1, player2, game, movementCards = {}, commonCard
+let player1, player2, game, movementCards = {}, commonCard;
 
 const createImages = (createCard, i) => {
   const imgArray = document.getElementById("card" + (i + 1));
@@ -226,6 +226,7 @@ switchPlayers() {
   };
 
   handlePlayerClick = (event) => {
+    this.updateBoard();
     this.selectedPiece = this.piecePositions.find((piece) => piece.selected === true)
     if (this.clickedCard) {
       if (this.selectedPiece) {
@@ -262,8 +263,8 @@ switchPlayers() {
   };
 
    
-    highlightSquare = (event) => {
-      const { cellX , cellY } = this.mouseClick(event);
+    highlightSquare = (cellX, cellY) => {
+      console.log(cellX,'cellX', cellY, 'cellY')
     const alpha = 0.2;
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
@@ -298,6 +299,10 @@ switchPlayers() {
       });
     return validMoves;
   };
+  eventHighlightSquare = (event) => {
+    const { cellX , cellY } = this.mouseClick(event);
+    this.highlightSquare(cellX, cellY)
+  }
 
 selectCard(cardId, cardIndex, playerColor){
   if ((this.currentPlayer === this.player1 && cardIndex > 1) || (this.currentPlayer === this.player2 && cardIndex < 2)) {
@@ -318,7 +323,7 @@ selectCard(cardId, cardIndex, playerColor){
       this.clickedCard.selected = true;
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (this.selectedPiece?.color === this.player1.color) this.highlightSquare();
+      if (this.selectedPiece?.color === this.player1.color) this.highlightSquare(this.selectedPiece.col, this.selectedPiece.row);
     } else {
       this.cardSelectionAlert();
     };
@@ -328,7 +333,7 @@ selectCard(cardId, cardIndex, playerColor){
       this.clickedCard.selected = true;
       selectedCard.style.borderColor = playerColor;
       selectedCard.style.borderWidth = '2px';
-      if (this.selectedPiece?.color === this.player2.color) this.highlightSquare();
+      if (this.selectedPiece?.color === this.player2.color) this.highlightSquare(this.selectedPiece.col, this.selectedPiece.row);
     } else {
       this.cardSelectionAlert();
       };
@@ -391,6 +396,7 @@ movePiece = (event, selectedPiece) => {
     this.resetGameboard();
     this.loadPieceImgs();
   } else {
+    console.log(isValidMove,'isvalidmove', pieceCheck,'pieceCheck');
     if (isValidMove && !pieceCheck) {
       selectedPiece.row = cellY;
       selectedPiece.col = cellX;
@@ -406,7 +412,7 @@ movePiece = (event, selectedPiece) => {
         this.invalidMoveAlert();
         };
   this.resetGameboard();
-  this.clickedCard = null;
+  this.clickedCard = undefined;
   this.loadPieceImgs();
   };
 };
@@ -432,12 +438,12 @@ animatePiece = () => {
 };
 
 resetGameboard = () => {
-  this.clickedCard.selected = false;
+ // this.clickedCard.selected = false;
+ // this.clickedCard = undefined;
   this.selectedPiece.selected = false;
-  //this.cellX = null;
-  //this.cellY = null;
+  this.selectedPiece = null;
   // this.resetCards();
-  //ctx.clearRect(0, 0, gameboard.width, gameboard.height);
+  ctx.clearRect(0, 0, gameboard.width, gameboard.height);
 };
 
 cardSelectionAlert = () => {
@@ -535,5 +541,5 @@ randomCard().then((gameCards) => {
   game = new Game(player1, player2, gameCards)
   game.initializeGame();
   gameboard.addEventListener('click', game.handlePlayerClick, game.selectPiece);
-  gameboard.addEventListener('click', game.highlightSquare);
+  gameboard.addEventListener('click', game.eventHighlightSquare);
 });
