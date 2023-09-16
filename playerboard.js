@@ -1,7 +1,7 @@
-//setTimeout(() => {
-//    const stratTips = document.getElementById('strategyTips');
-//    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
-//                stratToast.show()}, Math.random() * 1000)
+setTimeout(() => {
+   const stratTips = document.getElementById('strategyTips');
+    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
+               stratToast.show()}, Math.random() * 1000)
 
 
 const colordisplay = document.getElementsByName('color');
@@ -393,7 +393,10 @@ movePiece = (event, selectedPiece) => {
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
   });
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
+    console.log('True')
     this.resetGameboard();
+    this.selectedPiece.selected = false;
+    ctx.clearRect(0, 0, gameboard.width, gameboard.height);
     this.loadPieceImgs();
   } else {
     console.log(isValidMove,'isvalidmove', pieceCheck,'pieceCheck');
@@ -411,7 +414,7 @@ movePiece = (event, selectedPiece) => {
     } else {
         this.invalidMoveAlert();
         };
-  this.resetGameboard();
+ // this.resetGameboard();
   this.clickedCard = undefined;
   this.loadPieceImgs();
   };
@@ -435,14 +438,15 @@ animatePiece = () => {
     this.animationStep++;
     requestAnimationFrame(this.animatePiece);
   };
+  if (this.animationStep === 49) 
+      { this.selectedPiece.selected = false; 
+        this.selectedPiece = null;
+      };
 };
 
 resetGameboard = () => {
- // this.clickedCard.selected = false;
- // this.clickedCard = undefined;
   this.selectedPiece.selected = false;
   this.selectedPiece = null;
-  // this.resetCards();
   ctx.clearRect(0, 0, gameboard.width, gameboard.height);
 };
 
