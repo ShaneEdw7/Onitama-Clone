@@ -81,79 +81,100 @@ Blue = #2a85b3
 #gameboard{
    /* background-color: #EEE8C9; */
     border: 1px solid black;
-    margin: 0;
-    display: block;
-    top: 0px;
-    left: 400px;
     background-image: url('/images/canvas_background.png');
     background-image: center;
     background-repeat:no-repeat;
     background-size: cover;
-    position: static;
     }   
 
 .gameboard-container{
-  /*  justify-content: center;
-    align-content: center; */
-    padding: 1px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 960px;
-    height: 1090px;
-    overflow: visible;
-    margin-top: 69px;
-    position: static;
+    margin-top: 7rem;
+    background-color: red;
+    display: grid;
+    grid-template-columns: [first] 20px [boardbox] max-content [commoncard] max-content [sideboard] auto [last] 20px [end];
+    grid-template-rows: [first] 70px [opponentCards] 150px [gamearea] auto [playerCards] 150px [last] 10px [end];
     background-image: url('/images/Onitama_board.png');
     background-size: 535px 990px;
     background-repeat: no-repeat;
-    background-position-y: 0px;
-    background-position-x: 5px;
+    background-position: center;
 }
 
-.board {
+.sideboard {
+    background-color: brown;
+    opacity: 0.2;
+    grid-column-start: commoncard;
+    grid-column-end: last;
+    grid-row-start: first;
+    grid-row-end: last;
     display: flex;
-    padding: 5px;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    left: 0px;
-    top: 121px;
+    justify-content: flex-start;
+    z-index: 0;
     background-image: url('/images/japan-temple.png');
-    background-size: contain;
+    background-size:cover;
     background-position-x: right;
     background-repeat: no-repeat;
 }
 
-.cardContainer {
+.board {
+    background-color: green;
+    z-index: 1;
+    grid-row-start: gamearea;
+    grid-column-start: boardbox;
+    grid-column-end: commoncard;
     display: flex;
-   /* flex: 50%; */
-    justify-items: center;
     justify-content: center;
-    position: relative;
-    top: 122px;
+}
+
+.opponentCardContainer {
+    z-index: 2;
+  /*  background-color:blue; */
+    grid-row-start: opponentCards;
+    grid-column-start: boardbox;
+    display: flex;
+    justify-content: center;
+}
+.playerCardContainer {
+    z-index: 2;
+   background-color: orange;
+    grid-row-start: playerCards;
+    grid-column-start: boardbox;
+    display: flex;
+    justify-content: center;
+}
+.commonCardContainer{
+    background-color: pink;
+    grid-column-end: sideboard;
+    grid-row-start: gamearea;
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    z-index: 1;
+    margin-left: 3rem;
 }
 .card {
     margin: 5px;
     border: 2px solid black;
-    right: 210px;
     background-color: transparent;
     width: 211px;
     height: 125px;
     border-width: 0px;
 }
-#card5 {
-    left: -7rem;
+.toasts {
+    background-color: mediumseagreen;
+    grid-column-start: commoncard;
+    grid-column-end: last;
+    grid-row-start: playerCards;
+    display: flex;
+    justify-content: center;
+    align-content: center;
 }
+
 #card3 {
     transform: scaleY(-1); 
 }
 
 #card4 {
     transform: scaleY(-1);
-}
-
-#sideboard {
-    margin-left: 20%;
 }
 
   .brush-wrap {
@@ -220,62 +241,6 @@ Blue = #2a85b3
     top: 28%;
     left: -1%;
 }
-#card5 {
-    top: 305px;
-    left: -300px;
-}
-#gameboard{
-    /* background-color: #EEE8C9; */
-     border: 1px solid black;
-     margin: 0;
-     display: block;
-     top: 0px;
-     left: 400px;
-     background-image: center;
-     background-repeat:no-repeat;
-     background-size: cover;
-     position: static;
-     width: 300px;
-     height: 300px;
-     }   
- 
- .gameboard-container{
-   /*  justify-content: center;
-     align-content: center; */
-     padding: 1px;
-     margin-left: auto;
-     margin-right: auto;
-     width: 360px;
-     height: 650px;
-     overflow: auto;
-     overflow-x: hidden;
-     margin-top: 69px;
-     position: static;
-     background-size: 350px 615px;
-     background-repeat: no-repeat;
-     background-position-y: 0px;
-     background-position-x: 5px;
- }
- 
- .board {
-     display: flex;
-    /* flex: 33%; */
-     padding: 5px;
-     align-items: center;
-     justify-content: center;
-     position: relative;
-     left: 113px;
-     top: 52px;
- }
- 
- .cardContainer {
-     top: 52px;
-     left: 215px;
- }
- .card {
-     width: 136px;
-     height: 67px;
-}
 };
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -291,95 +256,17 @@ Blue = #2a85b3
     .btn-link {
         width: max-content;
     }
-
-    #card5 {
-        top: 305px;
-        left: -300px;
-    }
-    #gameboard{
-        /* background-color: #EEE8C9; */
-         border: 1px solid black;
-         margin: 0;
-         display: block;
-         top: 0px;
-         left: 400px;
-         background-image: center;
-         background-repeat:no-repeat;
-         background-size: cover;
-         position: static;
-         width: 300px;
-         height: 300px;
-         }   
-     
-     .gameboard-container{
-       /*  justify-content: center;
-         align-content: center; */
-         padding: 1px;
-         margin-left: auto;
-         margin-right: auto;
-         width: 360px;
-         height: 650px;
-         overflow: auto;
-         overflow-x: hidden;
-         margin-top: 69px;
-         position: static;
-         background-size: 350px 615px;
-         background-repeat: no-repeat;
-         background-position-y: 0px;
-         background-position-x: 5px;
-     }
-     
-     .board {
-         display: flex;
-        /* flex: 33%; */
-         padding: 5px;
-         align-items: center;
-         justify-content: center;
-         position: relative;
-         left: 113px;
-         top: 52px;
-     }
-     
-     .cardContainer {
-         display: flex;
-        /* flex: 50%; */
-         justify-items: center;
-         justify-content: center;
-         position: relative;
-         top: 52px;
-         left: 215px;
-     }
-     .card {
-         margin: 5px;
-         border: 2px solid black;
-         right: 210px;
-         background-color: transparent;
-         width: 136px;
-         height: 67px;
-    }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-
-    .gameboard-container{
-        overflow-x: hidden;
-    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-
-    .gameboard-container{
-        overflow-x: hidden;
-    }
 }
 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-
-    .gameboard-container{
-        overflow-x: hidden;
     }
-}
