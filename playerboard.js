@@ -1,7 +1,31 @@
-setTimeout(() => {
-   const stratTips = document.getElementById('strategyTips');
-    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips)
-               stratToast.show()}, Math.random() * 1000)
+const strategyToasts = [
+  'Running away is very effective.',
+  'Attempting to force your opponent to give up a piece rarely works.',
+  'Way of the Stream (moving your master across the board) is a more reliable way to win than the Way of the Stone (capturing the enemy master). ',
+  'Way of the Stream is the most effective way to win. This goal becomes easier when the board is empty,',
+  'Whenever there is a stale mate, gradually moving your pieces into a box-shape tends to be a good way to concentrate your army while you are waiting for the chance to break that stalemate.',
+  'If all your disciples die you will be forced to move your master every turn and you will lose the ability to stall.',
+  'The player who loses all their disciples quickly gets their master trapped and killed.',
+  "Don’t be afraid to use your master.",
+  'Force your opponent to one side.',
+  'Position your pawns close together in a way where if one were to be taken, one of your other pawns would be able to avenge him.',
+  "Don't be afraid to lose a pawn to take a pawn. Especially if you can clear one of the sides of the board to allow your master to pass.",
+  "The colours on the squares indicate the favoured direction of movement: green = general, red = right, blue = left. Use this for quick analysis."
+];
+
+const randomToast = () => {
+    const stratTips = document.getElementById('strategyTips');
+    stratTips.textContent = strategyToasts[Math.floor(Math.random() * strategyToasts.length)];
+    const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
+   // stratTips.textContent = strategyToasts[Math.floor(Math.random() * strategyToasts.length)];
+    stratToast.show();
+
+    setInterval(() => {
+                randomToast();
+              }, Math.floor(Math.random * 4000));
+            };
+ 
+randomToast();
 
 
 const colordisplay = document.getElementsByName('color');
