@@ -15,17 +15,18 @@ const strategyToasts = [
 
 const randomToast = () => {
     const stratTips = document.getElementById('strategyTips');
-    stratTips.textContent = strategyToasts[Math.floor(Math.random() * strategyToasts.length)];
+    const randomIndex = Math.floor(Math.random() * strategyToasts.length);
+    stratTips.textContent = strategyToasts[randomIndex];
     const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
-   // stratTips.textContent = strategyToasts[Math.floor(Math.random() * strategyToasts.length)];
     stratToast.show();
+    console.log('toast');
+     };
 
-    setInterval(() => {
-                randomToast();
-              }, Math.floor(Math.random * 4000));
-            };
- 
-randomToast();
+const displayRandomToast = () => {
+    setInterval(randomToast, 10000)
+}    
+
+displayRandomToast();
 
 
 const colordisplay = document.getElementsByName('color');
