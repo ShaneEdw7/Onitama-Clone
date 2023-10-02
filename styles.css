@@ -86,26 +86,45 @@ Blue = #2a85b3
     background-repeat:no-repeat;
     background-size: cover;
     }   
-
-.gameboard-container{
+.contain-all{
     margin-top: 7rem;
     background-color: red;
-    display: grid;
-    grid-template-columns: [first] 20px [boardbox] max-content [commoncard] max-content [sideboard] auto [last] 20px [end];
-    grid-template-rows: [first] 70px [opponentCards] 150px [gamearea] auto [playerCards] 150px [last] 10px [end];
+        display: grid; 
+        grid-template-columns: 70px repeat(4, 1fr) 70px; 
+        grid-template-rows: 60px 0.5fr 2fr 0.5fr 20px; 
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+}
+.gameboard-container{
+    background-color: aqua;
+    display: grid; 
+    grid-template-columns: 70px repeat(4, 1fr) 70px; 
+    grid-template-rows: 60px 0.5fr 2fr 0.5fr 20px; 
+    grid-column-gap: 0px;
+    grid-row-gap: 0px; 
     background-image: url('/images/Onitama_board.png');
     background-size: 535px 990px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
+    .div1 { grid-area: 2 / 2 / 3 / 3; } 
+    .div2 { grid-area: 4 / 2 / 5 / 3; } 
+    .div3 { grid-area: 3 / 2 / 4 / 3; } 
+    .div4 { grid-area: 3 / 4 / 4 / 5; } 
+    .div5 { grid-area: 4 / 4 / 5 / 5; } 
+    .div6 { grid-area: 3 / 2 / 4 / 4; } 
+    .div7 { grid-area: 2 / 2 / 3 / 4; } 
+    .div8 { grid-area: 4 / 2 / 5 / 4; } 
+    .div9 { grid-area: 3 / 4 / 4 / 6; } 
+    .div10 { grid-area: 4 / 4 / 5 / 6; } 
+    .div11 { grid-area: 2 / 4 / 3 / 5; } 
+    .div12 { grid-area: 2 / 4 / 3 / 6; } 
+
 .sideboard {
+    grid-area: 3 / 4 / 4 / 6;
     background-color: brown;
     opacity: 0.2;
-    grid-column-start: commoncard;
-    grid-column-end: last;
-    grid-row-start: first;
-    grid-row-end: last;
     display: flex;
     justify-content: flex-start;
     z-index: 0;
@@ -116,35 +135,30 @@ Blue = #2a85b3
 }
 
 .board {
+    grid-area: 3 / 2 / 4 / 4; 
     background-color: green;
     z-index: 1;
-    grid-row-start: gamearea;
-    grid-column-start: boardbox;
-    grid-column-end: commoncard;
     display: flex;
     justify-content: center;
 }
 
 .opponentCardContainer {
     z-index: 2;
-  /*  background-color:blue; */
-    grid-row-start: opponentCards;
-    grid-column-start: boardbox;
+    background-color:blue; 
+    grid-area: 2 / 2 / 3 / 4; 
     display: flex;
     justify-content: center;
 }
 .playerCardContainer {
     z-index: 2;
    background-color: orange;
-    grid-row-start: playerCards;
-    grid-column-start: boardbox;
+   grid-area: 4 / 2 / 5 / 4; 
     display: flex;
     justify-content: center;
 }
 .commonCardContainer{
     background-color: pink;
-    grid-column-end: sideboard;
-    grid-row-start: gamearea;
+    grid-area: 3 / 4 / 4 / 6; 
     display: flex;
     align-self: center;
     justify-content: center;
@@ -161,9 +175,7 @@ Blue = #2a85b3
 }
 .toasts {
     background-color: mediumseagreen;
-    grid-column-start: commoncard;
-    grid-column-end: last;
-    grid-row-start: playerCards;
+    grid-area: 4 / 4 / 5 / 6; 
     display: flex;
     justify-content: center;
     align-content: center;
