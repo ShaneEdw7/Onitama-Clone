@@ -15,16 +15,21 @@ const strategyToasts = [
 
 const randomToast = () => {
     const stratTips = document.getElementById('strategyTips');
+    const toastMessage = document.getElementById('toastMessage')
     const randomIndex = Math.floor(Math.random() * strategyToasts.length);
-    stratTips.textContent = strategyToasts[randomIndex];
     const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
+    toastMessage.textContent = strategyToasts[randomIndex];
     stratToast.show();
     console.log('toast');
      };
 
 const displayRandomToast = () => {
-    setInterval(randomToast, 10000)
-}    
+    setInterval(randomToast, Math.random() * 1000 + 50000)
+}
+
+const stopRandomToast = () => { 
+  clearInterval();
+}
 
 displayRandomToast();
 

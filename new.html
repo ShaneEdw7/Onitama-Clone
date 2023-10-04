@@ -18,6 +18,7 @@
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">Onitama Clone</a>
+          <button class="btn btn-outline-secondary" data-bs-toggle="button" type="button">Strategy Tips</button>
           <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
             <span>How To Play</span>
           </button>
@@ -117,41 +118,37 @@
       </nav>
 <!--Game Board-->
   <div class="gameboard-container">
-    <div class="opponentCardContainer">
-      <img class='card' id="card3" onclick="game.selectCard('card3',2,player2.color);"/> 
-      <img class='card' id="card4" onclick="game.selectCard('card4',3,player2.color);"/>
-    </div>
-    
-    <div class="board">
-          <canvas id="gameboard" width="450" height="450"></canvas>
-    </div>
-    <div class="commonCardContainer">
-      <img class='card' id="card5"/>
-    </div>
-
-    <div class="sideboard">
-    </div>
-    
-      <div class="toasts">
-       <div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
-          <div id="strategyTips" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-              <strong class="me-auto">Strategy Tip</strong>
-            </div>
-              <div class="toast-body">
-                Sample Strategy Tip
-              </div>
-              <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-        </div>     
+    <div class="background-image"></div>
+      <div class="opponentCardContainer">
+        <img class='card' id="card3" onclick="game.selectCard('card3',2,player2.color);"/> 
+        <img class='card' id="card4" onclick="game.selectCard('card4',3,player2.color);"/>
       </div>
     
+      <div class="board">
+          <canvas id="gameboard" width="350" height="350"></canvas>
+      </div>
+      <div class="commonCardContainer">
+          <img class='card' id="card5"/>
+      </div>
 
-    <div class="playerCardContainer">
-      <img class='card' id="card1" onclick="game.selectCard('card1',0,player1.color);"/>
-      <img class='card' id="card2" onclick="game.selectCard('card2',1,player1.color);"/>
-    </div>
+      <div class="sideboard">
+      </div>
 
+      <div class="toasts">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000" id="strategyTips">
+          <div class="toast-header">
+            <strong class="me-auto">Strategy Tips</strong>
+          </div>
+          <div class="toast-body" id="toastMessage">
+            <!--Strategy Tips go here -->
+          </div>
+        </div>
+      </div>
+
+      <div class="playerCardContainer">
+        <img class='card' id="card1" onclick="game.selectCard('card1',0,player1.color);"/>
+        <img class='card' id="card2" onclick="game.selectCard('card2',1,player1.color);"/>
+      </div>
   </div>
 
 <div class="modal fade" tabindex="-1" id="alert" data-bs-keyboard="false" data-bs-backdrop="static" aria-hidden="true" >
