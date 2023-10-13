@@ -24,15 +24,25 @@ const randomToast = () => {
      };
 
 const displayRandomToast = () => {
+    randomToast();
     setInterval(randomToast, Math.random() * 1000 + 50000)
 }
 
-const stopRandomToast = () => { 
-  clearInterval();
+const stopRandomToast = () => {
+  const stratTips = document.getElementById('strategyTips');
+  const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
+  stratToast.hide();
+  clearInterval(randomToast);
 }
 
-displayRandomToast();
-
+const toggleSwitch = () => {
+  const toggleTips = document.getElementById('tips');
+  if (toggleTips.classList.contains('active')) {
+    displayRandomToast();
+  } else {
+    stopRandomToast();
+  }
+}
 
 const colordisplay = document.getElementsByName('color');
 colordisplay.forEach((color) => {

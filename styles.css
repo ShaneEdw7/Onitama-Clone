@@ -78,6 +78,9 @@ Blue = #2a85b3
     font-family: 'Long Cang', cursive;
     font-size: 30px;
 }
+#tips {
+    font-size: 16px !important;
+}
 #gameboard{
    /* background-color: #EEE8C9; */
     border: 1px solid black;

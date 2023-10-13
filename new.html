@@ -18,8 +18,8 @@
     <nav class="navbar navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
           <a class="navbar-brand" href="index.html">Onitama Clone</a>
-          <button class="btn btn-outline-secondary" data-bs-toggle="button" type="button">Strategy Tips</button>
-          <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+          <button class="btn btn-dark btn-sm ms-auto" data-bs-toggle="button" type="button" id="tips" onclick="toggleSwitch()">Strategy Tips</button>
+          <button class="navbar-toggler ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
             <span>How To Play</span>
           </button>
           <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
@@ -139,7 +139,7 @@
           <div class="toast-header">
             <strong class="me-auto">Strategy Tips</strong>
           </div>
-          <div class="toast-body" id="toastMessage">
+          <div class="toast-body mx-auto text-center" id="toastMessage">
             <!--Strategy Tips go here -->
           </div>
         </div>
