@@ -13,6 +13,9 @@ const strategyToasts = [
   "The colours on the squares indicate the favoured direction of movement: green = general, red = right, blue = left. Use this for quick analysis."
 ];
 
+let toastRunning = false;
+let displayToast;
+
 const randomToast = () => {
     const stratTips = document.getElementById('strategyTips');
     const toastMessage = document.getElementById('toastMessage')
@@ -23,26 +26,19 @@ const randomToast = () => {
     console.log('toast');
      };
 
-const displayRandomToast = () => {
-    randomToast();
-    setInterval(randomToast, Math.random() * 1000 + 50000)
-}
+const toggleToast = () => {
+    if (toastRunning) {
+      clearInterval(displayToast)
+      console.log('Toast Stop')
+    } else {
+      randomToast();
+      displayToast = setInterval(randomToast, Math.random() * 1000 + 50000)
+      console.log('Toast Start')
+      }
+      toastRunning = !toastRunning
+    }
 
-const stopRandomToast = () => {
-  const stratTips = document.getElementById('strategyTips');
-  const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
-  stratToast.hide();
-  clearInterval(randomToast);
-}
-
-const toggleSwitch = () => {
-  const toggleTips = document.getElementById('tips');
-  if (toggleTips.classList.contains('active')) {
-    displayRandomToast();
-  } else {
-    stopRandomToast();
-  }
-}
+document.getElementById('tips').addEventListener('click', toggleToast);
 
 const colordisplay = document.getElementsByName('color');
 colordisplay.forEach((color) => {
@@ -149,6 +145,7 @@ class Game {
   this.animationStep = 0
   this.invalidMoveCounter = 0;
 };
+
 // Determine Start Player & Visual cue to show whos turn it is.
 determineStartPlayer = () => {
   const board = document.getElementById('gameboard');
@@ -164,6 +161,26 @@ if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
   board.style.borderSpacing = '5px';
   };
 };
+// Change gameboard background based on color selection.
+gameboardBackground = () => {
+  const optionRed = document.getElementById('red');
+  const optionBlue = document.getElementById('blue');
+  const gameBoard = document.getElementById('gameboard');
+
+  optionRed.addEventListener('change', function() {
+    if (this.checked) {
+      console.log('red');
+      gameBoard.style.backgroundImage = 'url("images/canvas_background.png")';
+    }
+  });
+
+  optionBlue.addEventListener('change', function() {
+    if (this.checked) {
+      console.log('blue');
+      gameBoard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
+    }
+  });
+}
 
 getCurrentPlayerColor = () => { 
   if(this.currentPlayer.color === this.player1.color) return this.player1.color 

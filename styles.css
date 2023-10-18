@@ -84,7 +84,7 @@ Blue = #2a85b3
 #gameboard{
    /* background-color: #EEE8C9; */
     border: 1px solid black;
-    background-image: url('/images/canvas_background.png');
+  /*  background-image: url('/images/canvas_background.png'); */
     background-image: center;
     background-repeat:no-repeat;
     background-size: contain;
