@@ -42,6 +42,20 @@ Blue = #2a85b3
     margin: 40px;
     padding: 5%;
 }
+
+#firstPlayer{
+    width: 15rem;
+    height: 8rem;
+    border: 5px solid white;
+    border-radius: 10px;
+}
+#movement2 {
+    width: 14rem;
+    height: 10rem;
+    border: 5px solid white;
+    border-radius: 10px;
+}
+
 .modal-body{
     background-color: #EEE8C9;
     font-size: 30px;
