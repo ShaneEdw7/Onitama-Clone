@@ -161,26 +161,6 @@ if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
   board.style.borderSpacing = '5px';
   };
 };
-// Change gameboard background based on color selection.
-gameboardBackground = () => {
-  const optionRed = document.getElementById('red');
-  const optionBlue = document.getElementById('blue');
-  const gameBoard = document.getElementById('gameboard');
-
-  optionRed.addEventListener('change', function() {
-    if (this.checked) {
-      console.log('red');
-      gameBoard.style.backgroundImage = 'url("images/canvas_background.png")';
-    }
-  });
-
-  optionBlue.addEventListener('change', function() {
-    if (this.checked) {
-      console.log('blue');
-      gameBoard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
-    }
-  });
-}
 
 getCurrentPlayerColor = () => { 
   if(this.currentPlayer.color === this.player1.color) return this.player1.color 
@@ -257,6 +237,13 @@ switchPlayers() {
    // this.drawGameboard();
     this.loadPieceImgs();
     this.determineStartPlayer();
+    if (this.player1.color === 'red') {
+      gameboard.style.backgroundImage = 'url("images/canvas_background.png")'
+      console.log('red')
+    } else {
+      gameboard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
+      console.log('blue')
+    };
     console.log('finished initializing')
   };
 
@@ -322,7 +309,7 @@ switchPlayers() {
    
     highlightSquare = (cellX, cellY) => {
       console.log(cellX,'cellX', cellY, 'cellY')
-    const alpha = 0.2;
+    const alpha = 0.4;
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
       ctx.clearRect(0,0, gameboard.width, gameboard.height);
@@ -346,9 +333,13 @@ switchPlayers() {
                     if (this.selectedPiece.color === this.player1.color) {
                       ctx.fillStyle = pieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
+                      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                      ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize)
                     } else {
                       ctx.fillStyle = opponentPieceColor;
                       ctx.fillRect(x, y, cellSize, cellSize);
+                      ctx.fillStyle = 'rgba(0,0,0,0.4)';
+                      ctx.fillRect(cellX * cellSize, cellY * cellSize, cellSize, cellSize)
                     };
                   };
               };

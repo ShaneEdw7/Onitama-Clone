@@ -95,13 +95,17 @@ Blue = #2a85b3
 #tips {
     font-size: 16px !important;
 }
+.label{
+    color: darkgrey !important;
+}
 #gameboard{
    /* background-color: #EEE8C9; */
     border: 1px solid black;
-  /*  background-image: url('/images/canvas_background.png'); */
+    background-image: url('/images/canvas_background-reverse.png');
     background-image: center;
     background-repeat:no-repeat;
     background-size: contain;
+    z-index: 2;
     }   
 
 .gameboard-container{
@@ -113,7 +117,7 @@ Blue = #2a85b3
    grid-row-gap: 0px; 
 }
 .background-image{
-    grid-area: 1 / 2 / 6 / 4; 
+    grid-area: 1 / 3 / 6 / 6; 
     z-index: 1;
     background-image: url('/images/Onitama_board.png');
     background-size: 412px 765px;
@@ -124,7 +128,7 @@ Blue = #2a85b3
 }
 
 .sideboard {
-    grid-area: 2 / 4 / 5 / 6;
+    grid-area: 2 / 5 / 5 / 7;
     /* background-color: brown; */
     opacity: 0.2;
     display: flex;
@@ -137,7 +141,7 @@ Blue = #2a85b3
 }
 
 .board {
-    grid-area: 3 / 2 / 4 / 4; 
+    grid-area: 3 / 3 / 4 / 5; 
    /* background-color: green; */
     z-index: 1;
     display: flex;
@@ -147,7 +151,7 @@ Blue = #2a85b3
 .opponentCardContainer {
     z-index: 2;
    /* background-color:blue; */
-    grid-area: 2 / 2 / 3 / 4; 
+    grid-area: 2 / 3 / 3 / 5; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -155,14 +159,14 @@ Blue = #2a85b3
 .playerCardContainer {
     z-index: 2;
    /* background-color: orange; */
-    grid-area: 4 / 2 / 5 / 4; 
+    grid-area: 4 / 2 / 5 / 6; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .commonCardContainer{
   /*  background-color: pink; */
-    grid-area: 3 / 4 / 4 / 5;  
+    grid-area: 3 / 5 / 4 / 6;  
     display: flex;
     align-self: center;
     justify-content: center;
@@ -179,7 +183,7 @@ Blue = #2a85b3
 }
 .toasts {
   /*  background-color: mediumseagreen; */
-    grid-area: 4 / 4 / 5 / 6; 
+    grid-area: 4 / 5 / 5 / 7; 
     justify-content: center;
     align-content: center;
     display: flex;
