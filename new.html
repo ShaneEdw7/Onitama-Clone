@@ -65,7 +65,8 @@
                         </p>
                         <br>
                           <ul>
-                            <li>Step 1, Move and Attack<br>
+                            <li>Step 1: Move and Attack<br>
+                              <br>
                               On your turn, examine and choose one of the two Move cards in front of you. Then, move one
                               of your pawns (student or master) as shown on that card. (The square grid will show you
                               the way.) 
@@ -83,14 +84,20 @@
                               <br><br>
                               If your pawn moves onto a square that is occupied by one of your opponent’s pawns, the
                               opponent’s pawn is “captured” and removed from the game.
+                              <br>
                               You must actually land on the piece to capture it — moving over or through a square occupied by
                               an opponent’s piece does not capture it. 
+                              <br>
+                              <br>
+                              <img src="/images/capture.png" alt="Capture Example" id="capture">
+                              <br>
                             </li>
                             <br>
-                            <li>Step 2, Exchange Cards <br>
-                              The move card you just used, will be placed to the side of the playmat.
-                              Then the card that is on the side of the play area will be added to your hand. You may
-                              use that card starting next turn, as one of the two move cards you can choose from. 
+                            <li>Step 2: Exchange Cards <br>
+                              <br>
+                              The move card you just used, will replace the card on the side of the playmat.
+                              The card being replaced will be added to your hand and you may
+                              use that card starting next turn as one of the two move cards you can choose from. 
                               <br><br>
                               Now it is time for your opponent to take a turn, following the same two steps.
                               You shall continue to take turns until one of you has won the game, demonstrating mastery of
@@ -183,7 +190,7 @@
       </div>
       <div class="modal-footer" id="footer">
         <a class="btn btn-primary btn" href="#newGameModal" role="button" data-bs-toggle="modal" data-bs-target="#newGameModal" id="start">New Game</a>
-        <a class="btn btn-primary btn" id="pass" onclick="passTrigger()" data-bs-dismiss="modal">Pass Turn</a>
+        <a class="btn btn-primary btn" id="pass" onclick="game.passTrigger();" data-bs-dismiss="modal">Pass Turn</a>
       </div>
     </div>
   </div>

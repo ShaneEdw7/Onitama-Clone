@@ -67,6 +67,10 @@ Blue = #2a85b3
     width: 16rem;
     height: 24rem;
 }
+#capture{
+    width: 18rem;
+    height: 16rem;
+}
 
 .modal-body{
     background-color: #EEE8C9;
@@ -210,7 +214,7 @@ Blue = #2a85b3
 }
 
 #card3, #card4 {
-    transform: scaleY(-1); 
+    transform: rotate(0.5turn);
 }
 
   .brush-wrap {

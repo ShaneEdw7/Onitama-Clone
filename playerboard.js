@@ -10,7 +10,8 @@ const strategyToasts = [
   'Force your opponent to one side.',
   'Position your pawns close together in a way where if one were to be taken, one of your other pawns would be able to avenge him.',
   "Don't be afraid to lose a pawn to take a pawn. Especially if you can clear one of the sides of the board to allow your master to pass.",
-  "The colours on the squares indicate the favoured direction of movement: green = general, red = right, blue = left. Use this for quick analysis."
+  "The colours on the squares indicate the favoured direction of movement: green = general, red = right, blue = left. Use this for quick analysis.",
+  "Be aware that the movement card you choose will become your opponent's card on the next turn."
 ];
 
 let toastRunning = false;
@@ -159,6 +160,8 @@ if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
   board.style.borderWidth = "5px"
   board.style.borderColor = getOpponentColor();
   board.style.borderSpacing = '5px';
+  const sideCard = document.getElementById('card5')
+  sideCard.style.transform = "rotate(0.5turn)"; 
   };
 };
 
@@ -187,10 +190,14 @@ switchPlayers() {
     this.currentPlayer = this.player2
     board.style.borderColor = this.player2.color
     board.style.borderSpacing = '5px';
+    const sideCard = document.getElementById('card5')
+    sideCard.style.transform = "rotate(0.5turn)"; 
     } else {
       this.currentPlayer = this.player1
       board.style.borderColor = this.player1.color;
       board.style.borderSpacing = '5px';
+      const sideCard = document.getElementById('card5')
+      sideCard.style.transform = "rotate(0turn)"; 
       };
   };
 
@@ -317,10 +324,11 @@ switchPlayers() {
 
       const validMoves = []
       this.clickedCard?.movement.forEach((movement) => {
-        const movementCardX = movement.x;
+        let movementCardX = movement.x;
         let movementCardY = movement.y;
           if(this.selectedPiece.color !== this.player1.color) {
               movementCardY = -movement.y;
+              movementCardX = -movement.x
               }
         validMoves.push({x: movementCardX, y: movementCardY});    
           for (let row = 0; row < numCells; row++) {
@@ -503,6 +511,7 @@ cardSelectionAlert = () => {
   this.removeStart();
   this.removePass();
   this.resetCards();
+  this.resetGameboard();
 };
 
 resetCards = () => {
@@ -551,20 +560,23 @@ invalidMoveAlert = () => {
   this.removeStart();
   this.invalidMoveCounter ++;
   this.removePass();
+  this.resetGameboard();
 } else {
     this.passAlert()
   };
 };
 
 passAlert = () => {
-  this.triggerAlert('Would you like to pass?')
-  this.removeStart
+  this.triggerAlert('If you have a legal move, you must take it—even if you don’t want to! It is possible that you will find that you cannot use any of your cards to make a legal move. If this happens —and only then— you must pass your turn. Would you like to pass?')
+  this.removeStart();
   const passTurn = document.getElementById('pass');
   passTurn.style.display = 'block'
   this.invalidMoveCounter = 0;
 };
 
 passTrigger = () => {
+  console.log('test')
+  console.log(this.clickedCard)
   this.switchCards();
   this.switchPlayers();
 };
