@@ -184,22 +184,22 @@ drawGameboard = () => {
   ctx.stroke();
   };
 
-switchPlayers() {
-  const board = document.getElementById('gameboard');
-  if (this.currentPlayer === this.player1) {
-    this.currentPlayer = this.player2
-    board.style.borderColor = this.player2.color
-    board.style.borderSpacing = '5px';
-    const sideCard = document.getElementById('card5')
-    sideCard.style.transform = "rotate(0.5turn)"; 
-    } else {
-      this.currentPlayer = this.player1
-      board.style.borderColor = this.player1.color;
+  switchPlayers() {
+    const board = document.getElementById('gameboard');
+    if (this.currentPlayer === this.player1) {
+      this.currentPlayer = this.player2
+      board.style.borderColor = this.player2.color
       board.style.borderSpacing = '5px';
-      const sideCard = document.getElementById('card5')
-      sideCard.style.transform = "rotate(0turn)"; 
-      };
-  };
+      } else {
+        this.currentPlayer = this.player1
+        board.style.borderColor = this.player1.color;
+        board.style.borderSpacing = '5px';
+        };
+  
+      if (game.currentPlayer === game.player2) {
+        game.botTakeTurn();
+      }
+    };
 
   loadPieceImgs = () => {
     this.pieceTypes.forEach((pieceType) => {
@@ -291,6 +291,66 @@ switchPlayers() {
         this.updateBoard();
       };
     }; 
+
+    isWithinBounds(row, col) {
+      return row >= 0 && row < numCells && col >= 0 && col < numCells;
+    }
+    
+    isOwnPieceAt(col, row, color) {
+      return this.piecePositions.some(piece => piece.col === col && piece.row === row && piece.color === color);
+    }
+    
+    movePieceSimulation(piece, move) {
+      const newRow = piece.row + move.y;
+      const newCol = piece.col + move.x;
+      piece.row = newRow;
+      piece.col = newCol;
+      this.updateBoard();
+    }
+    
+    botTakeTurn() {
+      if (this.currentPlayer !== this.player2) {
+        console.log("It's not the bot's turn.");
+        return;
+      }
+    
+      setTimeout(() => {
+        const cardIndex = Math.floor(Math.random() * this.player2.cards.length);
+        const card = this.player2.cards[cardIndex];
+        this.selectCard(`card${cardIndex + 3}`, cardIndex + 2, this.player2.color);
+    
+        let legalMoves = [];
+        this.piecePositions.forEach((piece) => {
+          if (piece.color === this.player2.color) {
+            card.movement.forEach((move) => {
+              // Invert the direction of the Y movement for player2
+              const newRow = piece.row - move.y; // Subtract instead of add
+              const newCol = piece.col + move.x;
+              if (this.isWithinBounds(newRow, newCol) && !this.isOwnPieceAt(newCol, newRow, this.player2.color)) {
+                legalMoves.push({ piece: piece, move: move });
+              }
+            });
+          }
+        });
+    
+        if (legalMoves.length === 0) {
+          setTimeout(() => {
+            this.passTrigger();
+          }, 1000);
+          return;
+        }
+    
+        setTimeout(() => {
+          const move = legalMoves[Math.floor(Math.random() * legalMoves.length)];
+          this.movePieceSimulation(move.piece, { x: move.move.x, y: -move.move.y });
+    
+          setTimeout(() => {
+            this.switchCards();
+            this.switchPlayers();
+          }, 4000);
+        }, 4000);
+      }, 1000);
+    }
 
   selectPiece = (event) => {
     const { cellX , cellY } = this.mouseClick(event);
@@ -409,6 +469,7 @@ switchCards() {
     });
     this.clickedCard.selected = false;
     this.resetCards();
+    console.log(this.gameCards)
 };
 
 removePiece = (cellX,cellY) => {
@@ -466,12 +527,12 @@ movePiece = (event, selectedPiece) => {
             || cellX === 2 && cellY === 4 && this.currentPlayer === this.player2) 
             this.gameOver(); 
       this.removePiece(cellX,cellY);
-      this.switchPlayers();  
+      this.switchPlayers();
+      this.clickedCard = undefined;  
     } else {
         this.invalidMoveAlert();
         };
  // this.resetGameboard();
-  this.clickedCard = undefined;
   this.loadPieceImgs();
   };
 };
@@ -494,7 +555,7 @@ animatePiece = () => {
     this.animationStep++;
     requestAnimationFrame(this.animatePiece);
   };
-  if (this.animationStep === 49) 
+  if (this.animationStep === 50) 
       { this.selectedPiece.selected = false; 
         this.selectedPiece = null;
       };
@@ -576,6 +637,7 @@ passAlert = () => {
 
 passTrigger = () => {
   console.log('test')
+  console.log(this)
   console.log(this.clickedCard)
   this.switchCards();
   this.switchPlayers();
@@ -592,6 +654,7 @@ pieceSelectionAlert = () => {
 
       // Canvas (Gameboard)
       const gameboard = document.getElementById("gameboard");
+      const passButton = document.getElementById("pass")
       const ctx = gameboard.getContext("2d");
       const boardSize = gameboard.width;
       const numCells = 5;
@@ -606,4 +669,5 @@ randomCard().then((gameCards) => {
   game.initializeGame();
   gameboard.addEventListener('click', game.handlePlayerClick, game.selectPiece);
   gameboard.addEventListener('click', game.eventHighlightSquare);
+  passButton.addEventListener('click', game.passTrigger)
 });
