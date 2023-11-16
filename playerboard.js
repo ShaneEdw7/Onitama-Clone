@@ -195,9 +195,15 @@ drawGameboard = () => {
         board.style.borderColor = this.player1.color;
         board.style.borderSpacing = '5px';
         };
-  
+  /* const aiCheck = () => {
+      const bot = document.getElementById('ai')
+      bot.addEventListener('change', function(){
+      if (bot.checked) console.log('checked yes')
+    })
+   };*/
       if (game.currentPlayer === game.player2) {
-        game.botTakeTurn();
+          // aiCheck()
+          game.botTakeTurn();
       }
     };
 
@@ -234,7 +240,6 @@ drawGameboard = () => {
 
   updateBoard = () => {
     ctx.clearRect(0,0, gameboard.width, gameboard.height);
-   // this.drawGameboard();
     this.loadPieceImgs();
     };
 
@@ -293,22 +298,31 @@ drawGameboard = () => {
     }; 
 
     isWithinBounds(row, col) {
+      console.log('isWithinBounds Function')
       return row >= 0 && row < numCells && col >= 0 && col < numCells;
     }
     
     isOwnPieceAt(col, row, color) {
+      console.log('isOwnPieceAt Function')
       return this.piecePositions.some(piece => piece.col === col && piece.row === row && piece.color === color);
     }
     
     movePieceSimulation(piece, move) {
-      const newRow = piece.row + move.y;
-      const newCol = piece.col + move.x;
+      console.log('MovePieceSimulation Function')
+      console.log({piece})
+      const newRow = piece.row + move.y
+      console.log({newRow})
+      const newCol = piece.col + move.x
+      console.log({newCol})
       piece.row = newRow;
       piece.col = newCol;
+      console.log({piece})
+      this.resetGameboard();
       this.updateBoard();
     }
     
     botTakeTurn() {
+      console.log('botTakeTurn function')
       if (this.currentPlayer !== this.player2) {
         console.log("It's not the bot's turn.");
         return;
@@ -316,20 +330,27 @@ drawGameboard = () => {
     
       setTimeout(() => {
         const cardIndex = Math.floor(Math.random() * this.player2.cards.length);
+        console.log({cardIndex})
         const card = this.player2.cards[cardIndex];
+        console.log({card})
         this.selectCard(`card${cardIndex + 3}`, cardIndex + 2, this.player2.color);
     
         let legalMoves = [];
         this.piecePositions.forEach((piece) => {
           if (piece.color === this.player2.color) {
             card.movement.forEach((move) => {
-              // Invert the direction of the Y movement for player2
-              const newRow = piece.row - move.y; // Subtract instead of add
+              console.log('piece.row', piece.row, 'move.y', move.y)
+              const newRow = piece.row + move.y;
+              console.log({newRow})
+              console.log('piece.col', piece.col, 'move.x', move.x)
               const newCol = piece.col + move.x;
+              console.log({newCol})
               if (this.isWithinBounds(newRow, newCol) && !this.isOwnPieceAt(newCol, newRow, this.player2.color)) {
+                console.log({piece, move})
                 legalMoves.push({ piece: piece, move: move });
               }
             });
+            console.log({legalMoves})
           }
         });
     
@@ -342,13 +363,25 @@ drawGameboard = () => {
     
         setTimeout(() => {
           const move = legalMoves[Math.floor(Math.random() * legalMoves.length)];
-          this.movePieceSimulation(move.piece, { x: move.move.x, y: -move.move.y });
+          console.log({move})
+          console.log(move.piece,'move.piece') 
+          this.selectedPiece = move.piece;
+          console.log(this.selectedPiece, 'this.selectedpiece after')
+          const pieceY = move.piece.row;
+          const pieceX = move.piece.col;
+          console.log({pieceX, pieceY})
+          console.log(this.clickedCard, 'clickedCard')
+          this.highlightSquare(pieceX, pieceY)
+          this.loadPieceImgs()        
+          setTimeout(() => {
+          this.movePieceSimulation(move.piece, { x: move.move.x, y: move.move.y });
     
           setTimeout(() => {
             this.switchCards();
             this.switchPlayers();
-          }, 4000);
-        }, 4000);
+            }, 2200);
+          }, 2000);
+        }, 3000);
       }, 1000);
     }
 
@@ -380,7 +413,6 @@ drawGameboard = () => {
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
       ctx.clearRect(0,0, gameboard.width, gameboard.height);
-      // this.drawGameboard();
 
       const validMoves = []
       this.clickedCard?.movement.forEach((movement) => {
@@ -413,8 +445,10 @@ drawGameboard = () => {
               };
           };
       });
+      console.log({validMoves})
     return validMoves;
   };
+
   eventHighlightSquare = (event) => {
     const { cellX , cellY } = this.mouseClick(event);
     this.highlightSquare(cellX, cellY)
@@ -532,7 +566,6 @@ movePiece = (event, selectedPiece) => {
     } else {
         this.invalidMoveAlert();
         };
- // this.resetGameboard();
   this.loadPieceImgs();
   };
 };
@@ -543,7 +576,7 @@ animatePiece = () => {
     const currentX = this.selectedPiece.startX + (this.selectedPiece.targetX - this.selectedPiece.startX) * (this.animationStep / totalSteps);
     const currentY = this.selectedPiece.startY + (this.selectedPiece.targetY - this.selectedPiece.startY) * (this.animationStep / totalSteps);
     ctx.clearRect(0, 0, gameboard.width, gameboard.height);
-   // this.drawGameboard();
+    
     this.piecePositions.forEach((piece) => {
       if (piece !== this.selectedPiece) {
         const img = this.pieceImgs[piece.color][piece.piece];
@@ -554,9 +587,8 @@ animatePiece = () => {
     ctx.drawImage(img, currentX, currentY, cellSize, cellSize);
     this.animationStep++;
     requestAnimationFrame(this.animatePiece);
-  };
-  if (this.animationStep === 50) 
-      { this.selectedPiece.selected = false; 
+  } else {
+        this.selectedPiece.selected = false; 
         this.selectedPiece = null;
       };
 };
