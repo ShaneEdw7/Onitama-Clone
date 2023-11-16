@@ -47,15 +47,16 @@ colordisplay.forEach((color) => {
         localStorage.setItem('playercolor', event.target.value)
     })
 });
-const difflevel = document.getElementsByName('difficulty');
-difflevel.forEach((difficulty) => {
-    difficulty.addEventListener('click', (event) => {
-        localStorage.setItem('difficulty', event.target.value)
+const gameModeChoice = document.getElementsByName('gameMode');
+gameModeChoice.forEach((gameMode) => {
+    gameMode.addEventListener('click', (event) => {
+        localStorage.setItem('botSelection', event.target.value)
     })
 });
 
 const difficulty = localStorage.getItem('difficulty');  
 const playercolor = localStorage.getItem('playercolor');
+const botSelection = localStorage.getItem('botSelection')
 let player1, player2, game, movementCards = {}, commonCard;
 
 const createImages = (createCard, i) => {
@@ -161,7 +162,11 @@ if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
   board.style.borderColor = getOpponentColor();
   board.style.borderSpacing = '5px';
   const sideCard = document.getElementById('card5')
-  sideCard.style.transform = "rotate(0.5turn)"; 
+  sideCard.style.transform = "rotate(0.5turn)";
+
+  if (botSelection === 'bot') {
+    game.botTakeTurn()
+    };
   };
 };
 
@@ -190,21 +195,18 @@ drawGameboard = () => {
       this.currentPlayer = this.player2
       board.style.borderColor = this.player2.color
       board.style.borderSpacing = '5px';
+      const sideCard = document.getElementById('card5')
+      sideCard.style.transform = "rotate(0.5turn)"; 
       } else {
         this.currentPlayer = this.player1
         board.style.borderColor = this.player1.color;
         board.style.borderSpacing = '5px';
-        };
-  /* const aiCheck = () => {
-      const bot = document.getElementById('ai')
-      bot.addEventListener('change', function(){
-      if (bot.checked) console.log('checked yes')
-    })
-   };*/
-      if (game.currentPlayer === game.player2) {
-          // aiCheck()
-          game.botTakeTurn();
-      }
+        const sideCard = document.getElementById('card5')
+        sideCard.style.transform = "rotate(1turn)"; 
+      } 
+      if (game.currentPlayer === game.player2 && botSelection === 'bot') {
+        game.botTakeTurn();
+        };    
     };
 
   loadPieceImgs = () => {
@@ -246,7 +248,6 @@ drawGameboard = () => {
   initializeGame() {
     console.log('initializing')
     this.getCurrentPlayerColor();
-   // this.drawGameboard();
     this.loadPieceImgs();
     this.determineStartPlayer();
     if (this.player1.color === 'red') {
@@ -256,6 +257,9 @@ drawGameboard = () => {
       gameboard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
       console.log('blue')
     };
+    if (botSelection === 'bot') {
+      console.log('bot enabled = true')
+    }
     console.log('finished initializing')
   };
 
@@ -310,6 +314,8 @@ drawGameboard = () => {
     movePieceSimulation(piece, move) {
       console.log('MovePieceSimulation Function')
       console.log({piece})
+      piece.startX = piece.col * cellSize;
+      piece.startY = piece.row * cellSize;
       const newRow = piece.row + move.y
       console.log({newRow})
       const newCol = piece.col + move.x
@@ -317,12 +323,18 @@ drawGameboard = () => {
       piece.row = newRow;
       piece.col = newCol;
       console.log({piece})
-      this.resetGameboard();
+      this.animationStep = 0;
+      piece.targetX = newCol * cellSize;
+      piece.targetY = newRow * cellSize;
+      this.selectedPiece = piece;
+      console.log(this.selectedPiece, 'selectedPiece')
+      this.animatePiece();
+      this.removePiece(newCol,newRow);
+    //  this.resetGameboard();
       this.updateBoard();
     }
     
     botTakeTurn() {
-      console.log('botTakeTurn function')
       if (this.currentPlayer !== this.player2) {
         console.log("It's not the bot's turn.");
         return;
@@ -555,10 +567,11 @@ movePiece = (event, selectedPiece) => {
       selectedPiece.row = cellY;
       selectedPiece.col = cellX;
       this.switchCards();
+      console.log({selectedPiece})
       this.animatePiece();
   
-        if (cellX === 2 && cellY === 0 && this.currentPlayer === this.player1
-            || cellX === 2 && cellY === 4 && this.currentPlayer === this.player2) 
+        if (cellX === 2 && cellY === 0 && this.currentPlayer === this.player1 && this.selectedPiece.piece === 'master'
+            || cellX === 2 && cellY === 4 && this.currentPlayer === this.player2 && this.selectedPiece.piece === 'master') 
             this.gameOver(); 
       this.removePiece(cellX,cellY);
       this.switchPlayers();
@@ -572,6 +585,7 @@ movePiece = (event, selectedPiece) => {
 
 animatePiece = () => {
   const totalSteps = 50;
+  console.log(this.selectedPiece, 'selectedPiece')
   if (this.animationStep < totalSteps) {
     const currentX = this.selectedPiece.startX + (this.selectedPiece.targetX - this.selectedPiece.startX) * (this.animationStep / totalSteps);
     const currentY = this.selectedPiece.startY + (this.selectedPiece.targetY - this.selectedPiece.startY) * (this.animationStep / totalSteps);
@@ -587,6 +601,7 @@ animatePiece = () => {
     ctx.drawImage(img, currentX, currentY, cellSize, cellSize);
     this.animationStep++;
     requestAnimationFrame(this.animatePiece);
+    console.log('Steps', this.animationStep)
   } else {
         this.selectedPiece.selected = false; 
         this.selectedPiece = null;
