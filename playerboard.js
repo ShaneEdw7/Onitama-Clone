@@ -312,25 +312,24 @@ drawGameboard = () => {
     }
     
     movePieceSimulation(piece, move) {
-      console.log('MovePieceSimulation Function')
-      console.log({piece})
+        console.log('MovePieceSimulation Function')
+        console.log({piece})
       piece.startX = piece.col * cellSize;
       piece.startY = piece.row * cellSize;
       const newRow = piece.row + move.y
-      console.log({newRow})
+        console.log({newRow})
       const newCol = piece.col + move.x
-      console.log({newCol})
+        console.log({newCol})
       piece.row = newRow;
       piece.col = newCol;
-      console.log({piece})
+        console.log({piece})
       this.animationStep = 0;
       piece.targetX = newCol * cellSize;
       piece.targetY = newRow * cellSize;
       this.selectedPiece = piece;
-      console.log(this.selectedPiece, 'selectedPiece')
+        console.log(this.selectedPiece, 'selectedPiece')
       this.animatePiece();
       this.removePiece(newCol,newRow);
-    //  this.resetGameboard();
       this.updateBoard();
     }
     
@@ -351,12 +350,13 @@ drawGameboard = () => {
         this.piecePositions.forEach((piece) => {
           if (piece.color === this.player2.color) {
             card.movement.forEach((move) => {
-              console.log('piece.row', piece.row, 'move.y', move.y)
-              const newRow = piece.row + move.y;
-              console.log({newRow})
-              console.log('piece.col', piece.col, 'move.x', move.x)
+                console.log(card.movement, 'card.movement')
+                console.log('piece.row', piece.row, 'move.y', move.y)
+              const newRow = piece.row + -move.y;
+                console.log({newRow})
+                console.log('piece.col', piece.col, 'move.x', move.x)
               const newCol = piece.col + move.x;
-              console.log({newCol})
+                console.log({newCol})
               if (this.isWithinBounds(newRow, newCol) && !this.isOwnPieceAt(newCol, newRow, this.player2.color)) {
                 console.log({piece, move})
                 legalMoves.push({ piece: piece, move: move });
@@ -386,7 +386,7 @@ drawGameboard = () => {
           this.highlightSquare(pieceX, pieceY)
           this.loadPieceImgs()        
           setTimeout(() => {
-          this.movePieceSimulation(move.piece, { x: move.move.x, y: move.move.y });
+          this.movePieceSimulation(move.piece, { x: -move.move.x, y: -move.move.y });
     
           setTimeout(() => {
             this.switchCards();
@@ -585,7 +585,6 @@ movePiece = (event, selectedPiece) => {
 
 animatePiece = () => {
   const totalSteps = 50;
-  console.log(this.selectedPiece, 'selectedPiece')
   if (this.animationStep < totalSteps) {
     const currentX = this.selectedPiece.startX + (this.selectedPiece.targetX - this.selectedPiece.startX) * (this.animationStep / totalSteps);
     const currentY = this.selectedPiece.startY + (this.selectedPiece.targetY - this.selectedPiece.startY) * (this.animationStep / totalSteps);
@@ -601,7 +600,6 @@ animatePiece = () => {
     ctx.drawImage(img, currentX, currentY, cellSize, cellSize);
     this.animationStep++;
     requestAnimationFrame(this.animatePiece);
-    console.log('Steps', this.animationStep)
   } else {
         this.selectedPiece.selected = false; 
         this.selectedPiece = null;
