@@ -24,17 +24,14 @@ const randomToast = () => {
     const stratToast = bootstrap.Toast.getOrCreateInstance(stratTips);
     toastMessage.textContent = strategyToasts[randomIndex];
     stratToast.show();
-    console.log('toast');
      };
 
 const toggleToast = () => {
     if (toastRunning) {
       clearInterval(displayToast)
-      console.log('Toast Stop')
     } else {
       randomToast();
       displayToast = setInterval(randomToast, Math.random() * 1000 + 50000)
-      console.log('Toast Start')
       }
       toastRunning = !toastRunning
     }
@@ -246,21 +243,16 @@ drawGameboard = () => {
     };
 
   initializeGame() {
-    console.log('initializing')
     this.getCurrentPlayerColor();
     this.loadPieceImgs();
     this.determineStartPlayer();
     if (this.player1.color === 'red') {
       gameboard.style.backgroundImage = 'url("images/canvas_background.png")'
-      console.log('red')
     } else {
       gameboard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
-      console.log('blue')
     };
     if (botSelection === 'bot') {
-      console.log('bot enabled = true')
     }
-    console.log('finished initializing')
   };
 
   mouseClick = (event) => {
@@ -302,32 +294,24 @@ drawGameboard = () => {
     }; 
 
     isWithinBounds(row, col) {
-      console.log('isWithinBounds Function')
       return row >= 0 && row < numCells && col >= 0 && col < numCells;
     }
     
     isOwnPieceAt(col, row, color) {
-      console.log('isOwnPieceAt Function')
       return this.piecePositions.some(piece => piece.col === col && piece.row === row && piece.color === color);
     }
     
     movePieceSimulation(piece, move) {
-        console.log('MovePieceSimulation Function')
-        console.log({piece})
       piece.startX = piece.col * cellSize;
       piece.startY = piece.row * cellSize;
       const newRow = piece.row + move.y
-        console.log({newRow})
       const newCol = piece.col + move.x
-        console.log({newCol})
       piece.row = newRow;
       piece.col = newCol;
-        console.log({piece})
       this.animationStep = 0;
       piece.targetX = newCol * cellSize;
       piece.targetY = newRow * cellSize;
       this.selectedPiece = piece;
-        console.log(this.selectedPiece, 'selectedPiece')
       this.animatePiece();
       this.removePiece(newCol,newRow);
       this.updateBoard();
@@ -335,37 +319,25 @@ drawGameboard = () => {
     
     botTakeTurn() {
       if (this.currentPlayer !== this.player2) {
-        console.log("It's not the bot's turn.");
         return;
       }
     
       setTimeout(() => {
         const cardIndex = Math.floor(Math.random() * this.player2.cards.length);
-        console.log({cardIndex})
-        const card = this.player2.cards[cardIndex];
-        console.log({card})
+        const card = this.gameCards[cardIndex + 2];
         this.selectCard(`card${cardIndex + 3}`, cardIndex + 2, this.player2.color);
-    
         let legalMoves = [];
         this.piecePositions.forEach((piece) => {
           if (piece.color === this.player2.color) {
             card.movement.forEach((move) => {
-                console.log(card.movement, 'card.movement')
-                console.log('piece.row', piece.row, 'move.y', move.y)
-              const newRow = piece.row + -move.y;
-                console.log({newRow})
-                console.log('piece.col', piece.col, 'move.x', move.x)
-              const newCol = piece.col + move.x;
-                console.log({newCol})
+              const newRow = piece.row - move.y;
+              const newCol = piece.col - move.x;
               if (this.isWithinBounds(newRow, newCol) && !this.isOwnPieceAt(newCol, newRow, this.player2.color)) {
-                console.log({piece, move})
                 legalMoves.push({ piece: piece, move: move });
               }
             });
-            console.log({legalMoves})
           }
         });
-    
         if (legalMoves.length === 0) {
           setTimeout(() => {
             this.passTrigger();
@@ -374,23 +346,19 @@ drawGameboard = () => {
         }
     
         setTimeout(() => {
-          const move = legalMoves[Math.floor(Math.random() * legalMoves.length)];
-          console.log({move})
-          console.log(move.piece,'move.piece') 
+          const move = legalMoves[Math.floor(Math.random() * legalMoves.length)]; 
           this.selectedPiece = move.piece;
-          console.log(this.selectedPiece, 'this.selectedpiece after')
           const pieceY = move.piece.row;
           const pieceX = move.piece.col;
-          console.log({pieceX, pieceY})
-          console.log(this.clickedCard, 'clickedCard')
           this.highlightSquare(pieceX, pieceY)
           this.loadPieceImgs()        
           setTimeout(() => {
-          this.movePieceSimulation(move.piece, { x: -move.move.x, y: -move.move.y });
+            this.movePieceSimulation(move.piece, { x: -move.move.x, y: -move.move.y });
     
           setTimeout(() => {
             this.switchCards();
             this.switchPlayers();
+            legalMoves = [];
             }, 2200);
           }, 2000);
         }, 3000);
@@ -420,7 +388,6 @@ drawGameboard = () => {
 
    
     highlightSquare = (cellX, cellY) => {
-      console.log(cellX,'cellX', cellY, 'cellY')
     const alpha = 0.4;
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
@@ -457,7 +424,6 @@ drawGameboard = () => {
               };
           };
       });
-      console.log({validMoves})
     return validMoves;
   };
 
@@ -500,7 +466,6 @@ selectCard(cardId, cardIndex, playerColor){
       this.cardSelectionAlert();
       };
     };
-    console.log(this.clickedCard)
   };
 
 
@@ -515,7 +480,6 @@ switchCards() {
     });
     this.clickedCard.selected = false;
     this.resetCards();
-    console.log(this.gameCards)
 };
 
 removePiece = (cellX,cellY) => {
@@ -556,18 +520,15 @@ movePiece = (event, selectedPiece) => {
     return piece.row === cellY && piece.col === cellX && pieceColorCheck;
   });
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
-    console.log('True')
     this.resetGameboard();
     this.selectedPiece.selected = false;
     ctx.clearRect(0, 0, gameboard.width, gameboard.height);
     this.loadPieceImgs();
   } else {
-    console.log(isValidMove,'isvalidmove', pieceCheck,'pieceCheck');
     if (isValidMove && !pieceCheck) {
       selectedPiece.row = cellY;
       selectedPiece.col = cellX;
       this.switchCards();
-      console.log({selectedPiece})
       this.animatePiece();
   
         if (cellX === 2 && cellY === 0 && this.currentPlayer === this.player1 && this.selectedPiece.piece === 'master'
@@ -681,9 +642,6 @@ passAlert = () => {
 };
 
 passTrigger = () => {
-  console.log('test')
-  console.log(this)
-  console.log(this.clickedCard)
   this.switchCards();
   this.switchPlayers();
 };
