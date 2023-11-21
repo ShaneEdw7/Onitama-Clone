@@ -7,7 +7,7 @@ Welcome to the Onitama board game clone! This project is a web-based implementat
 - [Introduction](#introduction)
 - [Features](#features)
 - [Usage](#usage)
-- [Game Rules and Tips](#game-rules-and-tips)
+- [Game Rules](#game-rules)
 - [Acknowledgments](#acknowledgments)
 
 ## Introduction
@@ -111,3 +111,9 @@ There are two ways to win:
 ### What if I don't want to move?
 
 If you have a legal move, you must take it. If you cannot make a legal move, pass your turn. Choose one of the two cards in front of you to be placed on the side of the play area and receive the card from the right of the play area.
+
+## Acknowledgments
+
+This project was inspired by the Onitama board game. Special thanks to the creators of Onitama for the original game concept.
+
+Enjoy playing Onitama, and may the best strategist win!
