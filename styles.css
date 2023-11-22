@@ -131,8 +131,8 @@ Blue = #2a85b3
 
 .gameboard-container{ 
    display: grid;
-   grid-template-columns: 10px 1fr 420px 1fr 10px;
-   grid-template-rows: 70px 120px repeat(3, 117px) 120px repeat(2, 1fr);
+   grid-template-columns: 5px 1fr 368px 1fr 5px;
+   grid-template-rows: 70px 1fr 160px repeat(3, 118px) 160px 1fr;
    grid-column-gap: 0px;
    grid-row-gap: 0px;
    background-image: url('images/background.png');
@@ -142,28 +142,16 @@ Blue = #2a85b3
 }
 
 .background-image{
-    grid-area: 2 / 3 / 8 / 4;; 
+    grid-area: 3 / 3 / 8 / 4; 
     z-index: 1;
     background-image: url('images/Onitama_board.png');
-    background-size: 370px 630px;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    background-position-y: -21px;
-    background-position-x: 27px;
-}
-
-.sideboard {
-    grid-area: 4 / 4 / 5 / 5;
-    display: flex;
-    justify-content: flex-start;
-    z-index: 0;
-    background-size:cover;
-    background-position-x: right;
-    background-repeat: no-repeat;
 }
 
 .board {
-    grid-area: 3 / 3 / 6 / 4; 
+    grid-area: 4 / 3 / 7 / 4; 
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -171,25 +159,26 @@ Blue = #2a85b3
 
 .opponentCardContainer {
     z-index: 2;
-    grid-area: 2 / 3 / 3 / 4; 
+    grid-area: 3 / 3 / 4 / 4; 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
+    margin-bottom: 1rem;
 }
 .playerCardContainer {
     z-index: 2;
-    grid-area: 6 / 3 / 7 / 4; 
+    grid-area: 7 / 3 / 8 / 4; 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    margin-top: 1rem;
 }
 .commonCardContainer{
-    grid-area: 4 / 4 / 5 / 5;  
+    grid-area: 5 / 4 / 6 / 5;  
     display: flex;
     align-self: center;
     justify-content: center;
     z-index: 1;
-    margin-right: 150px;
 }
 .card {
     margin: 5px;
@@ -200,11 +189,12 @@ Blue = #2a85b3
     border-width: 0px;
 }
 .toasts {
-    grid-area: 5 / 4 / 7 / 5;
+    grid-area: 6 / 4 / 8 / 5;
     justify-content: center;
     align-content: center;
     display: flex;
     margin-top: 50px;
+    padding: 10px;
 }
 
 #card3, #card4 {
@@ -265,16 +255,80 @@ Blue = #2a85b3
     color: inherit;
     text-decoration:none;
 }
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 
-.brush-wrap:before{
-    height: 45%;
-    width: 100%;
-    top: 28%;
-    left: -1%;
-}
+    .brush-wrap:before{
+        height: 45%;
+        width: 100%;
+        top: 28%;
+        left: -1%;
+    }
+    .commonCardContainer{
+    grid-area: 2 / 3 / 3 / 4;
+    }
+    .brush-wrap {
+        position: relative;
+        display: inline-block;
+        padding: 2rem;
+        left: 50%;
+        transform: translateX(-50%)
+      }
+
+      @keyframes colorChange {
+        0% {color: transparent;}
+        70% {color: transparent;}
+        100% {color: white;}
+      }
+
+      .btn-link {
+        font-family: 'Long Cang', cursive !important;
+        text-decoration: none !important;
+        font-size: 1rem !important;
+        text-transform: uppercase !important;
+        margin: 0 50px;
+        color: #C39856;
+        font-style: italic;
+        animation-name: colorChange;
+        animation-duration: 3.5s;
+        animation-fill-mode: forwards;
+      }
+
+    .btn-link {
+        width: max-content;
+    }
+    .modal-body{
+        background-color: #EEE8C9;
+        font-size: 22px;
+    }
+    .container-fluid{
+        flex-wrap: nowrap !important;
+    }
+    .background-image{
+        background-position-y: 21px;
+    }
+    .toasts {
+        grid-area: 8 / 3 / 9 / 4; 
+        margin-top: 0px;
+    }
+    .gameboard-container{ 
+        display: grid;
+        grid-template-columns: 5px 1fr 368px 1fr 5px;
+        grid-template-rows: 70px auto 160px repeat(3, 118px) 160px 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        background-image: none;
+     }
+     .form-check-label{
+        font-size: 14px !important;
+    }
+    .navbar-toggler.ms2{
+        font-size: 16px !important;
+    }
+    .navbar-brand{
+        font-family: 'Comforter Brush', cursive;
+        font-size: 24px;
+    };
 };
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -286,22 +340,67 @@ Blue = #2a85b3
         top: 28%;
         left: -1%;
     }
-
-    .btn-link {
-        width: max-content;
-    }
-    .commonCardContainer{
-    grid-area: 7 / 3 / 8 / 4
+    .gameboard-container{ 
+        display: grid;
+        grid-template-columns: 5px 1fr 368px 1fr 5px;
+        grid-template-rows: 70px auto 160px repeat(3, 118px) 160px 160px;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+     }
+     .toasts {
+        grid-area: 8 / 3 / 8 / 4;
+        margin-top: 0px;    
     }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+    .gameboard-container{ 
+        display: grid;
+        grid-template-columns: 5px 1fr 368px 1fr 5px;
+        grid-template-rows: 70px 50px 160px repeat(3, 118px) 160px 160px;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        background-image: url('images/background.png');
+        background-size: 100vw;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-position-y: 350px;
+     }
+     .toasts {
+        grid-area: 8 / 3 / 8 / 4;
+        margin-top: 0px;
+    }
+     
 }
 
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-}
+/* Large devices (laptops/desktops, 1024px and up) */
+@media only screen and (min-width: 1024px) {
+    .gameboard-container{ 
+        display: grid;
+        grid-template-columns: 5px 1fr 368px 1fr 5px;
+        grid-template-rows: 70px 1fr 160px repeat(3, 118px) 160px 160px;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        background-image: url('images/background.png');
+        background-size: 100vw;
+        background-repeat: no-repeat;
+        background-position: center;
+     }
+    .toasts {
+        grid-area: 3 / 4 / 3 / 5;
+        width: 300px;
+        margin-left: 3rem;
+    }
+    .commonCardContainer{
+        grid-area: 5 / 4 / 6 / 5;  
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        z-index: 1;
+        margin-right: 1rem;
+    }
+
 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */

@@ -3,7 +3,7 @@ const strategyToasts = [
   'Attempting to force your opponent to give up a piece rarely works.',
   'Way of the Stream (moving your master across the board) is a more reliable way to win than the Way of the Stone (capturing the enemy master). ',
   'Way of the Stream is the most effective way to win. This goal becomes easier when the board is empty,',
-  'Whenever there is a stale mate, gradually moving your pieces into a box-shape tends to be a good way to concentrate your army while you are waiting for the chance to break that stalemate.',
+  'Gradually moving your pieces into a box-shape is a good way to concentrate your army while waiting for the chance to break a stalemate.',
   'If all your disciples die you will be forced to move your master every turn and you will lose the ability to stall.',
   'The player who loses all their disciples quickly gets their master trapped and killed.',
   "Don’t be afraid to use your master.",
