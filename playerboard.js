@@ -587,6 +587,8 @@ resetCards = () => {
     card.style.borderWidth = '0px'
     card.selected = false
 });
+this.selectedCard = null;
+this.clickedCard = null;
 };
 
 removeStart = () => {

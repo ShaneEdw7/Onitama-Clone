@@ -129,33 +129,31 @@ Blue = #2a85b3
     z-index: 2;
     }   
 
-.gameboard-container{
-   /* background-color: aqua; */
-   display: grid; 
-   grid-template-columns: 70px repeat(4, 265px) 70px; 
-   grid-template-rows: 60px 150px 350px 150px 20px; 
+.gameboard-container{ 
+   display: grid;
+   grid-template-columns: 10px 1fr 420px 1fr 10px;
+   grid-template-rows: 70px 120px repeat(3, 117px) 120px repeat(2, 1fr);
    grid-column-gap: 0px;
-   grid-row-gap: 0px; 
+   grid-row-gap: 0px;
    background-image: url('images/background.png');
    background-size: 100vw 100vh;
    background-repeat: no-repeat;
    background-position: static;
 }
+
 .background-image{
-    grid-area: 1 / 3 / 6 / 6; 
+    grid-area: 2 / 3 / 8 / 4;; 
     z-index: 1;
     background-image: url('images/Onitama_board.png');
-    background-size: 412px 765px;
+    background-size: 370px 630px;
     background-repeat: no-repeat;
     background-position: center;
-    background-position-y: 5px;
-    background-position-x: 55px;
+    background-position-y: -21px;
+    background-position-x: 27px;
 }
 
 .sideboard {
-    grid-area: 2 / 5 / 5 / 7;
-    /* background-color: brown; */
-    opacity: 0.2;
+    grid-area: 4 / 4 / 5 / 5;
     display: flex;
     justify-content: flex-start;
     z-index: 0;
@@ -165,8 +163,7 @@ Blue = #2a85b3
 }
 
 .board {
-    grid-area: 3 / 3 / 4 / 5; 
-   /* background-color: green; */
+    grid-area: 3 / 3 / 6 / 4; 
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -174,28 +171,25 @@ Blue = #2a85b3
 
 .opponentCardContainer {
     z-index: 2;
-   /* background-color:blue; */
-    grid-area: 2 / 3 / 3 / 5; 
+    grid-area: 2 / 3 / 3 / 4; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .playerCardContainer {
     z-index: 2;
-   /* background-color: orange; */
-    grid-area: 4 / 2 / 5 / 6; 
+    grid-area: 6 / 3 / 7 / 4; 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .commonCardContainer{
-  /*  background-color: pink; */
-    grid-area: 3 / 5 / 4 / 6;  
+    grid-area: 4 / 4 / 5 / 5;  
     display: flex;
     align-self: center;
     justify-content: center;
     z-index: 1;
-    margin-right: 100px;
+    margin-right: 150px;
 }
 .card {
     margin: 5px;
@@ -206,11 +200,11 @@ Blue = #2a85b3
     border-width: 0px;
 }
 .toasts {
-  /*  background-color: mediumseagreen; */
-    grid-area: 4 / 5 / 5 / 7; 
+    grid-area: 5 / 4 / 7 / 5;
     justify-content: center;
     align-content: center;
     display: flex;
+    margin-top: 50px;
 }
 
 #card3, #card4 {
@@ -295,6 +289,9 @@ Blue = #2a85b3
 
     .btn-link {
         width: max-content;
+    }
+    .commonCardContainer{
+    grid-area: 7 / 3 / 8 / 4
     }
 }
 
