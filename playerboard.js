@@ -205,7 +205,7 @@ drawGameboard = () => {
         game.botTakeTurn();
         };    
     };
-
+/*
   loadPieceImgs = () => {
     this.pieceTypes.forEach((pieceType) => {
       const redPiece = new Image();
@@ -218,7 +218,7 @@ drawGameboard = () => {
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
       }
-      redPiece.src = `images/red_${pieceType}.png`;
+      redPiece.src = `images/red_${pieceType}.png?${Date.now()}`;
       this.pieceImgs.red[pieceType] = redPiece;
   
       const bluePiece = new Image();
@@ -232,16 +232,76 @@ drawGameboard = () => {
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
       };
-      bluePiece.src = `images/blue_${pieceType}.png`;
+      bluePiece.src = `images/blue_${pieceType}.png?${Date.now()}`;
       this.pieceImgs.blue[pieceType] = bluePiece;
     });
   };
+*/
 
-  updateBoard = () => {
-    ctx.clearRect(0,0, gameboard.width, gameboard.height);
-    this.loadPieceImgs();
-    };
+loadPieceImgs = () => {
+  pieceTypes.forEach((pieceType) => {
+    const redPiece = new Image();
+    redPiece.src = `images/red_${pieceType}.png`;
+    pieceImgs.red[pieceType] = redPiece;
 
+    const bluePiece = new Image();
+    bluePiece.src = `images/blue_${pieceType}.png`;
+    pieceImgs.blue[pieceType] = bluePiece;
+  });
+const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.red));
+
+  Promise.all(
+    allImages.map(img => {
+      return new Promise((resolve, reject) => {
+        img.onload = resolve;
+        img.onerror = reject;
+      });
+    })
+  ).then(() => {
+    drawPieces();
+  });
+};
+/*
+loadPieceImgs = () => {
+  const loadImage = (color, pieceType) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        this.pieceImgs[color][pieceType] = img;
+        resolve();
+      };
+      img.src = `images/${color}_${pieceType}.png`;
+      img.onerror = () => {
+        reject(`Error loading image: ${color}_${pieceType}`);
+      };
+    });
+  };
+  
+  const promises = [];
+
+  this.pieceTypes.forEach((pieceType) => {
+    promises.push(loadImage('blue', pieceType));
+    promises.push(loadImage('red', pieceType));
+  });
+
+  // Wait for all images to load
+  Promise.all(promises)
+    .then(() => {
+      console.log('All images loaded successfully.');
+      // All images have loaded, now draw them on the canvas
+      this.piecePositions.forEach((position) => {
+        const { row, col, piece, color } = position;
+        const x = col * cellSize;
+        const y = row * cellSize;
+        const img = this.pieceImgs[color][piece];
+        ctx.drawImage(img, x, y, cellSize, cellSize);     
+      });
+    })
+    .catch((error) => {
+      console.error('Error loading images:', error);
+    });
+};
+*/
   initializeGame() {
     this.getCurrentPlayerColor();
     this.loadPieceImgs();
@@ -278,18 +338,15 @@ drawGameboard = () => {
   };
 
   handlePlayerClick = (event) => {
-    this.updateBoard();
     this.selectedPiece = this.piecePositions.find((piece) => piece.selected === true)
     if (this.clickedCard) {
       if (this.selectedPiece) {
         this.movePiece(event, this.selectedPiece)
       } else { 
         this.selectPiece(event);
-        this.updateBoard();
         };
       } else {
         this.cardSelectionAlert();
-        this.updateBoard();
       };
     }; 
 
@@ -314,7 +371,6 @@ drawGameboard = () => {
       this.selectedPiece = piece;
       this.animatePiece();
       this.removePiece(newCol,newRow);
-      this.updateBoard();
     }
     
     botTakeTurn() {
@@ -351,7 +407,7 @@ drawGameboard = () => {
           const pieceY = move.piece.row;
           const pieceX = move.piece.col;
           this.highlightSquare(pieceX, pieceY)
-          this.loadPieceImgs()        
+          //this.loadPieceImgs()        
           setTimeout(() => {
             this.movePieceSimulation(move.piece, { x: -move.move.x, y: -move.move.y });
     
@@ -391,7 +447,8 @@ drawGameboard = () => {
     const alpha = 0.4;
     const pieceColor = this.colorConverter(this.player1.color, alpha);
     const opponentPieceColor = this.colorConverter(this.player2.color, alpha)
-      ctx.clearRect(0,0, gameboard.width, gameboard.height);
+    ctx.clearRect(0,0, gameboard.width, gameboard.height);
+    this.loadPieceImgs();
 
       const validMoves = []
       this.clickedCard?.movement.forEach((movement) => {
@@ -444,7 +501,6 @@ selectCard(cardId, cardIndex, playerColor){
   allCards.forEach((card) => {
     card.style.borderWidth = '0px';
   });
-  this.updateBoard();
   if (this.currentPlayer === this.player1) {
     if (this.player1.color) {
       this.clickedCard = this.gameCards[cardIndex];
@@ -522,8 +578,8 @@ movePiece = (event, selectedPiece) => {
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
     this.resetGameboard();
     this.selectedPiece.selected = false;
-    ctx.clearRect(0, 0, gameboard.width, gameboard.height);
-    this.loadPieceImgs();
+    //ctx.clearRect(0, 0, gameboard.width, gameboard.height);
+    //this.loadPieceImgs();
   } else {
     if (isValidMove && !pieceCheck) {
       selectedPiece.row = cellY;
@@ -540,7 +596,7 @@ movePiece = (event, selectedPiece) => {
     } else {
         this.invalidMoveAlert();
         };
-  this.loadPieceImgs();
+ // this.loadPieceImgs();
   };
 };
 
@@ -652,7 +708,6 @@ pieceSelectionAlert = () => {
   this.triggerAlert('Select A Piece')
   this.removeStart();
   this.removePass();
-  this.updateBoard();
   this.resetGameboard();
   };
 };

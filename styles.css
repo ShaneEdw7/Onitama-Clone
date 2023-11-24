@@ -125,14 +125,14 @@ Blue = #2a85b3
     background-image: url('images/canvas_background-reverse.png');
     background-image: center;
     background-repeat:no-repeat;
-    background-size: contain;
+    background-size: cover;
     z-index: 2;
     }   
 
 .gameboard-container{ 
    display: grid;
-   grid-template-columns: 5px 1fr 368px 1fr 5px;
-   grid-template-rows: 70px 1fr 160px repeat(3, 118px) 160px 1fr;
+   grid-template-columns: 5px 1fr 400px 1fr 5px;
+   grid-template-rows: 70px 1fr 160px repeat(3, 128px) 160px 1fr;
    grid-column-gap: 0px;
    grid-row-gap: 0px;
    background-image: url('images/background.png');
@@ -313,8 +313,8 @@ Blue = #2a85b3
     }
     .gameboard-container{ 
         display: grid;
-        grid-template-columns: 5px 1fr 368px 1fr 5px;
-        grid-template-rows: 70px auto 160px repeat(3, 118px) 160px 1fr;
+        grid-template-columns: 5px 1fr 400px 1fr 5px;
+        grid-template-rows: 70px auto 160px repeat(3, 128px) 160px 1fr;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         background-image: none;
@@ -342,8 +342,8 @@ Blue = #2a85b3
     }
     .gameboard-container{ 
         display: grid;
-        grid-template-columns: 5px 1fr 368px 1fr 5px;
-        grid-template-rows: 70px auto 160px repeat(3, 118px) 160px 160px;
+        grid-template-columns: 5px 1fr 400px 1fr 5px;
+        grid-template-rows: 70px auto 160px repeat(3, 128px) 160px 160px;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
      }
@@ -357,8 +357,8 @@ Blue = #2a85b3
 @media only screen and (min-width: 768px) {
     .gameboard-container{ 
         display: grid;
-        grid-template-columns: 5px 1fr 368px 1fr 5px;
-        grid-template-rows: 70px 50px 160px repeat(3, 118px) 160px 160px;
+        grid-template-columns: 5px 1fr 400px 1fr 5px;
+        grid-template-rows: 70px 50px 160px repeat(3, 128px) 160px 160px;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         background-image: url('images/background.png');
@@ -378,8 +378,8 @@ Blue = #2a85b3
 @media only screen and (min-width: 1024px) {
     .gameboard-container{ 
         display: grid;
-        grid-template-columns: 5px 1fr 368px 1fr 5px;
-        grid-template-rows: 70px 1fr 160px repeat(3, 118px) 160px 160px;
+        grid-template-columns: 5px 1fr 400px 1fr 5px;
+        grid-template-rows: 70px 1fr 160px repeat(3, 128px) 160px 160px;
         grid-column-gap: 0px;
         grid-row-gap: 0px;
         background-image: url('images/background.png');
