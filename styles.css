@@ -305,7 +305,7 @@ Blue = #2a85b3
         flex-wrap: nowrap !important;
     }
     .background-image{
-        background-position-y: 21px;
+        background-position-y: 8px;
     }
     .toasts {
         grid-area: 8 / 3 / 9 / 4; 
@@ -400,7 +400,6 @@ Blue = #2a85b3
         z-index: 1;
         margin-right: 1rem;
     }
-
 
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */

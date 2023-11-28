@@ -218,7 +218,7 @@ drawGameboard = () => {
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
       }
-      redPiece.src = `images/red_${pieceType}.png?${Date.now()}`;
+      redPiece.src = `images/red_${pieceType}.png`;
       this.pieceImgs.red[pieceType] = redPiece;
   
       const bluePiece = new Image();
@@ -232,76 +232,44 @@ drawGameboard = () => {
           ctx.drawImage(img, x, y, cellSize, cellSize);
         });
       };
-      bluePiece.src = `images/blue_${pieceType}.png?${Date.now()}`;
+      bluePiece.src = `images/blue_${pieceType}.png`;
       this.pieceImgs.blue[pieceType] = bluePiece;
     });
   };
 */
 
-loadPieceImgs = () => {
-  pieceTypes.forEach((pieceType) => {
-    const redPiece = new Image();
-    redPiece.src = `images/red_${pieceType}.png`;
-    pieceImgs.red[pieceType] = redPiece;
-
-    const bluePiece = new Image();
-    bluePiece.src = `images/blue_${pieceType}.png`;
-    pieceImgs.blue[pieceType] = bluePiece;
-  });
-const allImages = Object.values(pieceImgs.blue).concat(Object.values(pieceImgs.red));
-
-  Promise.all(
-    allImages.map(img => {
-      return new Promise((resolve, reject) => {
-        img.onload = resolve;
-        img.onerror = reject;
-      });
-    })
-  ).then(() => {
-    drawPieces();
+loadPieceType = (pieceType, color) => {
+  return new Promise((resolve, reject) => {
+    const piece = new Image();
+    piece.onload = () => {
+      this.pieceImgs[color][pieceType] = piece;
+      resolve({ pieceType, color, piece });
+    };
+    piece.onerror = (error) => reject(error);
+    piece.src = `images/${color}_${pieceType}.png`;
   });
 };
-/*
-loadPieceImgs = () => {
-  const loadImage = (color, pieceType) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = () => {
-        this.pieceImgs[color][pieceType] = img;
-        resolve();
-      };
-      img.src = `images/${color}_${pieceType}.png`;
-      img.onerror = () => {
-        reject(`Error loading image: ${color}_${pieceType}`);
-      };
-    });
-  };
-  
-  const promises = [];
 
-  this.pieceTypes.forEach((pieceType) => {
-    promises.push(loadImage('blue', pieceType));
-    promises.push(loadImage('red', pieceType));
-  });
+loadPieceImgs = async () => {
+  try {
+    const redImages = await Promise.all(this.pieceTypes.map(pieceType => this.loadPieceType(pieceType, 'red')));
+    const blueImages = await Promise.all(this.pieceTypes.map(pieceType => this.loadPieceType(pieceType, 'blue')));
 
-  // Wait for all images to load
-  Promise.all(promises)
-    .then(() => {
-      console.log('All images loaded successfully.');
-      // All images have loaded, now draw them on the canvas
-      this.piecePositions.forEach((position) => {
-        const { row, col, piece, color } = position;
-        const x = col * cellSize;
-        const y = row * cellSize;
-        const img = this.pieceImgs[color][piece];
-        ctx.drawImage(img, x, y, cellSize, cellSize);     
-      });
-    })
-    .catch((error) => {
-      console.error('Error loading images:', error);
+    this.piecePositions.forEach((position) => {
+      const { row, col, piece, color } = position;
+      const x = col * cellSize;
+      const y = row * cellSize;
+      const img = color === 'red' ? redImages.find(img => img.pieceType === piece) : blueImages.find(img => img.pieceType === piece);
+
+      if (img && img.piece) {
+        ctx.drawImage(img.piece, x, y, cellSize, cellSize);
+      }
     });
+  } catch (error) {
+    console.error('Error loading images:', error);
+  }
 };
-*/
+
   initializeGame() {
     this.getCurrentPlayerColor();
     this.loadPieceImgs();
@@ -406,8 +374,7 @@ loadPieceImgs = () => {
           this.selectedPiece = move.piece;
           const pieceY = move.piece.row;
           const pieceX = move.piece.col;
-          this.highlightSquare(pieceX, pieceY)
-          //this.loadPieceImgs()        
+          this.highlightSquare(pieceX, pieceY)        
           setTimeout(() => {
             this.movePieceSimulation(move.piece, { x: -move.move.x, y: -move.move.y });
     
@@ -501,6 +468,7 @@ selectCard(cardId, cardIndex, playerColor){
   allCards.forEach((card) => {
     card.style.borderWidth = '0px';
   });
+  this.loadPieceImgs();
   if (this.currentPlayer === this.player1) {
     if (this.player1.color) {
       this.clickedCard = this.gameCards[cardIndex];
@@ -578,8 +546,7 @@ movePiece = (event, selectedPiece) => {
   if (selectedPiece.startX === selectedPiece.targetX && selectedPiece.startY === selectedPiece.targetY) {
     this.resetGameboard();
     this.selectedPiece.selected = false;
-    //ctx.clearRect(0, 0, gameboard.width, gameboard.height);
-    //this.loadPieceImgs();
+    this.loadPieceImgs();
   } else {
     if (isValidMove && !pieceCheck) {
       selectedPiece.row = cellY;
@@ -596,7 +563,7 @@ movePiece = (event, selectedPiece) => {
     } else {
         this.invalidMoveAlert();
         };
- // this.loadPieceImgs();
+        this.loadPieceImgs();
   };
 };
 
@@ -708,6 +675,7 @@ pieceSelectionAlert = () => {
   this.triggerAlert('Select A Piece')
   this.removeStart();
   this.removePass();
+  this.loadPieceImgs();
   this.resetGameboard();
   };
 };
