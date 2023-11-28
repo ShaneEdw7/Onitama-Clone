@@ -143,17 +143,20 @@ class Game {
   this.clickedCard
   this.animationStep = 0
   this.invalidMoveCounter = 0;
+  this.gameState = null;
 };
 
 // Determine Start Player & Visual cue to show whos turn it is.
 determineStartPlayer = () => {
   const board = document.getElementById('gameboard');
 if (this.gameCards[4].color === this.getCurrentPlayerColor()) {
+  this.gameState = 'player 1';
   this.currentPlayer = this.player1
   board.style.borderWidth = "5px"
   board.style.borderColor = this.getCurrentPlayerColor();
   board.style.borderSpacing = '5px'; 
 } else {
+  this.gameState = 'player 2';
   this.currentPlayer = this.player2
   board.style.borderWidth = "5px"
   board.style.borderColor = getOpponentColor();
@@ -189,12 +192,16 @@ drawGameboard = () => {
   switchPlayers() {
     const board = document.getElementById('gameboard');
     if (this.currentPlayer === this.player1) {
+      if(this.gameState === 'gameOver') return
+      this.gameState = 'player2'
       this.currentPlayer = this.player2
       board.style.borderColor = this.player2.color
       board.style.borderSpacing = '5px';
       const sideCard = document.getElementById('card5')
       sideCard.style.transform = "rotate(0.5turn)"; 
       } else {
+        if(this.gameState === 'gameOver') return
+        this.gameState = 'player1'
         this.currentPlayer = this.player1
         board.style.borderColor = this.player1.color;
         board.style.borderSpacing = '5px';
@@ -247,8 +254,6 @@ loadPieceImgs = async () => {
     } else {
       gameboard.style.backgroundImage = 'url("images/canvas_background-reverse.png")';
     };
-    if (botSelection === 'bot') {
-    }
   };
 
   mouseClick = (event) => {
@@ -311,6 +316,7 @@ loadPieceImgs = async () => {
     }
     
     botTakeTurn() {
+      this.gameState = 'bot_turn'
       if (this.currentPlayer !== this.player2) {
         return;
       }
@@ -481,6 +487,7 @@ removePiece = (cellX,cellY) => {
   });
   if (pieceToRemove) {
     if(pieceToRemove.piece === 'master') {
+      this.gameState = 'gameOver';
       this.gameOver();
      };
     const index = this.piecePositions.indexOf(pieceToRemove);
@@ -566,6 +573,7 @@ resetGameboard = () => {
 };
 
 cardSelectionAlert = () => {
+  this.gameState = 'card alert';
   this.triggerAlert('Please select a Card')
   this.removeStart();
   this.removePass();
@@ -604,6 +612,7 @@ gameOver = () => {
   this.triggerAlert(`Game Over. ${winner.charAt(0).toUpperCase() + winner.slice(1)} Wins!`);
   const newGameButton = document.getElementById('start');
   newGameButton.style.display = 'block'
+  this.gameState = 'gameOver'
   this.removePass();
   this.removeClose();
 };
@@ -616,6 +625,7 @@ removeClose = () => {
 };
 
 invalidMoveAlert = () => {
+  this.gameState = 'move alert';
   if (this.invalidMoveCounter < 3) {
   this.triggerAlert('Invalid Move');
   this.removeStart();
@@ -628,6 +638,7 @@ invalidMoveAlert = () => {
 };
 
 passAlert = () => {
+  this.gameState = 'pass alert';
   this.triggerAlert('If you have a legal move, you must take it—even if you don’t want to! It is possible that you will find that you cannot use any of your cards to make a legal move. If this happens —and only then— you must pass your turn. Would you like to pass?')
   this.removeStart();
   const passTurn = document.getElementById('pass');
@@ -641,6 +652,7 @@ passTrigger = () => {
 };
 
 pieceSelectionAlert = () => {
+  this.gameState = 'piece alert';
   this.triggerAlert('Select A Piece')
   this.removeStart();
   this.removePass();
