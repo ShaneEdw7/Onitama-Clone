@@ -205,38 +205,6 @@ drawGameboard = () => {
         game.botTakeTurn();
         };    
     };
-/*
-  loadPieceImgs = () => {
-    this.pieceTypes.forEach((pieceType) => {
-      const redPiece = new Image();
-      redPiece.onload = () => {
-        this.piecePositions.forEach((position) => {
-          const { row, col, piece, color } = position;
-          const x = col * cellSize;
-          const y = row * cellSize;
-          const img = this.pieceImgs[color][piece];
-          ctx.drawImage(img, x, y, cellSize, cellSize);
-        });
-      }
-      redPiece.src = `images/red_${pieceType}.png`;
-      this.pieceImgs.red[pieceType] = redPiece;
-  
-      const bluePiece = new Image();
-      bluePiece.onload = () => {
-        this.piecePositions.forEach((position) => {
-          const { row, col, piece, color } = position;
-          const x = col * cellSize;
-          const y = row * cellSize;
-      
-          const img = this.pieceImgs[color][piece];
-          ctx.drawImage(img, x, y, cellSize, cellSize);
-        });
-      };
-      bluePiece.src = `images/blue_${pieceType}.png`;
-      this.pieceImgs.blue[pieceType] = bluePiece;
-    });
-  };
-*/
 
 loadPieceType = (pieceType, color) => {
   return new Promise((resolve, reject) => {
