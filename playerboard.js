@@ -339,6 +339,7 @@ loadPieceImgs = async () => {
       this.selectedPiece = piece;
       this.animatePiece();
       this.removePiece(newCol,newRow);
+      this.loadPieceImgs();
     }
     
     botTakeTurn() {
