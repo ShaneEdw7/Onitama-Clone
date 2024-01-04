@@ -2,6 +2,15 @@
 
 Welcome to the Onitama board game clone! This project is a web-based implementation of the popular board game Onitama, where players strategically move their pieces to outmaneuver and capture their opponent's master.
 
+It was created using:
+- HTML
+- CSS
+- Javascript
+
+You can find the game here:
+
+### https://shaneedw7.github.io/Onitama-Clone/
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -13,6 +22,10 @@ Welcome to the Onitama board game clone! This project is a web-based implementat
 ## Introduction
 
 This project is a JavaScript implementation of the Onitama board game. The game allows two players to engage in a strategic battle on a 5x5 grid, using movement cards that determine the available moves for their pieces. The game features a user-friendly interface and provides helpful strategy tips to enhance the gaming experience.
+
+## Motivation
+
+As a board game fan I planned this project, thinking it would be challenging but achievable as a software devlopment student. I had decided that because the game already had a specific set of rules that I already had a good roadmap on how the project would progres. Little did I know, it was a very complex project requiring a deep understanding of Javascript. It tested my problem solving as I grappled with asynchronous programming, understanding 'this', refactoring, and object oriented programming.
 
 ## Features
 
@@ -115,5 +128,7 @@ If you have a legal move, you must take it. If you cannot make a legal move, pas
 ## Acknowledgments
 
 This project was inspired by the Onitama board game. Special thanks to the creators of Onitama for the original game concept.
+
+I extend a heartfelt thanks to my mentor, Joel Lake, for his invaluable guidance throughout this project. Joel not only navigated around my busy schedule but also fueled my project ambitions with unwavering support.
 
 Enjoy playing Onitama, and may the best strategist win!
