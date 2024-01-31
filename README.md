@@ -11,6 +11,17 @@ You can find the game here:
 
 ### https://shaneedw7.github.io/Onitama-Clone/
 
+Video Demo:
+
+<div>
+    <a href="https://www.loom.com/share/c0b48dc56f504d3892ebb9d28279a7ce">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/c0b48dc56f504d3892ebb9d28279a7ce-with-play.gif">
+    </a>
+     <a href="https://www.loom.com/share/c0b48dc56f504d3892ebb9d28279a7ce">
+      <p>Onitama Clone - Video Demo</p>
+    </a>
+  </div>
+
 ## Table of Contents
 
 - [Introduction](#introduction)
