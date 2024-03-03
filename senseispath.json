@@ -1,0 +1,180 @@
+{
+  "fox": {
+    "color": "red",
+    "image": "images/fox.png",
+    "movement": [
+      { "x": 1, "y": -1 },
+      { "x": 1, "y": 0 },
+      { "x": 1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "dog": {
+    "color": "blue",
+    "image": "images/dog.png",
+    "movement": [
+      { "x": -1, "y": -1 },
+      { "x": -1, "y": 0 },
+      { "x": -1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "giraffe": {
+    "color": "blue",
+    "image": "images/giraffe.png",
+    "movement": [
+      { "x": 0, "y": 1 },
+      { "x": -2, "y": -1 },
+      { "x": 2, "y": -1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "panda": {
+    "color": "red",
+    "image": "images/panda.png",
+    "movement": [
+      { "x": -1, "y": 1 },
+      { "x": 0, "y": -1 },
+      { "x": 1, "y": -1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "bear": {
+    "color": "blue",
+    "image": "images/bear.png",
+    "movement": [
+      { "x": 1, "y": 1 },
+      { "x": -1, "y": -1 },
+      { "x": 0, "y": -1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "kirin": {
+    "color": "red",
+    "image": "images/kirin.png",
+    "movement": [
+      { "x": -1, "y": -2 },
+      { "x": 1, "y": -2 },
+      { "x": 0, "y": 2 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "seasnake": {
+    "color": "blue",
+    "image": "images/seasnake.png",
+    "movement": [
+      { "x": -1, "y": 1 },
+      { "x": 0, "y": -1 },
+      { "x": 2, "y": 0 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "viper": {
+    "color": "red",
+    "image": "images/viper.png",
+    "movement": [
+      { "x": -2, "y": 0 },
+      { "x": 0, "y": -1 },
+      { "x": 1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "phoenix": {
+    "color": "blue",
+    "image": "images/phoenix.png",
+    "movement": [
+      { "x": -2, "y": 0 },
+      { "x": -1, "y": -1 },
+      { "x": 1, "y": -1 },
+      { "x": 2, "y": 0 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "mouse": {
+    "color": "blue",
+    "image": "images/mouse.png",
+    "movement": [
+      { "x": -1, "y": 1 },
+      { "x": 0, "y": -1 },
+      { "x": 1, "y": 0 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "rat": {
+    "color": "red",
+    "image": "images/rat.png",
+    "movement": [
+      { "x": -1, "y": 0 },
+      { "x": 0, "y": -1 },
+      { "x": 1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "turtle": {
+    "color": "red",
+    "image": "images/turtle.png",
+    "movement": [
+      { "x": -2, "y": 0 },
+      { "x": -1, "y": -1 },
+      { "x": 1, "y": -1 },
+      { "x": 2, "y": 0 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "tanuki": {
+    "color": "blue",
+    "image": "images/tanuki.png",
+    "movement": [
+      { "x": -1, "y": 1 },
+      { "x": 0, "y": -1 },
+      { "x": 2, "y": -1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "iguana": {
+    "color": "red",
+    "image": "images/iguana.png",
+    "movement": [
+      { "x": -2, "y": -1 },
+      { "x": 0, "y": -1 },
+      { "x": 1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "sable": {
+    "color": "blue",
+    "image": "images/sable.png",
+    "movement": [
+      { "x": -2, "y": 0 },
+      { "x": -1, "y": 1 },
+      { "x": 1, "y": -1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  },
+  "otter": {
+    "color": "red",
+    "image": "images/otter.png",
+    "movement": [
+      { "x": -1, "y": -1 },
+      { "x": 2, "y": 0 },
+      { "x": 1, "y": 1 },
+      { "x": 0, "y": 0 }
+    ],
+    "selected": false
+  }
+}
