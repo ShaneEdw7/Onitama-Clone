@@ -27,6 +27,9 @@ Blue = #2a85b3
 .modal-content{
     font-family: 'Long Cang', cursive;
 }
+.modal-title{
+    text-align: center !important;
+}
 .rule-head{
     font-family: 'Long Cang', cursive;
     font-size: 45px;
@@ -78,7 +81,9 @@ Blue = #2a85b3
 }
 .modal-header{
     background-color: #EEE8C9;
+    text-align: center !important;
 }
+
 .default-body{
      background-color: #C39856;
 

@@ -1,12 +1,13 @@
-const colordisplay = document.getElementsByName('color');
+//Stores color and gameModeChoice to local storage
+const colordisplay = document.getElementsByName("color");
 colordisplay.forEach((color) => {
-    color.addEventListener('click', (event) => {
-        localStorage.setItem('playercolor', event.target.value)
-    })
+  color.addEventListener("click", (event) => {
+    localStorage.setItem("playercolor", event.target.value);
+  });
 });
-const gameModeChoice = document.getElementsByName('gameMode');
+const gameModeChoice = document.getElementsByName("gameMode");
 gameModeChoice.forEach((gameMode) => {
-    gameMode.addEventListener('click', (event) => {
-        localStorage.setItem('botSelection', event.target.value)
-    })
+  gameMode.addEventListener("click", (event) => {
+    localStorage.setItem("botSelection", event.target.value);
+  });
 });

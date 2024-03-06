@@ -67,11 +67,19 @@ const createImages = (createCard, i) => {
   imgArray.src = createCard.image;
 };
 
+const senseispath = true;
+
 const fetchCards = async () => {
   try {
-    const response = await fetch("./basecards.json");
-    const cards = await response.json();
-    return cards;
+    if (senseispath === true) {
+      const response = await fetch("./senseispath.json");
+      const cards = await response.json();
+      return cards;
+    } else {
+      const response = await fetch("./basecards.json");
+      const cards = await response.json();
+      return cards;
+    }
   } catch (error) {
     console.error("Error fetching cards:", error);
     throw error;
